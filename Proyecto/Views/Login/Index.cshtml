@@ -1,0 +1,279 @@
+﻿@{
+    Layout = null;
+}
+@using Proyecto.Models
+@model UsuarioCLS
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Escuela Club de Leones</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-ajax-unobtrusive/3.2.6/jquery.unobtrusive-ajax.min.js"></script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #70CEF7 0%, #FFFFFF 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            transition: background 0.3s ease;
+        }
+
+        .container-login {
+            max-width:450px; /* Aumentado de 800px a 1000px */
+            width: 70%; /* Asegura que en pantallas más pequeñas, ocupe el 90% del ancho */
+            padding: 50px 60px; /* Ajustado el padding */
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .login-icon-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .login-icon-circle {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(145deg, #0288d1, #03a9f4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 20px rgba(2, 136, 209, 0.3);
+            transition: all 0.3s ease;
+        }
+
+            .login-icon-circle i {
+                font-size: 50px;
+                color: white;
+            }
+
+            .login-icon-circle:hover {
+                transform: scale(1.05);
+                box-shadow: 0 15px 30px rgba(2, 136, 209, 0.4);
+            }
+
+        .login-title {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 30px;
+            color: #0288d1;
+            font-weight: 600;
+        }
+
+        .form-group {
+            position: relative;
+            margin-bottom: 25px;
+        }
+
+        .form-control {
+            border: none;
+            border-bottom: 2px solid #01579b;
+            border-radius: 0;
+            padding: 10px 0;
+            font-size: 18px;
+            background-color: transparent;
+            transition: all 0.3s ease;
+        }
+
+            .form-control:focus {
+                outline: none;
+                box-shadow: none;
+                border-color: #01579b;
+            }
+
+            .form-control::placeholder {
+                color: #b3e5fc;
+            }
+
+            .form-control:focus::placeholder {
+                color: transparent;
+            }
+
+        .toggle-password {
+            position: absolute;
+            right: 0;
+            top: 10px;
+            cursor: pointer;
+            color: #0288d1;
+        }
+
+        .btn-login {
+            background: linear-gradient(to right, #0288d1, #0277bd);
+            border: none;
+            color: white;
+            font-size: 16px;
+            padding: 12px 20px;
+            width: 100%;
+            transition: all 0.3s ease;
+            border-radius: 30px;
+        }
+
+            .btn-login:hover {
+                background: linear-gradient(to right, #01579b, #0288d1);
+                transform: translateY(-2px);
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            }
+
+        .forgot-password {
+            text-align: center;
+            font-size: 0.875rem;
+            margin-top: 20px;
+        }
+
+            .forgot-password a {
+                color: #0288d1;
+                text-decoration: none;
+                transition: color 0.3s ease;
+            }
+
+                .forgot-password a:hover {
+                    color: #01579b;
+                }
+
+        #darkModeToggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: #0288d1;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+            #darkModeToggle:hover {
+                color: #01579b;
+            }
+
+        .dark-mode {
+            background: linear-gradient(135deg, #263238 0%, #37474f 100%);
+        }
+
+            .dark-mode .container-login {
+                background-color: rgba(55, 71, 79, 0.9);
+            }
+
+            .dark-mode .login-title,
+            .dark-mode .form-control,
+            .dark-mode .toggle-password {
+                color: #e0f7fa;
+            }
+
+            .dark-mode .form-control {
+                border-bottom-color: #80deea;
+            }
+
+                .dark-mode .form-control::placeholder {
+                    color: #4fc3f7;
+                }
+
+            .dark-mode .btn-login {
+                background: linear-gradient(to right, #0288d1, #0277bd);
+            }
+
+                .dark-mode .btn-login:hover {
+                    background: linear-gradient(to right, #01579b, #0288d1);
+                }
+
+            .dark-mode .forgot-password a {
+                color: #80deea;
+            }
+
+            .dark-mode #darkModeToggle {
+                color: #80deea;
+            }
+
+            .dark-mode .login-icon-circle {
+                background: linear-gradient(145deg, #01579b, #0288d1);
+                box-shadow: 0 10px 20px rgba(1, 87, 155, 0.3);
+            }
+
+                .dark-mode .login-icon-circle:hover {
+                    box-shadow: 0 15px 30px rgba(1, 87, 155, 0.4);
+                }
+    </style>
+</head>
+<body>
+    <button id="darkModeToggle">
+        <i class="bi bi-moon-fill"></i>
+    </button>
+
+    <div class="container-login">
+        <div class="login-icon-container">
+            <div class="login-icon-circle">
+                <i class="bi bi-person-fill"></i>
+            </div>
+        </div>
+        <h2 class="login-title">Bienvenido</h2>
+        @using (Ajax.BeginForm("Login", "Login", "", new AjaxOptions { HttpMethod = "POST", OnSuccess = "Ingresar", UpdateTargetId = "divRespuesta" }, new { @id = "frmLogin" }))
+        {
+            <div class="form-group">
+                <input type="text" class="form-control" id="nombreusuario" name="nombreusuario" placeholder="Usuario" required>
+            </div>
+            <div class="form-group">
+                <input type="password" class="form-control" id="contra" name="contra" placeholder="Contraseña" required>
+                <span class="toggle-password" onclick="togglePassword()">
+                    <i class="bi bi-eye-slash" id="toggleIcon"></i>
+                </span>
+            </div>
+            <button type="submit" class="btn btn-lg btn-primary btn-login" id="IngresoLog">Entrar</button>  
+            <div class="forgot-password">
+                <a href="#">¿Olvidaste tu contraseña?</a>
+            </div>
+        }
+    </div>
+
+    <div id="divRespuesta"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const body = document.body;
+        const icon = darkModeToggle.querySelector('i');
+
+        darkModeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            if (body.classList.contains('dark-mode')) {
+                icon.classList.replace('bi-moon-fill', 'bi-sun-fill');
+            } else {
+                icon.classList.replace('bi-sun-fill', 'bi-moon-fill');
+            }
+        });
+
+        function togglePassword() {
+            const passwordInput = document.getElementById('contra');
+            const toggleIcon = document.getElementById('toggleIcon');
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleIcon.classList.replace('bi-eye-slash', 'bi-eye');
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.classList.replace('bi-eye', 'bi-eye-slash');
+            }
+        }
+
+        function Ingresar(response) {
+            if (response.success) {
+                // Redirigir o mostrar un mensaje de éxito
+                window.location.href = response.redirectUrl;
+            } else {
+                // Mostrar un mensaje de error
+                document.getElementById('divRespuesta').innerHTML = response.message;
+            }
+        }
+    </script>
+</body>
+</html>
