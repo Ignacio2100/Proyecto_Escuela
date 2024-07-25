@@ -16,8 +16,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-ajax-unobtrusive/3.2.6/jquery.unobtrusive-ajax.min.js"></script>
     <style>
         body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #70CEF7 0%, #FFFFFF 100%);
+            font-family: 'Fredoka One', cursive;
+            background: linear-gradient(135deg, #70CEF7 50%, #FFD700 50%);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -43,8 +43,8 @@
         }
 
         .login-icon-circle {
-            width: 100px;
-            height: 100px;
+            width: 130px;
+            height: 130px;
             border-radius: 50%;
             background: linear-gradient(145deg, #0288d1, #03a9f4);
             display: flex;
@@ -54,9 +54,12 @@
             transition: all 0.3s ease;
         }
 
-            .login-icon-circle i {
-                font-size: 50px;
-                color: white;
+            .login-icon-circle img {
+                
+                width: 150px; /* Tamaño estándar para el logo */
+                height: auto;
+                border-radius: 50%;
+                box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
             }
 
             .login-icon-circle:hover {
@@ -214,7 +217,7 @@
     <div class="container-login">
         <div class="login-icon-container">
             <div class="login-icon-circle">
-                <i class="bi bi-person-fill"></i>
+                <img src="~/Imagenes/Logo.png" alt="Logo Escuela Club de Leones" />
             </div>
         </div>
         <h2 class="login-title">Bienvenido</h2>
