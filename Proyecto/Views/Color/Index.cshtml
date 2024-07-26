@@ -3,5 +3,260 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aventura de Colores para Preescolares</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f0f0f0;
+            font-family: 'Comic Sans MS', cursive;
+        }
 
+        .color-card {
+            height: 250px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            overflow: hidden;
+            position: relative;
+        }
+
+            .color-card:hover {
+                transform: translateY(-10px);
+                box-shadow: 0 12px 16px rgba(0,0,0,0.2);
+            }
+
+        .color-img {
+            width: 100%;
+            height: 70%;
+            object-fit: cover;
+            border-top-left-radius: 15px;
+            border-top-right-radius: 15px;
+        }
+
+        .color-name {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: rgba(255,255,255,0.8);
+            padding: 10px;
+            font-size: 1.2em;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .category-title {
+            background-color: #fff;
+            border-radius: 25px;
+            padding: 10px 20px;
+            display: inline-block;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        #colorMixer {
+            background-color: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 30px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        #mixResult {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin: 20px auto;
+            transition: background-color 0.5s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center mb-5 animate__animated animate__bounce">Aventura de Colores para Tí</h1>
+
+        <div id="colorCategories">
+            <h2 class="category-title animate__animated animate__fadeIn">Colores Primarios</h2>
+            <div class="row mb-5">
+                <div class="col-md-4 mb-3">
+                    <div class="color-card animate__animated animate__zoomIn" style="background-color: #FF0000;" onclick="playSound('rojo')">
+                        <img src="~/Imagenes/Rojo.png" alt="Manzana roja" class="color-img">
+                        <div class="color-name">Rojo</div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="color-card animate__animated animate__zoomIn" style="background-color: #FFFF00;" onclick="playSound('amarillo')">
+                        <img src="~/Imagenes/Amarillo.png" alt="Sol amarillo" class="color-img">
+                        <div class="color-name">Amarillo</div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="color-card animate__animated animate__zoomIn" style="background-color: #0000FF;" onclick="playSound('azul')">
+                        <img src="~/Imagenes/Azul.png" alt="Cielo azul" class="color-img">
+                        <div class="color-name">Azul</div>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="category-title animate__animated animate__fadeIn">Colores Secundarios</h2>
+            <div class="row mb-5">
+                <div class="col-md-4 mb-3">
+                    <div class="color-card animate__animated animate__zoomIn" style="background-color: #FFA500;" onclick="playSound('anaranjado')">
+                        <img src="~/Imagenes/Naranja.png" alt="Naranja" class="color-img">
+                        <div class="color-name">Anaranjado</div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="color-card animate__animated animate__zoomIn" style="background-color: #00FF00;" onclick="playSound('verde')">
+                        <img src="~/Imagenes/Verde.png" alt="Hoja verde" class="color-img">
+                        <div class="color-name">Verde</div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="color-card animate__animated animate__zoomIn" style="background-color: #800080;" onclick="playSound('violeta')">
+                        <img src="~/Imagenes/Violeta.png" alt="Uva morada" class="color-img">
+                        <div class="color-name">Violeta</div>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="category-title animate__animated animate__fadeIn">Colores Terciarios</h2>
+            <div class="row">
+                <div class="row mb-5">
+                    <div class="col-md-4 mb-3">
+                        <div class="color-card animate__animated animate__zoomIn" style="background-color: #f5c514;" onclick="playSound('amarillo-anaranjado')">
+                            <img src="~/Imagenes/AA.png" alt="Amarillo-Anaranjado" class="color-img">
+                            <div class="color-name">Amarillo-Anaranjado</div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="color-card animate__animated animate__zoomIn" style="background-color: #f55f14;" onclick="playSound('rojo-anaranjado')">
+                            <img src="~/Imagenes/RA.png" alt="rojo-anaranjado" class="color-img">
+                            <div class="color-name">Rojo-Anaranjado</div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="color-card animate__animated animate__zoomIn" style="background-color: #f60882;" onclick="playSound('Rojo-Violáceo')">
+                            <img src="~/Imagenes/RV.png" alt="Rojo-Violáceo" class="color-img">
+                            <div class="color-name">Rojo-Violáceo</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-5">
+                    <div class="col-md-4 mb-3">
+                        <div class="color-card animate__animated animate__zoomIn" style="background-color: #390e70;" onclick="playSound(' Azul-Violáceo')">
+                            <img src="~/Imagenes/AV.png" alt=" Azul-Violáceo" class="color-img">
+                            <div class="color-name"> Azul-Violáceo</div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="color-card animate__animated animate__zoomIn" style="background-color: #2e7e9b;" onclick="playSound('Azul-Verdoso')">
+                            <img src="~/Imagenes/AzulVerdoso.png" alt="Azul-Verdoso" class="color-img">
+                            <div class="color-name">Azul-Verdoso</div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="color-card animate__animated animate__zoomIn" style="background-color: #40c041;" onclick="playSound('Amarillo-Verdoso')">
+                            <img src="~/Imagenes/AmarilloVerdoso.png" alt="Amarillo-Verdoso" class="color-img">
+                            <div class="color-name">Amarillo-Verdoso</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="colorMixer" class="animate__animated animate__fadeIn">
+            <h2 class="text-center mb-4">¡Mezclemos Colores!</h2>
+            <div class="row">
+                <div class="col-md-4">
+                    <select id="color1" class="form-select mb-2">
+                        <option value="">Elige el primer color</option>
+                        <option value="#FF0000">Rojo</option>
+                        <option value="#FFFF00">Amarillo</option>
+                        <option value="#0000FF">Azul</option>
+                        <option value="#FFA500">Anaranjado</option>
+                        <option value="#00FF00">Verde</option>
+                        <option value="#800080">Violeta</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <select id="color2" class="form-select mb-2">
+                        <option value="">Elige el segundo color</option>
+                        <option value="#FF0000">Rojo</option>
+                        <option value="#FFFF00">Amarillo</option>
+                        <option value="#0000FF">Azul</option>
+                        <option value="#FFA500">Anaranjado</option>
+                        <option value="#00FF00">Verde</option>
+                        <option value="#800080">Violeta</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <button onclick="mixColors()" class="btn btn-primary w-100">Mezclar</button>
+
+                </div>
+            </div>
+            <div id="mixResult"></div>
+            <p id="mixExplanation" class="text-center mt-3"></p>
+            <a href="@Url.Action("Index", "Home")" class="btn btn-primary ">Regresar</a>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function playSound(color) {
+            let utterance = new SpeechSynthesisUtterance(color);
+            utterance.lang = 'es-ES';
+            speechSynthesis.speak(utterance);
+
+            console.log(`Diciendo la palabra: ${color}`);
+        }
+
+        function mixColors() {
+            const color1 = document.getElementById('color1').value;
+            const color2 = document.getElementById('color2').value;
+            if (color1 && color2) {
+                const mixedColor = blendColors(color1, color2);
+                document.getElementById('mixResult').style.backgroundColor = mixedColor;
+                document.getElementById('mixExplanation').textContent = getColorName(mixedColor);
+            }
+        }
+
+        function blendColors(color1, color2) {
+            const [r1, g1, b1] = hexToRgb(color1);
+            const [r2, g2, b2] = hexToRgb(color2);
+            const r = Math.round((r1 + r2) / 2);
+            const g = Math.round((g1 + g2) / 2);
+            const b = Math.round((b1 + b2) / 2);
+            return rgbToHex(r, g, b);
+        }
+
+        function hexToRgb(hex) {
+            const bigint = parseInt(hex.slice(1), 16);
+            return [(bigint >> 16) & 255, (bigint >> 8) & 255, bigint & 255];
+        }
+
+        function rgbToHex(r, g, b) {
+            return `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1)}`;
+        }
+
+        function getColorName(hex) {
+            const colorMap = {
+                '#FF0000': 'Rojo',
+                '#FFFF00': 'Amarillo',
+                '#0000FF': 'Azul',
+                '#FFA500': 'Anaranjado',
+                '#00FF00': 'Verde',
+                '#800080': 'Violeta'
+            };
+            return colorMap[hex] || 'Un nuevo color';
+        }
+    </script>
+</body>
+</html>
