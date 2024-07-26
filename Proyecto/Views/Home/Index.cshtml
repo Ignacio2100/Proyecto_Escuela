@@ -2,35 +2,158 @@
     ViewBag.Title = "Home Page";
 }
 
-<main>
-    <section class="row" aria-labelledby="aspnetTitle">
-        <h1 id="title">Hola</h1>
-        <p class="lead">
-            ¡El mundo es como un gran libro lleno de páginas esperando a ser descubiertas!
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mundo de Aprendizaje Infantil</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-yellow: #FFD700;
+            --primary-blue: #1E90FF;
+            --primary-white: #FFFFFF;
+            --primary-black: #000000;
+        }
 
-        </p>
-       
-    </section>
+        body {
+            background-color: var(--primary-white);
+            font-family: 'Arial', sans-serif;
+        }
 
-    <div class="row">
-        <section class="col-md-4" aria-labelledby="gettingStartedTitle">
-            <h2 id="gettingStartedTitle">Getting started</h2>
-            <p>
-                ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-                enables a clean separation of concerns and gives you full control over markup
-                for enjoyable, agile development.
+        .card {
+            border: 2px solid var(--primary-yellow);
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+            margin-bottom: 20px;
+            background-color: var(--primary-white);
+        }
+
+            .card:hover {
+                transform: scale(1.05);
+                border-color: var(--primary-blue);
+            }
+
+        .card-img-top {
+            border-top-left-radius: 13px;
+            border-top-right-radius: 13px;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        h1 {
+            color: var(--primary-blue);
+            font-size: 3rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .lead {
+            font-size: 1.5rem;
+            color: var(--primary-black);
+        }
+
+        .btn-primary {
+            background-color: var(--primary-yellow);
+            border-color: var(--primary-yellow);
+            color: var(--primary-black);
+        }
+
+            .btn-primary:hover {
+                background-color: var(--primary-blue);
+                border-color: var(--primary-blue);
+                color: var(--primary-white);
+            }
+
+        .card-title {
+            color: var(--primary-blue);
+        }
+
+        .card-text {
+            color: var(--primary-black);
+        }
+
+        .main-container {
+            background-color: rgba(255, 215, 0, 0.1);
+            border-radius: 20px;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <main class="container mt-4 main-container">
+        <section class="text-center mb-5">
+            <h1 class="display-4">¡Bienvenidos al Mundo del Aprendizaje!</h1>
+            <p class="lead">
+                Explora y aprende con nuestros divertidos módulos educativos
             </p>
-            <p><a href="https://asp.net" class="btn btn-primary btn-md">Learn more &raquo;</a></p>
         </section>
-        <section class="col-md-4" aria-labelledby="librariesTitle">
-            <h2 id="librariesTitle">Get more libraries</h2>
-            <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-            <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-        </section>
-        <section class="col-md-4" aria-labelledby="hostingTitle">
-            <h2 id="hostingTitle">Web Hosting</h2>
-            <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-            <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
-        </section>
-    </div>
-</main>
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card">
+                    <img src="~/Imagenes/Color.jpg" class="card-img-top" alt="Colores">
+                    <div class="card-body">
+                        <h5 class="card-title">Módulo de Colores</h5>
+                        <p class="card-text">Aprende sobre los diferentes colores y sus combinaciones.</p>
+                        <a href="#" class="btn btn-primary">¡Vamos!</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <img src="~/Imagenes/Figura.jpg" class="card-img-top" alt="Figuras Geométricas">
+                    <div class="card-body">
+                        <h5 class="card-title">Módulo de Figuras Geométricas</h5>
+                        <p class="card-text">Descubre las formas geométricas y sus propiedades.</p>
+                        <a href="#" class="btn btn-primary">¡Exploremos!</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <img src="~/Imagenes/Animal.jpg" class="card-img-top" alt="Animales">
+                    <div class="card-body">
+                        <h5 class="card-title">Módulo de Tipos de Animales</h5>
+                        <p class="card-text">Conoce los diferentes tipos de animales y sus características.</p>
+                        <a href="#" class="btn btn-primary">¡Conozcamos !</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <img src="~/Imagenes/Abecedario.jpg" class="card-img-top" alt="Abecedario">
+                    <div class="card-body">
+                        <h5 class="card-title">Módulo de Abecedario</h5>
+                        <p class="card-text">Aprende las letras del abecedario.</p>
+                        <a href="#" class="btn btn-primary">¡Juguemos con las letras!</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <img src="~/Imagenes/Vocal.jpg" class="card-img-top" alt="Vocales">
+                    <div class="card-body">
+                        <h5 class="card-title">Módulo de Vocales</h5>
+                        <p class="card-text">Descubre las vocales y su uso en palabras.</p>
+                        <a href="#" class="btn btn-primary">¡Cantemos las vocales!</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <img src="~/Imagenes/Fruta.jpg" class="card-img-top" alt="Frutas y Verduras">
+                    <div class="card-body">
+                        <h5 class="card-title">Módulo de Frutas y Verduras</h5>
+                        <p class="card-text">Explora las diferentes frutas y verduras.</p>
+                        <a href="#" class="btn btn-primary">¡A comer saludable!</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
