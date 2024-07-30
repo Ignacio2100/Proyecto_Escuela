@@ -61,7 +61,7 @@
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
 
-        #colorMixer, #voiceRecognition {
+        #colorMixer, #voiceRecognition, #colorGame {
             background-color: white;
             border-radius: 15px;
             padding: 20px;
@@ -82,7 +82,6 @@
             text-align: center;
             margin-top: 10px;
         }
-
     </style>
 </head>
 <body>
@@ -211,7 +210,7 @@
             </div>
             <div id="mixResult"></div>
             <p id="mixExplanation" class="text-center mt-3"></p>
-           
+
         </div>
 
         <!-- Sección de reconocimiento de voz actualizada -->
@@ -222,164 +221,285 @@
             <div id="result" class="text-center mt-3"></div>
             <div id="errorMessage"></div>
 
-            <a href="@Url.Action("Index", "Home")" class="btn btn-primary ">Regresar</a>
+
         </div>
 
+        <!--codigo de pizarra-->
+
+        <div id="colorGame" class="animate__animated animate__fadeIn">
+            <h2 class="text-center mb-4">¡Haz un dibujo que te indique la maestra!</h2>
+            <div class="row justify-content-center mb-3">
+                <div class="col-md-2">
+                    <select id="colorSelect" class="form-select mb-2">
+                        <option value="#FF0000">Rojo</option>
+                        <option value="#FFFF00">Amarillo</option>
+                        <option value="#0000FF">Azul</option>
+                        <option value="#FFA500">Anaranjado</option>
+                        <option value="#00FF00">Verde</option>
+                        <option value="#800080">Violeta</option>
+                        <option value="#000000">Negro</option>
+                        <option value="#FFFFFF">Blanco</option>
+                        <option value="#FFC0CB">Rosa</option>
+                        <option value="#A52A2A">Marrón</option>
+                        <option value="#808080">Gris</option>
+                        <option value="#C0C0C0">Plata</option>
+                        <option value="#FFD700">Oro</option>
+                        <option value="#00FFFF">Cian</option>
+                        <option value="#FF1493">Rosa intenso</option>
+                        <option value="#B22222">Rojo ladrillo</option>
+                        <option value="#8A2BE2">Violeta azulado</option>
+                        <option value="#D2691E">Chocolate</option>
+                        <option value="#5F9EA0">Azul pizarra</option>
+                        <option value="#7FFF00">Chartreuse</option>
+                        <option value="#DCDCDC">Gainsboro</option>
+                        <option value="#ADFF2F">Verde amarillento</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <input type="range" id="brushSize" min="1" max="20" value="5" class="form-range">
+                </div>
+                <div class="col-md-2">
+                    <button id="clearCanvas" class="btn btn-secondary w-100">Limpiar</button>
+                </div>
+                <div class="col-md-2">
+                    <button id="eraser" class="btn btn-info w-100">Borrador</button>
+                </div>
+                <div class="col-md-2">
+                    <button id="captureCanvas" class="btn btn-primary w-100">Capturar</button>
+                </div>
+            </div>
+            <div class="d-flex justify-content-center">
+                <canvas id="drawingCanvas" width="1000" height="500" style="border:1px solid #000; background-color: white;"></canvas>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row justify-content-center mt-4 mb-4">
+                <div class="col-auto">
+                    <a href="@Url.Action("Index", "Home")" class="btn btn-primary">Regresar</a>
+                </div>
+            </div>
+        </div>
     </div>
 
 
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
-    <script>
-        function playSound(color) {
-            let utterance = new SpeechSynthesisUtterance(color);
-            utterance.lang = 'es-ES';
-            speechSynthesis.speak(utterance);
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+        <script>
+            function playSound(color) {
+                let utterance = new SpeechSynthesisUtterance(color);
+                utterance.lang = 'es-ES';
+                speechSynthesis.speak(utterance);
 
-            console.log(`Diciendo la palabra: ${color}`);
-        }
-
-        function mixColors() {
-            const color1 = document.getElementById('color1').value;
-            const color2 = document.getElementById('color2').value;
-            if (color1 && color2) {
-                const mixedColor = blendColors(color1, color2);
-                document.getElementById('mixResult').style.backgroundColor = mixedColor;
-                document.getElementById('mixExplanation').textContent = getColorName(mixedColor);
+                console.log(`Diciendo la palabra: ${color}`);
             }
-        }
 
-        function blendColors(color1, color2) {
-            const [r1, g1, b1] = hexToRgb(color1);
-            const [r2, g2, b2] = hexToRgb(color2);
-            const r = Math.round((r1 + r2) / 2);
-            const g = Math.round((g1 + g2) / 2);
-            const b = Math.round((b1 + b2) / 2);
-            return rgbToHex(r, g, b);
-        }
+            function mixColors() {
+                const color1 = document.getElementById('color1').value;
+                const color2 = document.getElementById('color2').value;
+                if (color1 && color2) {
+                    const mixedColor = blendColors(color1, color2);
+                    document.getElementById('mixResult').style.backgroundColor = mixedColor;
+                    document.getElementById('mixExplanation').textContent = getColorName(mixedColor);
+                }
+            }
 
-        function hexToRgb(hex) {
-            const bigint = parseInt(hex.slice(1), 16);
-            return [(bigint >> 16) & 255, (bigint >> 8) & 255, bigint & 255];
-        }
+            function blendColors(color1, color2) {
+                const [r1, g1, b1] = hexToRgb(color1);
+                const [r2, g2, b2] = hexToRgb(color2);
+                const r = Math.round((r1 + r2) / 2);
+                const g = Math.round((g1 + g2) / 2);
+                const b = Math.round((b1 + b2) / 2);
+                return rgbToHex(r, g, b);
+            }
 
-        function rgbToHex(r, g, b) {
-            return `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1)}`;
-        }
+            function hexToRgb(hex) {
+                const bigint = parseInt(hex.slice(1), 16);
+                return [(bigint >> 16) & 255, (bigint >> 8) & 255, bigint & 255];
+            }
 
-        function getColorName(hex) {
-            const colorMap = {
-                '#FF0000': 'Rojo',
-                '#FFFF00': 'Amarillo',
-                '#0000FF': 'Azul',
-                '#FFA500': 'Anaranjado',
-                '#00FF00': 'Verde',
-                '#800080': 'Violeta'
-            };
-            return colorMap[hex] || 'Un nuevo color';
-        }
+            function rgbToHex(r, g, b) {
+                return `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1)}`;
+            }
 
-
-        // Función de reconocimiento de voz actualizada
-        function startVoiceRecognition() {
-            const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-            recognition.lang = 'es-ES';
-            recognition.interimResults = false;
-            recognition.maxAlternatives = 1;
-
-            const resultDiv = document.getElementById('result');
-            const errorDiv = document.getElementById('errorMessage');
-            const startButton = document.getElementById('startListening');
-
-            startButton.disabled = true;
-            startButton.textContent = 'Escuchando...';
-            errorDiv.textContent = '';
-            resultDiv.textContent = '';
-
-            recognition.start();
-
-            recognition.onresult = function (event) {
-                const color = event.results[0][0].transcript.toLowerCase();
-
+            function getColorName(hex) {
                 const colorMap = {
-                    'rojo': '#FF0000',
-                    'amarillo': '#FFFF00',
-                    'azul': '#0000FF',
-                    'anaranjado': '#FFA500',
-                    'naranja': '#FFA500',
-                    'verde': '#00FF00',
-                    'violeta': '#800080',
-                    'morado': '#800080',
-                    'rosa': '#FFC0CB',
-                    'rosado': '#FFC0CB',
-                    'negro': '#000000',
-                    'blanco': '#FFFFFF',
-                    'gris': '#808080',
-                    'celeste': '#87CEEB',
-                    'cian': '#00FFFF',
-                    'turquesa': '#40E0D0',
-                    'magenta': '#FF00FF',
-                    'lima': '#00FF00',
-                    'verde oliva': '#808000',
-                    'oro': '#FFD700',
-                    'plata': '#C0C0C0',
-                    'marrón': '#8B4513',
-                    'café': '#8B4513',
-                    'fucsia': '#FF00FF',
-                    'azul marino': '#000080',
-                    'azul claro': '#ADD8E6',
-                    'azul oscuro': '#00008B'
+                    '#FF0000': 'Rojo',
+                    '#FFFF00': 'Amarillo',
+                    '#0000FF': 'Azul',
+                    '#FFA500': 'Anaranjado',
+                    '#00FF00': 'Verde',
+                    '#800080': 'Violeta'
+                };
+                return colorMap[hex] || 'Un nuevo color';
+            }
+
+
+            // Función de reconocimiento de voz actualizada
+            function startVoiceRecognition() {
+                const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+                recognition.lang = 'es-ES';
+                recognition.interimResults = false;
+                recognition.maxAlternatives = 1;
+
+                const resultDiv = document.getElementById('result');
+                const errorDiv = document.getElementById('errorMessage');
+                const startButton = document.getElementById('startListening');
+
+                startButton.disabled = true;
+                startButton.textContent = 'Escuchando...';
+                errorDiv.textContent = '';
+                resultDiv.textContent = '';
+
+                recognition.start();
+
+                recognition.onresult = function (event) {
+                    const color = event.results[0][0].transcript.toLowerCase();
+
+                    const colorMap = {
+                        'rojo': '#FF0000',
+                        'amarillo': '#FFFF00',
+                        'azul': '#0000FF',
+                        'anaranjado': '#FFA500',
+                        'naranja': '#FFA500',
+                        'verde': '#00FF00',
+                        'violeta': '#800080',
+                        'morado': '#800080',
+                        'rosa': '#FFC0CB',
+                        'rosado': '#FFC0CB',
+                        'negro': '#000000',
+                        'blanco': '#FFFFFF',
+                        'gris': '#808080',
+                        'celeste': '#87CEEB',
+                        'cian': '#00FFFF',
+                        'turquesa': '#40E0D0',
+                        'magenta': '#FF00FF',
+                        'lima': '#00FF00',
+                        'verde oliva': '#808000',
+                        'oro': '#FFD700',
+                        'plata': '#C0C0C0',
+                        'marrón': '#8B4513',
+                        'café': '#8B4513',
+                        'fucsia': '#FF00FF',
+                        'azul marino': '#000080',
+                        'azul claro': '#ADD8E6',
+                        'azul oscuro': '#00008B'
+                    };
+
+
+                    if (colorMap[color]) {
+                        resultDiv.innerHTML = `¡Correcto! Has dicho <strong>${color}</strong>.`;
+                        resultDiv.style.color = colorMap[color];
+                        speakFeedback('Correcto');
+                    } else {
+                        resultDiv.innerHTML = `No reconozco ese color. ¿Puedes intentarlo de nuevo?`;
+                        resultDiv.style.color = 'black';
+                        speakFeedback('Incorrecto');
+                    }
+
+                    startButton.disabled = false;
+                    startButton.textContent = 'Iniciar Reconocimiento de Voz';
                 };
 
+                recognition.onerror = function (event) {
+                    console.error('Error en el reconocimiento de voz:', event.error);
+                    startButton.disabled = false;
+                    startButton.textContent = 'Iniciar Reconocimiento de Voz';
 
-                if (colorMap[color]) {
-                    resultDiv.innerHTML = `¡Correcto! Has dicho <strong>${color}</strong>.`;
-                    resultDiv.style.color = colorMap[color];
-                    speakFeedback('Correcto');
-                } else {
-                    resultDiv.innerHTML = `No reconozco ese color. ¿Puedes intentarlo de nuevo?`;
-                    resultDiv.style.color = 'black';
-                    speakFeedback('Incorrecto');
-                }
+                    switch (event.error) {
+                        case 'network':
+                            errorDiv.textContent = 'Error de red. Por favor, verifica tu conexión a internet.';
+                            break;
+                        case 'not-allowed':
+                        case 'service-not-allowed':
+                            errorDiv.textContent = 'El permiso para usar el micrófono fue denegado. Por favor, permite el acceso al micrófono.';
+                            break;
+                        default:
+                            errorDiv.textContent = 'Ocurrió un error. Por favor, intenta de nuevo.';
+                    }
+                };
 
-                startButton.disabled = false;
-                startButton.textContent = 'Iniciar Reconocimiento de Voz';
-            };
+                recognition.onend = function () {
+                    startButton.disabled = false;
+                    startButton.textContent = 'Iniciar Reconocimiento de Voz';
+                };
+            }
 
-            recognition.onerror = function (event) {
-                console.error('Error en el reconocimiento de voz:', event.error);
-                startButton.disabled = false;
-                startButton.textContent = 'Iniciar Reconocimiento de Voz';
+            // Nueva función para proporcionar retroalimentación por voz
+            function speakFeedback(message) {
+                let utterance = new SpeechSynthesisUtterance(message);
+                utterance.lang = 'es-ES';
+                speechSynthesis.speak(utterance);
+            }
 
-                switch (event.error) {
-                    case 'network':
-                        errorDiv.textContent = 'Error de red. Por favor, verifica tu conexión a internet.';
-                        break;
-                    case 'not-allowed':
-                    case 'service-not-allowed':
-                        errorDiv.textContent = 'El permiso para usar el micrófono fue denegado. Por favor, permite el acceso al micrófono.';
-                        break;
-                    default:
-                        errorDiv.textContent = 'Ocurrió un error. Por favor, intenta de nuevo.';
-                }
-            };
+            // Event listener para el botón de reconocimiento de voz
+            document.getElementById('startListening').addEventListener('click', startVoiceRecognition);
 
-            recognition.onend = function () {
-                startButton.disabled = false;
-                startButton.textContent = 'Iniciar Reconocimiento de Voz';
-            };
-        }
 
-        // Nueva función para proporcionar retroalimentación por voz
-        function speakFeedback(message) {
-            let utterance = new SpeechSynthesisUtterance(message);
-            utterance.lang = 'es-ES';
-            speechSynthesis.speak(utterance);
-        }
 
-        // Event listener para el botón de reconocimiento de voz
-        document.getElementById('startListening').addEventListener('click', startVoiceRecognition);
+            //juego de canvas
+            const canvas = document.getElementById('drawingCanvas');
+            const ctx = canvas.getContext('2d');
+            let isDrawing = false;
+            let lastX = 0;
+            let lastY = 0;
+            let isEraser = false;
 
-    </script>
-</body>
-</html>
+            function startPosition(e) {
+                isDrawing = true;
+                [lastX, lastY] = [e.offsetX, e.offsetY];
+            }
+
+            function endPosition() {
+                isDrawing = false;
+            }
+
+            function draw(e) {
+                if (!isDrawing) return;
+                ctx.beginPath();
+                ctx.moveTo(lastX, lastY);
+                ctx.lineTo(e.offsetX, e.offsetY);
+                ctx.stroke();
+                [lastX, lastY] = [e.offsetX, e.offsetY];
+            }
+
+            canvas.addEventListener('mousedown', startPosition);
+            canvas.addEventListener('mouseup', endPosition);
+            canvas.addEventListener('mousemove', draw);
+
+            document.getElementById('colorSelect').addEventListener('change', function () {
+                ctx.strokeStyle = this.value;
+                isEraser = false;
+            });
+
+            document.getElementById('brushSize').addEventListener('input', function () {
+                ctx.lineWidth = this.value;
+            });
+
+            document.getElementById('clearCanvas').addEventListener('click', function () {
+                ctx.fillStyle = 'white';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+            });
+
+            document.getElementById('eraser').addEventListener('click', function () {
+                isEraser = true;
+                ctx.strokeStyle = 'white';
+            });
+
+            document.getElementById('captureCanvas').addEventListener('click', function () {
+                const image = canvas.toDataURL("image/jpeg");
+                const link = document.createElement('a');
+                link.href = image;
+                link.download = 'NOMBRE DEL ALUMNO';
+                link.click();
+            });
+
+            // Inicialización
+            ctx.fillStyle = 'white';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.strokeStyle = document.getElementById('colorSelect').value;
+            ctx.lineWidth = document.getElementById('brushSize').value;
+            ctx.lineCap = 'round';
+        </script>
+    </body>
+    </html>
