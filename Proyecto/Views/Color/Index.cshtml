@@ -61,7 +61,7 @@
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
 
-        #colorMixer {
+        #colorMixer, #voiceRecognition {
             background-color: white;
             border-radius: 15px;
             padding: 20px;
@@ -76,6 +76,13 @@
             margin: 20px auto;
             transition: background-color 0.5s ease;
         }
+
+        #errorMessage {
+            color: red;
+            text-align: center;
+            margin-top: 10px;
+        }
+
     </style>
 </head>
 <body>
@@ -204,9 +211,23 @@
             </div>
             <div id="mixResult"></div>
             <p id="mixExplanation" class="text-center mt-3"></p>
+           
+        </div>
+
+        <!-- Sección de reconocimiento de voz actualizada -->
+        <div id="voiceRecognition" class="animate__animated animate__fadeIn">
+            <h2 class="text-center mb-4">¡Practica los Colores!</h2>
+            <p class="text-center">Haz clic en el botón y di el nombre de un color en español.</p>
+            <button id="startListening" class="btn btn-primary d-block mx-auto mb-3">Iniciar Reconocimiento de Voz</button>
+            <div id="result" class="text-center mt-3"></div>
+            <div id="errorMessage"></div>
+
             <a href="@Url.Action("Index", "Home")" class="btn btn-primary ">Regresar</a>
         </div>
+
     </div>
+
+
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
     <script>
@@ -257,6 +278,108 @@
             };
             return colorMap[hex] || 'Un nuevo color';
         }
+
+
+        // Función de reconocimiento de voz actualizada
+        function startVoiceRecognition() {
+            const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+            recognition.lang = 'es-ES';
+            recognition.interimResults = false;
+            recognition.maxAlternatives = 1;
+
+            const resultDiv = document.getElementById('result');
+            const errorDiv = document.getElementById('errorMessage');
+            const startButton = document.getElementById('startListening');
+
+            startButton.disabled = true;
+            startButton.textContent = 'Escuchando...';
+            errorDiv.textContent = '';
+            resultDiv.textContent = '';
+
+            recognition.start();
+
+            recognition.onresult = function (event) {
+                const color = event.results[0][0].transcript.toLowerCase();
+
+                const colorMap = {
+                    'rojo': '#FF0000',
+                    'amarillo': '#FFFF00',
+                    'azul': '#0000FF',
+                    'anaranjado': '#FFA500',
+                    'naranja': '#FFA500',
+                    'verde': '#00FF00',
+                    'violeta': '#800080',
+                    'morado': '#800080',
+                    'rosa': '#FFC0CB',
+                    'rosado': '#FFC0CB',
+                    'negro': '#000000',
+                    'blanco': '#FFFFFF',
+                    'gris': '#808080',
+                    'celeste': '#87CEEB',
+                    'cian': '#00FFFF',
+                    'turquesa': '#40E0D0',
+                    'magenta': '#FF00FF',
+                    'lima': '#00FF00',
+                    'verde oliva': '#808000',
+                    'oro': '#FFD700',
+                    'plata': '#C0C0C0',
+                    'marrón': '#8B4513',
+                    'café': '#8B4513',
+                    'fucsia': '#FF00FF',
+                    'azul marino': '#000080',
+                    'azul claro': '#ADD8E6',
+                    'azul oscuro': '#00008B'
+                };
+
+
+                if (colorMap[color]) {
+                    resultDiv.innerHTML = `¡Correcto! Has dicho <strong>${color}</strong>.`;
+                    resultDiv.style.color = colorMap[color];
+                    speakFeedback('Correcto');
+                } else {
+                    resultDiv.innerHTML = `No reconozco ese color. ¿Puedes intentarlo de nuevo?`;
+                    resultDiv.style.color = 'black';
+                    speakFeedback('Incorrecto');
+                }
+
+                startButton.disabled = false;
+                startButton.textContent = 'Iniciar Reconocimiento de Voz';
+            };
+
+            recognition.onerror = function (event) {
+                console.error('Error en el reconocimiento de voz:', event.error);
+                startButton.disabled = false;
+                startButton.textContent = 'Iniciar Reconocimiento de Voz';
+
+                switch (event.error) {
+                    case 'network':
+                        errorDiv.textContent = 'Error de red. Por favor, verifica tu conexión a internet.';
+                        break;
+                    case 'not-allowed':
+                    case 'service-not-allowed':
+                        errorDiv.textContent = 'El permiso para usar el micrófono fue denegado. Por favor, permite el acceso al micrófono.';
+                        break;
+                    default:
+                        errorDiv.textContent = 'Ocurrió un error. Por favor, intenta de nuevo.';
+                }
+            };
+
+            recognition.onend = function () {
+                startButton.disabled = false;
+                startButton.textContent = 'Iniciar Reconocimiento de Voz';
+            };
+        }
+
+        // Nueva función para proporcionar retroalimentación por voz
+        function speakFeedback(message) {
+            let utterance = new SpeechSynthesisUtterance(message);
+            utterance.lang = 'es-ES';
+            speechSynthesis.speak(utterance);
+        }
+
+        // Event listener para el botón de reconocimiento de voz
+        document.getElementById('startListening').addEventListener('click', startVoiceRecognition);
+
     </script>
 </body>
 </html>
