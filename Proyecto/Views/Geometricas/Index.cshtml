@@ -1,0 +1,305 @@
+﻿
+@{
+    ViewBag.Title = "Figuras Geometricas";
+}
+@{
+    ViewBag.Title = "Figuras Geometricas";
+}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Figuras Geométricas</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #FFD700;
+            font-family: 'Comic Sans MS', cursive;
+            color: #333;
+        }
+
+        h1 {
+            color: #0056b3;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .nav-tabs .nav-link {
+            background-color: #4ECDC4;
+            color: #FFF;
+            border-radius: 15px 15px 0 0;
+            margin-right: 5px;
+            font-size: 1.2em;
+        }
+
+        .nav-tabs .nav-link.active {
+            background-color: #FF6B6B;
+            color: #FFF;
+            border: none;
+        }
+
+        .card {
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .card:hover {
+            transform: scale(1.05) rotate(2deg);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        }
+
+        .card-img-top {
+            height: 200px;
+            object-fit: contain;
+            background-color: #F7FFF7;
+        }
+
+        .card-title {
+            color: #FF6B6B;
+            font-size: 1.5em;
+        }
+
+        #infoFigura {
+            background-color: #4ECDC4;
+            color: #FFF;
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 20px;
+        }
+
+        .btn-jugar {
+            background-color: #FF6B6B;
+            color: #FFF;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1.2em;
+            border-radius: 30px;
+            transition: background-color 0.3s;
+        }
+
+        .btn-jugar:hover {
+            background-color: #FF8E8E;
+        }
+
+        .figura-flotante {
+            position: fixed;
+            font-size: 3em;
+            animation: float 3s ease-in-out infinite;
+            z-index: 1010;
+            cursor: pointer;
+        }
+
+        #gameScore {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background-color: #FF6B6B;
+            color: #FFF;
+            padding: 10px;
+            border-radius: 15px;
+            font-size: 1.2em;
+            z-index: 1020;
+        }
+
+        #gameTimer {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            background-color: #4ECDC4;
+            color: #FFF;
+            padding: 10px;
+            border-radius: 15px;
+            font-size: 1.2em;
+            z-index: 1020;
+        }
+
+        #gameOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            display: none;
+        }
+
+        @@keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-4 animate__animated animate__fadeIn">
+        <h1 class="text-center mb-4 animate__animated animate__bounce">¡Exploremos las Figuras Geométricas!</h1>
+
+        <ul class="nav nav-tabs mb-3" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="planas-tab" data-bs-toggle="tab" data-bs-target="#planas" type="button" role="tab" aria-controls="planas" aria-selected="true">Figuras Planas</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="solidas-tab" data-bs-toggle="tab" data-bs-target="#solidas" type="button" role="tab" aria-controls="solidas" aria-selected="false">Figuras Sólidas</button>
+            </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="planas" role="tabpanel" aria-labelledby="planas-tab">
+                <div class="row" id="figurasPlanas"></div>
+            </div>
+            <div class="tab-pane fade" id="solidas" role="tabpanel" aria-labelledby="solidas-tab">
+                <div class="row" id="figurasSolidas"></div>
+            </div>
+        </div>
+
+        <div class="text-center mt-4">
+            <h3>¡Descubre la Figura!</h3>
+            <p id="infoFigura" class="animate__animated animate__fadeIn"></p>
+            <button class="btn btn-jugar mt-3" onclick="iniciarJuego()">¡Jugar y Aprender!</button>
+        </div>
+    </div>
+
+    <div id="gameScore" style="display: none;">Puntuación: <span id="score">0</span></div>
+    <div id="gameTimer" style="display: none;">Tiempo: <span id="timer">60</span>s</div>
+    <div id="gameOverlay"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const figurasPlanas = [
+            { nombre: 'Cuadrado', imagen: '/Imagenes/Rojo.png', lados: 4, descripcion: 'Tiene 4 lados iguales y 4 ángulos rectos.', emoji: '◼️' },
+            { nombre: 'Rectángulo', imagen: '/imagenes/rectangulo.png', lados: 4, descripcion: 'Tiene 4 lados, con 2 pares de lados iguales y 4 ángulos rectos.', emoji: '▭' },
+            { nombre: 'Trapecio', imagen: '/imagenes/trapecio.png', lados: 4, descripcion: 'Tiene 4 lados, con al menos un par de lados paralelos.', emoji: '⏢' },
+            { nombre: 'Círculo', imagen: '/imagenes/circulo.png', lados: 0, descripcion: 'No tiene lados ni vértices. Es perfectamente redondo.', emoji: '⚪' },
+            { nombre: 'Rombo', imagen: '/imagenes/rombo.png', lados: 4, descripcion: 'Tiene 4 lados iguales, pero sus ángulos no son rectos.', emoji: '◆' },
+            { nombre: 'Triángulo', imagen: '/imagenes/triangulo.png', lados: 3, descripcion: 'Tiene 3 lados y 3 ángulos.', emoji: '▲' }
+        ];
+
+        const figurasSolidas = [
+            { nombre: 'Cubo', imagen: '/imagenes/cubo.png', caras: 6, descripcion: 'Tiene 6 caras cuadradas iguales.', emoji: '🧊' },
+            { nombre: 'Esfera', imagen: '/imagenes/esfera.png', caras: 1, descripcion: 'Es perfectamente redonda, como una pelota.', emoji: '🏀' },
+            { nombre: 'Prisma', imagen: '/imagenes/prisma.png', caras: 5, descripcion: 'Tiene dos bases iguales y caras laterales rectangulares.', emoji: '📦' },
+            { nombre: 'Pirámide', imagen: '/imagenes/piramide.png', caras: 5, descripcion: 'Tiene una base cuadrada y 4 caras triangulares.', emoji: '🔺' },
+            { nombre: 'Tetraedro', imagen: '/imagenes/tetraedro.png', caras: 4, descripcion: 'Tiene 4 caras triangulares iguales.', emoji: '△' },
+            { nombre: 'Cilindro', imagen: '/imagenes/cilindro.png', caras: 3, descripcion: 'Tiene dos bases circulares y una cara lateral curva.', emoji: '🥫' }
+        ];
+
+        let score = 0;
+        let figurasEnJuego = [];
+        let tiempoRestante = 60;
+        let temporizador;
+
+        function crearTarjeta(figura, tipo) {
+            const col = document.createElement('div');
+            col.className = 'col-md-4 mb-4';
+            col.innerHTML = `
+                    <div class="card animate__animated animate__zoomIn" onclick="mostrarInfo('${figura.nombre}', '${tipo}')" data-nombre="${figura.nombre}">
+                        <img src="${figura.imagen}" class="card-img-top img-fluid" alt="${figura.nombre}">
+                        <div class="card-body">
+                            <h5 class="card-title">${figura.nombre} ${figura.emoji}</h5>
+                        </div>
+                    </div>
+                `;
+            return col;
+        }
+
+        function playSound(nombre) {
+            let utterance = new SpeechSynthesisUtterance(nombre);
+            utterance.lang = 'es-ES';
+            speechSynthesis.speak(utterance);
+            console.log(`Diciendo el nombre: ${nombre}`);
+        }
+
+        function mostrarInfo(nombre, tipo) {
+            const figuras = tipo === 'plana' ? figurasPlanas : figurasSolidas;
+            const figura = figuras.find(f => f.nombre === nombre);
+            const infoElement = document.getElementById('infoFigura');
+            let info = `<h4>${figura.nombre} ${figura.emoji}</h4>`;
+            info += `<p>${figura.descripcion}</p>`;
+            info += tipo === 'plana' ? `<p>Número de lados: ${figura.lados}</p>` : `<p>Número de caras: ${figura.caras}</p>`;
+            infoElement.innerHTML = info;
+            infoElement.classList.remove('animate__fadeIn');
+            void infoElement.offsetWidth;
+            infoElement.classList.add('animate__fadeIn');
+
+            playSound(figura.nombre);
+        }
+
+        function iniciarJuego() {
+            alert('¡Juego iniciado! Encuentra todas las figuras flotantes en 60 segundos.');
+            document.getElementById('gameScore').style.display = 'block';
+            document.getElementById('gameTimer').style.display = 'block';
+            document.getElementById('gameOverlay').style.display = 'block';
+            score = 0;
+            tiempoRestante = 60;
+            actualizarPuntuacion();
+            actualizarTemporizador();
+            const figuras = [...figurasPlanas, ...figurasSolidas];
+            figurasEnJuego = [];
+            for (let i = 0; i < 5; i++) {
+                const figura = figuras[Math.floor(Math.random() * figuras.length)];
+                figurasEnJuego.push(figura);
+                crearFiguraFlotante(figura);
+            }
+            temporizador = setInterval(actualizarTemporizador, 1000);
+        }
+
+        function crearFiguraFlotante(figura) {
+            const figuraElement = document.createElement('div');
+            figuraElement.className = 'figura-flotante animate__animated animate__bounceIn';
+            figuraElement.innerHTML = figura.emoji;
+            figuraElement.style.left = `${Math.random() * 90}vw`;
+            figuraElement.style.top = `${Math.random() * 90}vh`;
+            figuraElement.onclick = () => {
+                figuraElement.classList.add('animate__bounceOut');
+                setTimeout(() => figuraElement.remove(), 500);
+                mostrarInfo(figura.nombre, figura.lados ? 'plana' : 'solida');
+                score += 10;
+                actualizarPuntuacion();
+                figurasEnJuego = figurasEnJuego.filter(f => f.nombre !== figura.nombre);
+                if (figurasEnJuego.length === 0) {
+                    finalizarJuego();
+                }
+            };
+            document.body.appendChild(figuraElement);
+        }
+
+        function actualizarPuntuacion() {
+            document.getElementById('score').textContent = score;
+        }
+
+        function actualizarTemporizador() {
+            document.getElementById('timer').textContent = tiempoRestante;
+            if (tiempoRestante <= 0) {
+                finalizarJuego();
+            } else {
+                tiempoRestante--;
+            }
+        }
+
+        function finalizarJuego() {
+            clearInterval(temporizador);
+            alert(`¡Tiempo terminado! Tu puntuación final es: ${score}`);
+            document.getElementById('gameScore').style.display = 'none';
+            document.getElementById('gameTimer').style.display = 'none';
+            document.getElementById('gameOverlay').style.display = 'none';
+            document.querySelectorAll('.figura-flotante').forEach(f => f.remove());
+        }
+
+        window.onload = function () {
+            const contenedorPlanas = document.getElementById('figurasPlanas');
+            const contenedorSolidas = document.getElementById('figurasSolidas');
+
+            figurasPlanas.forEach(figura => {
+                contenedorPlanas.appendChild(crearTarjeta(figura, 'plana'));
+            });
+
+            figurasSolidas.forEach(figura => {
+                contenedorSolidas.appendChild(crearTarjeta(figura, 'solida'));
+            });
+        };
+    </script>
+</body>
+</html>
