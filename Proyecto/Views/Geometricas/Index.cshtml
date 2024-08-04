@@ -33,11 +33,11 @@
             font-size: 1.2em;
         }
 
-        .nav-tabs .nav-link.active {
-            background-color: #FF6B6B;
-            color: #FFF;
-            border: none;
-        }
+            .nav-tabs .nav-link.active {
+                background-color: #FF6B6B;
+                color: #FFF;
+                border: none;
+            }
 
         .card {
             border-radius: 15px;
@@ -46,20 +46,24 @@
             transition: transform 0.3s, box-shadow 0.3s;
         }
 
-        .card:hover {
-            transform: scale(1.05) rotate(2deg);
-            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
-        }
+            .card:hover {
+                transform: scale(1.05) rotate(2deg);
+                box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            }
 
         .card-img-top {
-            height: 200px;
-            object-fit: contain;
+            
             background-color: #F7FFF7;
+            width: 100%;
+            height: 70%;
+            object-fit: cover;
+            border-top-left-radius: 15px;
+            border-top-right-radius: 15px;
         }
 
         .card-title {
             color: #FF6B6B;
-            font-size: 1.5em;
+            font-size: 2.5em;
         }
 
         #infoFigura {
@@ -80,9 +84,9 @@
             transition: background-color 0.3s;
         }
 
-        .btn-jugar:hover {
-            background-color: #FF8E8E;
-        }
+            .btn-jugar:hover {
+                background-color: #FF8E8E;
+            }
 
         .figura-flotante {
             position: fixed;
@@ -128,10 +132,38 @@
         }
 
         @@keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
-            100% { transform: translateY(0px); }
+            0% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-20px);
+            }
+
+            100% {
+                transform: translateY(0px);
+            }
         }
+        canvas, h2 {
+            padding: 0;
+            margin: auto;
+            display: block;
+            text-align:center;
+           
+        }
+
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+            .btn-container button {
+                margin: 0 10px;
+            }
+
+      
+
     </style>
 </head>
 <body>
@@ -145,6 +177,9 @@
             <li class="nav-item" role="presentation">
                 <button class="nav-link" id="solidas-tab" data-bs-toggle="tab" data-bs-target="#solidas" type="button" role="tab" aria-controls="solidas" aria-selected="false">Figuras Sólidas</button>
             </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="aprende-tab" data-bs-toggle="tab" data-bs-target="#aprende" type="button" role="tab" aria-controls="aprende" aria-selected="false">Aprende Figuras</button>
+            </li>
         </ul>
         <div class="tab-content" id="myTabContent">
             <div class="tab-pane fade show active" id="planas" role="tabpanel" aria-labelledby="planas-tab">
@@ -153,12 +188,31 @@
             <div class="tab-pane fade" id="solidas" role="tabpanel" aria-labelledby="solidas-tab">
                 <div class="row" id="figurasSolidas"></div>
             </div>
+            <div class="tab-pane fade" id="aprende" role="tabpanel" aria-labelledby="aprende-tab">
+                <div class="container">
+                    <h2 class="card-subtitle">Aprende Figuras Geométricas</h2>
+                    <canvas width="1000" height="600" style="border:1px solid #000; background-color: white;" id="lienzo"></canvas>
+
+                    <div class="btn-container">
+                        <button class="btn btn-danger" onclick="borrarTrazado()">Borrar</button>
+                        <button class="btn btn-primary" onclick="capturarYDescargar()">Descargar Imagen</button>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div class="text-center mt-4">
             <h3>¡Descubre la Figura!</h3>
             <p id="infoFigura" class="animate__animated animate__fadeIn"></p>
             <button class="btn btn-jugar mt-3" onclick="iniciarJuego()">¡Jugar y Aprender!</button>
+
+            <div class="container">
+                <div class="row justify-content-center mt-4 mb-4">
+                    <div class="col-auto">
+                        <a href="@Url.Action("Index", "Home")" class="btn btn-primary">Regresar</a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -166,24 +220,25 @@
     <div id="gameTimer" style="display: none;">Tiempo: <span id="timer">60</span>s</div>
     <div id="gameOverlay"></div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.5.0-beta4/html2canvas.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         const figurasPlanas = [
-            { nombre: 'Cuadrado', imagen: '/Imagenes/Rojo.png', lados: 4, descripcion: 'Tiene 4 lados iguales y 4 ángulos rectos.', emoji: '◼️' },
-            { nombre: 'Rectángulo', imagen: '/imagenes/rectangulo.png', lados: 4, descripcion: 'Tiene 4 lados, con 2 pares de lados iguales y 4 ángulos rectos.', emoji: '▭' },
-            { nombre: 'Trapecio', imagen: '/imagenes/trapecio.png', lados: 4, descripcion: 'Tiene 4 lados, con al menos un par de lados paralelos.', emoji: '⏢' },
-            { nombre: 'Círculo', imagen: '/imagenes/circulo.png', lados: 0, descripcion: 'No tiene lados ni vértices. Es perfectamente redondo.', emoji: '⚪' },
-            { nombre: 'Rombo', imagen: '/imagenes/rombo.png', lados: 4, descripcion: 'Tiene 4 lados iguales, pero sus ángulos no son rectos.', emoji: '◆' },
-            { nombre: 'Triángulo', imagen: '/imagenes/triangulo.png', lados: 3, descripcion: 'Tiene 3 lados y 3 ángulos.', emoji: '▲' }
+            { nombre: 'Cuadrado', imagen: '/Imagenes/Cuadrado.png', lados: 4, descripcion: 'Tiene 4 lados iguales y 4 ángulos rectos.', emoji: '🎓' },
+            { nombre: 'Rectángulo', imagen: '/Imagenes/Rectangulo.png', lados: 4, descripcion: 'Tiene 4 lados, con 2 pares de lados iguales y 4 ángulos rectos.', emoji: '🏳️‍⚧️' },
+            { nombre: 'Trapecio', imagen: '/Imagenes/Trapecio.png', lados: 4, descripcion: 'Tiene 4 lados, con al menos un par de lados paralelos.', emoji: '🗻' },
+            { nombre: 'Círculo', imagen: '/Imagenes/Circulo.png', lados: 0, descripcion: 'No tiene lados ni vértices. Es perfectamente redondo.', emoji: '⚽' },
+            { nombre: 'Rombo', imagen: '/Imagenes/Rombo.png', lados: 4, descripcion: 'Tiene 4 lados iguales, pero sus ángulos no son rectos.', emoji: '💠' },
+            { nombre: 'Triángulo', imagen: '/Imagenes/Triangulo.png', lados: 3, descripcion: 'Tiene 3 lados y 3 ángulos.', emoji: '🍕' }
         ];
 
         const figurasSolidas = [
-            { nombre: 'Cubo', imagen: '/imagenes/cubo.png', caras: 6, descripcion: 'Tiene 6 caras cuadradas iguales.', emoji: '🧊' },
-            { nombre: 'Esfera', imagen: '/imagenes/esfera.png', caras: 1, descripcion: 'Es perfectamente redonda, como una pelota.', emoji: '🏀' },
-            { nombre: 'Prisma', imagen: '/imagenes/prisma.png', caras: 5, descripcion: 'Tiene dos bases iguales y caras laterales rectangulares.', emoji: '📦' },
-            { nombre: 'Pirámide', imagen: '/imagenes/piramide.png', caras: 5, descripcion: 'Tiene una base cuadrada y 4 caras triangulares.', emoji: '🔺' },
-            { nombre: 'Tetraedro', imagen: '/imagenes/tetraedro.png', caras: 4, descripcion: 'Tiene 4 caras triangulares iguales.', emoji: '△' },
-            { nombre: 'Cilindro', imagen: '/imagenes/cilindro.png', caras: 3, descripcion: 'Tiene dos bases circulares y una cara lateral curva.', emoji: '🥫' }
+            { nombre: 'Cubo', imagen: '/Imagenes/Cubo.png', caras: 6, descripcion: 'Tiene 6 caras cuadradas iguales.', emoji: '🧊' },
+            { nombre: 'Esfera', imagen: '/Imagenes/Esfera.png', caras: 1, descripcion: 'Es perfectamente redonda, como una pelota.', emoji: '🏀' },
+            { nombre: 'Prisma', imagen: '/Imagenes/Prisma.png', caras: 5, descripcion: 'Tiene dos bases iguales y caras laterales rectangulares.', emoji: '📦' },
+            { nombre: 'Pirámide', imagen: '/Imagenes/Piramide.png', caras: 5, descripcion: 'Tiene una base cuadrada y 4 caras triangulares.', emoji: '🔺' },
+            { nombre: 'Tetraedro', imagen: '/Imagenes/Tetraedro.png', caras: 4, descripcion: 'Tiene 4 caras triangulares iguales.', emoji: '△' },
+            { nombre: 'Cilindro', imagen: '/Imagenes/Cilindro.png', caras: 3, descripcion: 'Tiene dos bases circulares y una cara lateral curva.', emoji: '🥫' }
         ];
 
         let score = 0;
@@ -195,13 +250,13 @@
             const col = document.createElement('div');
             col.className = 'col-md-4 mb-4';
             col.innerHTML = `
-                    <div class="card animate__animated animate__zoomIn" onclick="mostrarInfo('${figura.nombre}', '${tipo}')" data-nombre="${figura.nombre}">
-                        <img src="${figura.imagen}" class="card-img-top img-fluid" alt="${figura.nombre}">
-                        <div class="card-body">
-                            <h5 class="card-title">${figura.nombre} ${figura.emoji}</h5>
-                        </div>
-                    </div>
-                `;
+                                        <div class="card animate__animated animate__zoomIn" onclick="mostrarInfo('${figura.nombre}', '${tipo}')" data-nombre="${figura.nombre}">
+                                            <img src="${figura.imagen}" class="card-img-top img-fluid" alt="${figura.nombre}">
+                                            <div class="card-body">
+                                                <h5 class="card-title">${figura.nombre} ${figura.emoji}</h5>
+                                            </div>
+                                        </div>
+                                    `;
             return col;
         }
 
@@ -299,7 +354,249 @@
             figurasSolidas.forEach(figura => {
                 contenedorSolidas.appendChild(crearTarjeta(figura, 'solida'));
             });
+
+            inicializarLienzo();
         };
+
+        // Nuevo código para el lienzo de dibujo de figuras geométricas
+        const canvas = document.getElementById('lienzo');
+        const ctx = canvas.getContext('2d');
+        let isDrawing = false;
+        let lastX = 0;
+        let lastY = 0;
+
+        // Definir las figuras geométricas
+        const figuras = [
+            // Primera fila
+            {
+                nombre: 'Círculo', dibujar: (x, y) => {
+                    ctx.beginPath();
+                    ctx.setLineDash([5, 5]);
+                    ctx.arc(x, y, 50, 0, Math.PI * 2);
+                    ctx.stroke();
+                }
+            },
+            {
+                nombre: 'Triángulo', dibujar: (x, y) => {
+                    ctx.beginPath();
+                    ctx.setLineDash([5, 5]);
+                    ctx.moveTo(x, y - 40);
+                    ctx.lineTo(x - 40, y + 40);
+                    ctx.lineTo(x + 40, y + 40);
+                    ctx.closePath();
+                    ctx.stroke();
+                }
+            },
+            {
+                nombre: 'Cuadrado', dibujar: (x, y) => {
+                    ctx.beginPath();
+                    ctx.setLineDash([5, 5]);
+                    ctx.rect(x - 40, y - 40, 80, 80);
+                    ctx.stroke();
+                }
+            },
+            // Segunda fila
+            {
+                nombre: 'Rectángulo', dibujar: (x, y) => {
+                    ctx.beginPath();
+                    ctx.setLineDash([5, 5]);
+                    ctx.rect(x - 60, y - 30, 120, 60);
+                    ctx.stroke();
+                }
+            },
+            {
+                nombre: 'Rombo', dibujar: (x, y) => {
+                    ctx.beginPath();
+                    ctx.setLineDash([5, 5]);
+                    ctx.moveTo(x, y - 40);
+                    ctx.lineTo(x + 40, y);
+                    ctx.lineTo(x, y + 40);
+                    ctx.lineTo(x - 40, y);
+                    ctx.closePath();
+                    ctx.stroke();
+                }
+            },
+            {
+                nombre: 'Pentágono', dibujar: (x, y) => {
+                    ctx.beginPath();
+                    ctx.setLineDash([5, 5]);
+                    for (let i = 0; i < 5; i++) {
+                        ctx.lineTo(x + 50 * Math.cos(i * 2 * Math.PI / 5 - Math.PI / 2),
+                            y + 50 * Math.sin(i * 2 * Math.PI / 5 - Math.PI / 2));
+                    }
+                    ctx.closePath();
+                    ctx.stroke();
+                }
+            },
+            // Tercera fila
+            {
+                nombre: 'Hexágono', dibujar: (x, y) => {
+                    ctx.beginPath();
+                    ctx.setLineDash([5, 5]);
+                    for (let i = 0; i < 6; i++) {
+                        ctx.lineTo(x + 50 * Math.cos(i * 2 * Math.PI / 6),
+                            y + 50 * Math.sin(i * 2 * Math.PI / 6));
+                    }
+                    ctx.closePath();
+                    ctx.stroke();
+                }
+            },
+            {
+                nombre: 'Estrella', dibujar: (x, y) => {
+                    ctx.beginPath();
+                    ctx.setLineDash([5, 5]);
+                    for (let i = 0; i < 5; i++) {
+                        ctx.lineTo(x + 50 * Math.cos(i * 4 * Math.PI / 5 - Math.PI / 2),
+                            y + 50 * Math.sin(i * 4 * Math.PI / 5 - Math.PI / 2));
+                    }
+                    ctx.closePath();
+                    ctx.stroke();
+                }
+            },
+            {
+                nombre: 'Octágono', dibujar: (x, y) => {
+                    ctx.beginPath();
+                    ctx.setLineDash([5, 5]);
+                    for (let i = 0; i < 8; i++) {
+                        ctx.lineTo(x + 45 * Math.cos(i * 2 * Math.PI / 8),
+                            y + 45 * Math.sin(i * 2 * Math.PI / 8));
+                    }
+                    ctx.closePath();
+                    ctx.stroke();
+                }
+            },
+            // Cuarta fila
+            {
+                nombre: 'Corazón', dibujar: (x, y) => {
+                    ctx.beginPath();
+                    ctx.setLineDash([5, 5]);
+                    ctx.moveTo(x, y + 30);
+                    ctx.bezierCurveTo(x - 40, y - 20, x - 60, y - 60, x, y - 30);
+                    ctx.bezierCurveTo(x + 60, y - 60, x + 40, y - 20, x, y + 30);
+                    ctx.stroke();
+                }
+            },
+            {
+                nombre: 'Media Luna', dibujar: (x, y) => {
+                    ctx.beginPath();
+                    ctx.setLineDash([5, 5]);
+                    ctx.arc(x, y, 40, -Math.PI / 2, Math.PI / 2, true);
+                    ctx.quadraticCurveTo(x + 20, y, x, y - 40);
+                    ctx.stroke();
+                }
+            },
+            {
+                nombre: 'Flecha', dibujar: (x, y) => {
+                    ctx.beginPath();
+                    ctx.setLineDash([5, 5]);
+                    ctx.moveTo(x - 50, y);
+                    ctx.lineTo(x + 30, y);
+                    ctx.lineTo(x + 30, y - 20);
+                    ctx.lineTo(x + 50, y + 10);
+                    ctx.lineTo(x + 30, y + 40);
+                    ctx.lineTo(x + 30, y + 20);
+                    ctx.lineTo(x - 50, y + 20);
+                    ctx.closePath();
+                    ctx.stroke();
+                }
+            }
+        ];
+
+
+        function inicializarLienzo() {
+            canvas.addEventListener('mousedown', (e) => {
+                isDrawing = true;
+                [lastX, lastY] = [e.offsetX, e.offsetY];
+            });
+
+            canvas.addEventListener('mousemove', draw);
+            canvas.addEventListener('mouseup', () => isDrawing = false);
+            canvas.addEventListener('mouseout', () => isDrawing = false);
+
+            dibujarFiguras();
+        }
+
+        function dibujarFiguras() {
+
+            const columnWidth = canvas.width / 3;
+            const rowHeight = canvas.height / 4;
+
+            figuras.forEach((figura, index) => {
+                const col = index % 3;
+                const row = Math.floor(index / 3);
+
+                const x = columnWidth * (col + 0.5);
+                const y = rowHeight * (row + 0.5);
+
+                ctx.beginPath();
+                ctx.setLineDash([5, 5]);
+                ctx.strokeStyle = '#FF69B4'; // Estilo original de las figuras
+                ctx.lineWidth = 2; // Grosor de línea original de las figuras
+                figura.dibujar(x, y);
+                ctx.stroke();
+
+                // Añadir el nombre de la figura debajo
+                ctx.fillStyle = 'black';
+                ctx.font = '10px Arial';
+                ctx.textAlign = 'center';
+                ctx.fillText(figura.nombre, x, y + 60);
+            });
+
+        }
+
+        canvas.addEventListener('mousedown', (e) => {
+            isDrawing = true;
+            [lastX, lastY] = [e.offsetX, e.offsetY];
+        });
+
+        canvas.addEventListener('mousemove', draw);
+        canvas.addEventListener('mouseup', () => isDrawing = false);
+        canvas.addEventListener('mouseout', () => isDrawing = false);
+
+        function draw(e) {
+            if (!isDrawing) return;
+            ctx.beginPath();
+            ctx.moveTo(lastX, lastY);
+            ctx.lineTo(e.offsetX, e.offsetY);
+            ctx.strokeStyle = '#FF69B4';
+            ctx.lineWidth = 4;
+            ctx.lineCap = 'round';
+            ctx.setLineDash([]);
+            ctx.stroke();
+            [lastX, lastY] = [e.offsetX, e.offsetY];
+        }
+
+        function borrarTrazado() {
+            // Borrar el área de dibujo
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Dibujar las figuras geométricas nuevamente
+            dibujarFiguras();
+
+        }
+
+        function capturarYDescargar() {
+            // Crear un canvas temporal
+            const tempCanvas = document.createElement('canvas');
+            tempCanvas.width = canvas.width;
+            tempCanvas.height = canvas.height;
+            const tempCtx = tempCanvas.getContext('2d');
+
+            // Dibujar un fondo blanco
+            tempCtx.fillStyle = 'white';
+            tempCtx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
+
+            // Dibujar el contenido del canvas original sobre el fondo blanco
+            tempCtx.drawImage(canvas, 0, 0);
+
+            // Crear el enlace de descarga
+            const link = document.createElement('a');
+            link.download = 'Nombre del Alumno.png';
+            link.href = tempCanvas.toDataURL('image/png');
+            link.click();
+        }
+
+        dibujarFiguras();
     </script>
 </body>
 </html>
