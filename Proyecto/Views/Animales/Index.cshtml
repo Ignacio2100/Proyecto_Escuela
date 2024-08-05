@@ -1,0 +1,279 @@
+﻿@{
+    ViewBag.Title = "Tipos de Animales";
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agregar Nuevo Animal</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+       
+        .form-control {
+            min-width: 100%;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container mt-4">
+        <div class="row justify-content-center">
+            <div class="col-md-10">
+                <div class="p-4 shadow bg-white rounded">
+                    <div class="text-center mb-4">
+                        <h3 class="text-black">Agregar Nuevo Animal</h3>
+                    </div>
+                    <form asp-action="Create" enctype="multipart/form-data" method="post">
+                        <div class="row mb-4">
+                            <div class="col-md-4">
+                                <label for="Nombre" class="form-label">Nombre</label>
+                                <input type="text" class="form-control" id="Nombre" name="Nombre" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="TipoAnimal" class="form-label">Tipo de Animal</label>
+                                <select class="form-select" id="TipoAnimal" name="TipoAnimal" required>
+                                    <option value="" selected disabled>Seleccione un tipo</option>
+                                    <option value="Mamíferos">Mamíferos</option>
+                                    <option value="Aves">Aves</option>
+                                    <option value="Reptiles">Reptiles</option>
+                                    <option value="Anfibios">Anfibios</option>
+                                    <option value="Vertebrados">Vertebrados</option>
+                                    <option value="Invertebrados">Invertebrados</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="Imagen" class="form-label">Imagen</label>
+                                <input type="file" class="form-control" id="Imagen" name="upload" accept="image/*" required>
+                            </div>
+                        </div>
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <label for="Descripcion" class="form-label">Descripción</label>
+                                <textarea class="form-control" id="Descripcion" name="Descripcion" rows="5" style="width: 100%; box-sizing: border-box;" required></textarea>
+
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary">Guardar Animal</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="card-header m-4 text-xxl-center text-black">
+        <h3 class="mb-0">Tipos de Animales</h3>
+    </div>
+    <div class="accordion" id="animalAccordion">
+        <!-- Mamíferos -->
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="mamiferosHeading">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#mamiferosCollapse" aria-expanded="true" aria-controls="mamiferosCollapse">
+                    Mamíferos
+                </button>
+            </h2>
+            <div id="mamiferosCollapse" class="accordion-collapse collapse show" aria-labelledby="mamiferosHeading" data-bs-parent="#animalAccordion">
+                <div class="accordion-body">
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <div class="card">
+                                <img src="~/Content/Images/leon.jpg" class="card-img-top" alt="León">
+                                <div class="card-body">
+                                    <h5 class="card-title">León</h5>
+                                    <p class="card-text">El león es un felino grande y fuerte. Vive en África y es conocido como el rey de la selva. Tiene una melena impresionante y ruge muy fuerte.</p>
+                                    <button class="btn btn-primary btn-speak" data-text="El león es un felino grande y fuerte. Vive en África y es conocido como el rey de la selva. Tiene una melena impresionante y ruge muy fuerte.">
+                                        <i class="fas fa-volume-up"></i> Escuchar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="card">
+                                <img src="~/Content/Images/elefante.jpg" class="card-img-top" alt="Elefante">
+                                <div class="card-body">
+                                    <h5 class="card-title">Elefante</h5>
+                                    <p class="card-text">El elefante es el animal terrestre más grande. Tiene una trompa larga que usa como mano y grandes orejas. Los elefantes son muy inteligentes y tienen buena memoria.</p>
+                                    <button class="btn btn-primary btn-speak" data-text="El elefante es el animal terrestre más grande. Tiene una trompa larga que usa como mano y grandes orejas. Los elefantes son muy inteligentes y tienen buena memoria.">
+                                        <i class="fas fa-volume-up"></i> Escuchar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Agrega 4 cards más para mamíferos -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Aves -->
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="avesHeading">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#avesCollapse" aria-expanded="false" aria-controls="avesCollapse">
+                    Aves
+                </button>
+            </h2>
+            <div id="avesCollapse" class="accordion-collapse collapse" aria-labelledby="avesHeading" data-bs-parent="#animalAccordion">
+                <div class="accordion-body">
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <div class="card">
+                                <img src="~/Content/Images/aguila.jpg" class="card-img-top" alt="Águila">
+                                <div class="card-body">
+                                    <h5 class="card-title">Águila</h5>
+                                    <p class="card-text">El águila es un ave rapaz con excelente visión. Puede volar muy alto y es un cazador habilidoso. Tiene un pico curvo y garras fuertes.</p>
+                                    <button class="btn btn-primary btn-speak" data-text="El águila es un ave rapaz con excelente visión. Puede volar muy alto y es un cazador habilidoso. Tiene un pico curvo y garras fuertes.">
+                                        <i class="fas fa-volume-up"></i> Escuchar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Agrega 5 cards más para aves -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reptiles -->
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="reptilesHeading">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#reptilesCollapse" aria-expanded="false" aria-controls="reptilesCollapse">
+                    Reptiles
+                </button>
+            </h2>
+            <div id="reptilesCollapse" class="accordion-collapse collapse" aria-labelledby="reptilesHeading" data-bs-parent="#animalAccordion">
+                <div class="accordion-body">
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <div class="card">
+                                <img src="~/Content/Images/cocodrilo.jpg" class="card-img-top" alt="Cocodrilo">
+                                <div class="card-body">
+                                    <h5 class="card-title">Cocodrilo</h5>
+                                    <p class="card-text">El cocodrilo es un reptil grande que vive en el agua y en la tierra. Tiene una piel escamosa y dientes muy afilados. Es un excelente nadador.</p>
+                                    <button class="btn btn-primary btn-speak" data-text="El cocodrilo es un reptil grande que vive en el agua y en la tierra. Tiene una piel escamosa y dientes muy afilados. Es un excelente nadador.">
+                                        <i class="fas fa-volume-up"></i> Escuchar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Agrega 5 cards más para reptiles -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Anfibios -->
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="anfibiosHeading">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#anfibiosCollapse" aria-expanded="false" aria-controls="anfibiosCollapse">
+                    Anfibios
+                </button>
+            </h2>
+            <div id="anfibiosCollapse" class="accordion-collapse collapse" aria-labelledby="anfibiosHeading" data-bs-parent="#animalAccordion">
+                <div class="accordion-body">
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <div class="card">
+                                <img src="~/Content/Images/rana.jpg" class="card-img-top" alt="Rana">
+                                <div class="card-body">
+                                    <h5 class="card-title">Rana</h5>
+                                    <p class="card-text">La rana es un anfibio que puede vivir en el agua y en la tierra. Tiene piel húmeda y patas traseras largas para saltar. Muchas ranas croan fuertemente.</p>
+                                    <button class="btn btn-primary btn-speak" data-text="La rana es un anfibio que puede vivir en el agua y en la tierra. Tiene piel húmeda y patas traseras largas para saltar. Muchas ranas croan fuertemente.">
+                                        <i class="fas fa-volume-up"></i> Escuchar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Agrega 5 cards más para anfibios -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Invertebrados -->
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="invertebradosHeading">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#invertebradosCollapse" aria-expanded="false" aria-controls="invertebradosCollapse">
+                    Invertebrados
+                </button>
+            </h2>
+            <div id="invertebradosCollapse" class="accordion-collapse collapse" aria-labelledby="invertebradosHeading" data-bs-parent="#animalAccordion">
+                <div class="accordion-body">
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <div class="card">
+                                <img src="~/Content/Images/mariposa.jpg" class="card-img-top" alt="Mariposa">
+                                <div class="card-body">
+                                    <h5 class="card-title">Mariposa</h5>
+                                    <p class="card-text">La mariposa es un insecto con hermosas alas de colores. Puede volar de flor en flor y se alimenta del néctar. Las mariposas pasan por una transformación llamada metamorfosis.</p>
+                                    <button class="btn btn-primary btn-speak" data-text="La mariposa es un insecto con hermosas alas de colores. Puede volar de flor en flor y se alimenta del néctar. Las mariposas pasan por una transformación llamada metamorfosis.">
+                                        <i class="fas fa-volume-up"></i> Escuchar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Agrega 5 cards más para invertebrados -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Peces -->
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="pecesHeading">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#pecesCollapse" aria-expanded="false" aria-controls="pecesCollapse">
+                    Peces
+                </button>
+            </h2>
+            <div id="pecesCollapse" class="accordion-collapse collapse" aria-labelledby="pecesHeading" data-bs-parent="#animalAccordion">
+                <div class="accordion-body">
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <div class="card">
+                                <img src="~/Content/Images/pez_payaso.jpg" class="card-img-top" alt="Pez payaso">
+                                <div class="card-body">
+                                    <h5 class="card-title">Pez payaso</h5>
+                                    <p class="card-text">El pez payaso es un pez pequeño y colorido que vive en los arrecifes de coral. Tiene rayas blancas y naranja. Vive en una relación especial con las anémonas de mar.</p>
+                                    <button class="btn btn-primary btn-speak" data-text="El pez payaso es un pez pequeño y colorido que vive en los arrecifes de coral. Tiene rayas blancas y naranja. Vive en una relación especial con las anémonas de mar.">
+                                        <i class="fas fa-volume-up"></i> Escuchar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Agrega 5 cards más para peces -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+@section Scripts {
+    
+    <script>
+        function speak(text) {
+            if ('speechSynthesis' in window) {
+                var msg = new SpeechSynthesisUtterance();
+                msg.text = text;
+                msg.lang = 'es-ES';
+                msg.rate = 0.9;
+                msg.pitch = 1.1;
+                window.speechSynthesis.speak(msg);
+            } else {
+                alert('Lo siento, tu navegador no soporta la síntesis de voz.');
+            }
+        }
+
+        $(document).ready(function () {
+            $('.btn-speak').on('click', function () {
+                var text = $(this).data('text');
+                speak(text);
+            });
+        });
+    </script>
+}
+
