@@ -1,4 +1,6 @@
-﻿@{
+﻿@using Proyecto.Models;
+@model Proyecto.Controllers.AnimalesController.AnimalesViewModel
+@{
     ViewBag.Title = "Tipos de Animales";
 }
 
@@ -10,14 +12,101 @@
     <title>Agregar Nuevo Animal</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
     <style>
-       
+
         .form-control {
             min-width: 100%;
         }
 
+        .card {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .card-body {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between; /* Espacia el contenido de la tarjeta */
+        }
+
+        .card-text {
+            text-align: justify; /* Justifica el texto en el cuerpo de la tarjeta */
+        }
+
+        .btn-speak {
+            align-self: center; /* Centra el botón horizontalmente */
+            margin-top: auto; /* Empuja el botón al final del cuerpo de la tarjeta */
+        }
+
+        .card-img-top {
+            width: 100%; /* Hace que la imagen ocupe todo el ancho del contenedor de la tarjeta */
+            height: 350px;
+            object-fit: cover; /* Asegura que la imagen cubra el área sin distorsionar */
+        }
+
+        #memory-board {
+            display: grid;
+            grid-template-columns: repeat(4, 100px);
+            gap: 15px; /* Espacio entre cartas */
+            margin-top: 20px;
+        }
+
+        .memory-card {
+            width: 100px;
+            height: 100px;
+            background-color: #3498db;
+            border-radius: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            font-size: 40px;
+            transition: transform 0.3s;
+        }
+
+            .memory-card:hover {
+                transform: scale(1.1); /* Escala ligeramente la carta al pasar el ratón */
+                background-color: #ffeb3b; /* Color de fondo más claro al pasar el ratón */
+            }
+
+            .memory-card.flipped {
+                background-color: #fff;
+                box-shadow: none; /* Elimina la sombra cuando la carta está volteada */
+            }
+
+        #attempts {
+            margin-top: 20px;
+            font-size: 1.5rem; /* Tamaño de fuente grande */
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3); /* Sombra para mejor visibilidad */
+        }
+        .Memoria {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; /* Ocupa toda la altura de la ventana del navegador */
+            background: linear-gradient(to right, rgba(255, 223, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://www.toptal.com/designers/subtlepatterns/patterns/double-bubble.png'); /* Gradiente sobre patrón */
+            background-size: cover, cover; /* Asegura que el patrón y el gradiente cubran todo el fondo */
+            margin: 0;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            color: white; /* Color de texto brillante */
+            margin-bottom: 20px;
+            font-size: 2.5rem; /* Tamaño de fuente grande */
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); /* Sombra para mayor impacto */
+        }
+
+       
     </style>
 </head>
 <body>
+    <!-- APARTADO PARA AGREGAR ANIMAL -->
+
     <div class="container mt-4">
         <div class="row justify-content-center">
             <div class="col-md-10">
@@ -25,244 +114,348 @@
                     <div class="text-center mb-4">
                         <h3 class="text-black">Agregar Nuevo Animal</h3>
                     </div>
-                    <form asp-action="Create" enctype="multipart/form-data" method="post">
+                    @using (Html.BeginForm("Agregar", "Animales", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    {
+                        @Html.AntiForgeryToken()
                         <div class="row mb-4">
                             <div class="col-md-4">
-                                <label for="Nombre" class="form-label">Nombre</label>
-                                <input type="text" class="form-control" id="Nombre" name="Nombre" required>
+                                @Html.LabelFor(m => m.NuevoAnimal.Nombre, new { @class = "form-label" })
+                                @Html.TextBoxFor(m => m.NuevoAnimal.Nombre, new { @class = "form-control", required = "required" })
+                                @Html.ValidationMessageFor(m => m.NuevoAnimal.Nombre, "", new { @class = "text-danger" })
                             </div>
                             <div class="col-md-4">
-                                <label for="TipoAnimal" class="form-label">Tipo de Animal</label>
-                                <select class="form-select" id="TipoAnimal" name="TipoAnimal" required>
-                                    <option value="" selected disabled>Seleccione un tipo</option>
-                                    <option value="Mamíferos">Mamíferos</option>
-                                    <option value="Aves">Aves</option>
-                                    <option value="Reptiles">Reptiles</option>
-                                    <option value="Anfibios">Anfibios</option>
-                                    <option value="Vertebrados">Vertebrados</option>
-                                    <option value="Invertebrados">Invertebrados</option>
-                                </select>
+                                @Html.LabelFor(m => m.NuevoAnimal.TipoAnimal, new { @class = "form-label" })
+                                @Html.DropDownListFor(m => m.NuevoAnimal.TipoAnimal, new List<SelectListItem>
+                                {
+                                    new SelectListItem { Text = "Seleccione un tipo", Value = "", Disabled = true, Selected = true },
+                                    new SelectListItem { Text = "Mamíferos", Value = "Mamiferos" },
+                                    new SelectListItem { Text = "Aves", Value = "Aves" },
+                                    new SelectListItem { Text = "Reptiles", Value = "Reptiles" },
+                                    new SelectListItem { Text = "Anfibios", Value = "Anfibios" },
+                                    new SelectListItem { Text = "Vertebrados", Value = "Vertebrados" },
+                                    new SelectListItem { Text = "Invertebrados", Value = "Invertebrados" }
+                                }, new { @class = "form-select", required = "required" })
+                                @Html.ValidationMessageFor(m => m.NuevoAnimal.TipoAnimal, "", new { @class = "text-danger" })
                             </div>
                             <div class="col-md-4">
-                                <label for="Imagen" class="form-label">Imagen</label>
-                                <input type="file" class="form-control" id="Imagen" name="upload" accept="image/*" required>
+                                @Html.LabelFor(m => m.NuevoAnimal.ImagenUrl, "Imagen", new { @class = "form-label", required = "required" })
+                                <input type="file" class="form-control" id="ImagenUrl" name="upload" accept=".jpg, .jpeg, .png">
                             </div>
                         </div>
                         <div class="row mb-4">
                             <div class="col-12">
-                                <label for="Descripcion" class="form-label">Descripción</label>
-                                <textarea class="form-control" id="Descripcion" name="Descripcion" rows="5" style="width: 100%; box-sizing: border-box;" required></textarea>
-
+                                @Html.LabelFor(m => m.NuevoAnimal.Descripcion, new { @class = "form-label" })
+                                @Html.TextAreaFor(m => m.NuevoAnimal.Descripcion, new { @class = "form-control", rows = "5", style = "width: 100%; box-sizing: border-box;", required = "required" })
+                                @Html.ValidationMessageFor(m => m.NuevoAnimal.Descripcion, "", new { @class = "text-danger" })
                             </div>
                         </div>
                         <div class="text-center">
                             <button type="submit" class="btn btn-primary">Guardar Animal</button>
                         </div>
-                    </form>
+                    }
                 </div>
             </div>
         </div>
     </div>
 
-
-    <div class="card-header m-4 text-xxl-center text-black">
+    <div class="card-header m-4 text-xxl-center text-black fw-bold">
         <h3 class="mb-0">Tipos de Animales</h3>
     </div>
+
+
     <div class="accordion" id="animalAccordion">
         <!-- Mamíferos -->
-        <div class="accordion-item">
+        <div class="accordion-item mb-3">
             <h2 class="accordion-header" id="mamiferosHeading">
-                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#mamiferosCollapse" aria-expanded="true" aria-controls="mamiferosCollapse">
+                <button class="accordion-button text-center fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#mamiferosCollapse" aria-expanded="true" aria-controls="mamiferosCollapse">
                     Mamíferos
                 </button>
             </h2>
             <div id="mamiferosCollapse" class="accordion-collapse collapse show" aria-labelledby="mamiferosHeading" data-bs-parent="#animalAccordion">
                 <div class="accordion-body">
                     <div class="row">
-                        <div class="col-md-4 mb-3">
-                            <div class="card">
-                                <img src="~/Content/Images/leon.jpg" class="card-img-top" alt="León">
-                                <div class="card-body">
-                                    <h5 class="card-title">León</h5>
-                                    <p class="card-text">El león es un felino grande y fuerte. Vive en África y es conocido como el rey de la selva. Tiene una melena impresionante y ruge muy fuerte.</p>
-                                    <button class="btn btn-primary btn-speak" data-text="El león es un felino grande y fuerte. Vive en África y es conocido como el rey de la selva. Tiene una melena impresionante y ruge muy fuerte.">
-                                        <i class="fas fa-volume-up"></i> Escuchar
-                                    </button>
+                        @foreach (var mamifero in Model.ListaMamiferos)
+                        {
+                            <div class="col-md-4 mb-3">
+                                <div class="card">
+                                    @if (!string.IsNullOrEmpty(mamifero.ImagenUrl))
+                                    {
+                                        <img src="@Url.Content(mamifero.ImagenUrl)" class="card-img-top" alt="@mamifero.Nombre">
+                                    }
+                                    else
+                                    {
+                                        <img src="~/Imagenes/Logo.png" class="card-img-top" alt="Imagen no disponible">
+                                    }
+                                    <div class="card-body">
+                                        <h5 class="card-title">@mamifero.Nombre</h5>
+                                        <p class="card-text">@mamifero.Descripcion</p>
+                                        <button class="btn btn-primary btn-speak" data-text="@mamifero.Descripcion">
+                                            <i class="fas fa-volume-up"></i> Escuchar
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <div class="card">
-                                <img src="~/Content/Images/elefante.jpg" class="card-img-top" alt="Elefante">
-                                <div class="card-body">
-                                    <h5 class="card-title">Elefante</h5>
-                                    <p class="card-text">El elefante es el animal terrestre más grande. Tiene una trompa larga que usa como mano y grandes orejas. Los elefantes son muy inteligentes y tienen buena memoria.</p>
-                                    <button class="btn btn-primary btn-speak" data-text="El elefante es el animal terrestre más grande. Tiene una trompa larga que usa como mano y grandes orejas. Los elefantes son muy inteligentes y tienen buena memoria.">
-                                        <i class="fas fa-volume-up"></i> Escuchar
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Agrega 4 cards más para mamíferos -->
+                        }
                     </div>
                 </div>
             </div>
         </div>
 
         <!-- Aves -->
-        <div class="accordion-item">
+        <div class="accordion-item mb-3">
             <h2 class="accordion-header" id="avesHeading">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#avesCollapse" aria-expanded="false" aria-controls="avesCollapse">
+                <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#avesCollapse" aria-expanded="false" aria-controls="avesCollapse">
                     Aves
                 </button>
             </h2>
             <div id="avesCollapse" class="accordion-collapse collapse" aria-labelledby="avesHeading" data-bs-parent="#animalAccordion">
                 <div class="accordion-body">
                     <div class="row">
-                        <div class="col-md-4 mb-3">
-                            <div class="card">
-                                <img src="~/Content/Images/aguila.jpg" class="card-img-top" alt="Águila">
-                                <div class="card-body">
-                                    <h5 class="card-title">Águila</h5>
-                                    <p class="card-text">El águila es un ave rapaz con excelente visión. Puede volar muy alto y es un cazador habilidoso. Tiene un pico curvo y garras fuertes.</p>
-                                    <button class="btn btn-primary btn-speak" data-text="El águila es un ave rapaz con excelente visión. Puede volar muy alto y es un cazador habilidoso. Tiene un pico curvo y garras fuertes.">
-                                        <i class="fas fa-volume-up"></i> Escuchar
-                                    </button>
+                        @foreach (var aves in Model.ListaAves)
+                        {
+                            <div class="col-md-4 mb-3">
+                                <div class="card">
+                                    @if (!string.IsNullOrEmpty(aves.ImagenUrl))
+                                    {
+                                        <img src="@Url.Content(aves.ImagenUrl)" class="card-img-top" alt="@aves.Nombre">
+                                    }
+                                    else
+                                    {
+                                        <img src="~/Imagenes/Logo.png" class="card-img-top" alt="Imagen no disponible">
+                                    }
+                                    <div class="card-body">
+                                        <h5 class="card-title">@aves.Nombre</h5>
+                                        <p class="card-text">@aves.Descripcion</p>
+                                        <button class="btn btn-primary btn-speak" data-text="@aves.Descripcion">
+                                            <i class="fas fa-volume-up"></i> Escuchar
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <!-- Agrega 5 cards más para aves -->
+                        }
                     </div>
                 </div>
             </div>
         </div>
 
         <!-- Reptiles -->
-        <div class="accordion-item">
+        <div class="accordion-item mb-3">
             <h2 class="accordion-header" id="reptilesHeading">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#reptilesCollapse" aria-expanded="false" aria-controls="reptilesCollapse">
+                <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#reptilesCollapse" aria-expanded="false" aria-controls="reptilesCollapse">
                     Reptiles
                 </button>
             </h2>
             <div id="reptilesCollapse" class="accordion-collapse collapse" aria-labelledby="reptilesHeading" data-bs-parent="#animalAccordion">
                 <div class="accordion-body">
                     <div class="row">
-                        <div class="col-md-4 mb-3">
-                            <div class="card">
-                                <img src="~/Content/Images/cocodrilo.jpg" class="card-img-top" alt="Cocodrilo">
-                                <div class="card-body">
-                                    <h5 class="card-title">Cocodrilo</h5>
-                                    <p class="card-text">El cocodrilo es un reptil grande que vive en el agua y en la tierra. Tiene una piel escamosa y dientes muy afilados. Es un excelente nadador.</p>
-                                    <button class="btn btn-primary btn-speak" data-text="El cocodrilo es un reptil grande que vive en el agua y en la tierra. Tiene una piel escamosa y dientes muy afilados. Es un excelente nadador.">
-                                        <i class="fas fa-volume-up"></i> Escuchar
-                                    </button>
+                        @foreach (var reptiles in Model.ListaReptiles)
+                        {
+                            <div class="col-md-4 mb-3">
+                                <div class="card">
+                                    @if (!string.IsNullOrEmpty(reptiles.ImagenUrl))
+                                    {
+                                        <img src="@Url.Content(reptiles.ImagenUrl)" class="card-img-top" alt="@reptiles.Nombre">
+                                    }
+                                    else
+                                    {
+                                        <img src="~/Imagenes/Logo.png" class="card-img-top" alt="Imagen no disponible">
+                                    }
+                                    <div class="card-body">
+                                        <h5 class="card-title">@reptiles.Nombre</h5>
+                                        <p class="card-text">@reptiles.Descripcion</p>
+                                        <button class="btn btn-primary btn-speak" data-text="@reptiles.Descripcion">
+                                            <i class="fas fa-volume-up"></i> Escuchar
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <!-- Agrega 5 cards más para reptiles -->
+                        }
                     </div>
                 </div>
             </div>
         </div>
 
         <!-- Anfibios -->
-        <div class="accordion-item">
+        <div class="accordion-item mb-3">
             <h2 class="accordion-header" id="anfibiosHeading">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#anfibiosCollapse" aria-expanded="false" aria-controls="anfibiosCollapse">
+                <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#anfibiosCollapse" aria-expanded="false" aria-controls="anfibiosCollapse">
                     Anfibios
                 </button>
             </h2>
             <div id="anfibiosCollapse" class="accordion-collapse collapse" aria-labelledby="anfibiosHeading" data-bs-parent="#animalAccordion">
                 <div class="accordion-body">
                     <div class="row">
-                        <div class="col-md-4 mb-3">
-                            <div class="card">
-                                <img src="~/Content/Images/rana.jpg" class="card-img-top" alt="Rana">
-                                <div class="card-body">
-                                    <h5 class="card-title">Rana</h5>
-                                    <p class="card-text">La rana es un anfibio que puede vivir en el agua y en la tierra. Tiene piel húmeda y patas traseras largas para saltar. Muchas ranas croan fuertemente.</p>
-                                    <button class="btn btn-primary btn-speak" data-text="La rana es un anfibio que puede vivir en el agua y en la tierra. Tiene piel húmeda y patas traseras largas para saltar. Muchas ranas croan fuertemente.">
-                                        <i class="fas fa-volume-up"></i> Escuchar
-                                    </button>
+                        @foreach (var anfibios in Model.ListaAnfibios)
+                        {
+                            <div class="col-md-4 mb-3">
+                                <div class="card">
+                                    @if (!string.IsNullOrEmpty(anfibios.ImagenUrl))
+                                    {
+                                        <img src="@Url.Content(anfibios.ImagenUrl)" class="card-img-top" alt="@anfibios.Nombre">
+                                    }
+                                    else
+                                    {
+                                        <img src="~/Imagenes/Logo.png" class="card-img-top" alt="Imagen no disponible">
+                                    }
+                                    <div class="card-body">
+                                        <h5 class="card-title">@anfibios.Nombre</h5>
+                                        <p class="card-text">@anfibios.Descripcion</p>
+                                        <button class="btn btn-primary btn-speak" data-text="@anfibios.Descripcion">
+                                            <i class="fas fa-volume-up"></i> Escuchar
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <!-- Agrega 5 cards más para anfibios -->
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- vertebrados -->
+        <div class="accordion-item mb-3">
+            <h2 class="accordion-header" id="vertebradosHeading">
+                <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#vertebradosCollapse" aria-expanded="false" aria-controls="vertebradosCollapse">
+                    Vertebrados
+                </button>
+            </h2>
+            <div id="vertebradosCollapse" class="accordion-collapse collapse" aria-labelledby="vertebradosHeading" data-bs-parent="#animalAccordion">
+                <div class="accordion-body">
+                    <div class="row">
+                        @foreach (var vertebrados in Model.ListaVertebrados)
+                        {
+                            <div class="col-md-4 mb-3">
+                                <div class="card">
+                                    @if (!string.IsNullOrEmpty(vertebrados.ImagenUrl))
+                                    {
+                                        <img src="@Url.Content(vertebrados.ImagenUrl)" class="card-img-top" alt="@vertebrados.Nombre">
+                                    }
+                                    else
+                                    {
+                                        <img src="~/Imagenes/Logo.png" class="card-img-top" alt="Imagen no disponible">
+                                    }
+                                    <div class="card-body">
+                                        <h5 class="card-title">@vertebrados.Nombre</h5>
+                                        <p class="card-text">@vertebrados.Descripcion</p>
+                                        <button class="btn btn-primary btn-speak" data-text="@vertebrados.Descripcion">
+                                            <i class="fas fa-volume-up"></i> Escuchar
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        }
                     </div>
                 </div>
             </div>
         </div>
 
         <!-- Invertebrados -->
-        <div class="accordion-item">
+        <div class="accordion-item mb-3">
             <h2 class="accordion-header" id="invertebradosHeading">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#invertebradosCollapse" aria-expanded="false" aria-controls="invertebradosCollapse">
+                <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#invertebradosCollapse" aria-expanded="false" aria-controls="invertebradosCollapse">
                     Invertebrados
                 </button>
             </h2>
             <div id="invertebradosCollapse" class="accordion-collapse collapse" aria-labelledby="invertebradosHeading" data-bs-parent="#animalAccordion">
                 <div class="accordion-body">
                     <div class="row">
-                        <div class="col-md-4 mb-3">
-                            <div class="card">
-                                <img src="~/Content/Images/mariposa.jpg" class="card-img-top" alt="Mariposa">
-                                <div class="card-body">
-                                    <h5 class="card-title">Mariposa</h5>
-                                    <p class="card-text">La mariposa es un insecto con hermosas alas de colores. Puede volar de flor en flor y se alimenta del néctar. Las mariposas pasan por una transformación llamada metamorfosis.</p>
-                                    <button class="btn btn-primary btn-speak" data-text="La mariposa es un insecto con hermosas alas de colores. Puede volar de flor en flor y se alimenta del néctar. Las mariposas pasan por una transformación llamada metamorfosis.">
-                                        <i class="fas fa-volume-up"></i> Escuchar
-                                    </button>
+                        @foreach (var invertebrados in Model.ListaInvertebrados)
+                        {
+                            <div class="col-md-4 mb-3">
+                                <div class="card">
+                                    @if (!string.IsNullOrEmpty(invertebrados.ImagenUrl))
+                                    {
+                                        <img src="@Url.Content(invertebrados.ImagenUrl)" class="card-img-top" alt="@invertebrados.Nombre">
+                                    }
+                                    else
+                                    {
+                                        <img src="~/Imagenes/Logo.png" class="card-img-top" alt="Imagen no disponible">
+                                    }
+                                    <div class="card-body">
+                                        <h5 class="card-title">@invertebrados.Nombre</h5>
+                                        <p class="card-text">@invertebrados.Descripcion</p>
+                                        <button class="btn btn-primary btn-speak" data-text="@invertebrados.Descripcion">
+                                            <i class="fas fa-volume-up"></i> Escuchar
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <!-- Agrega 5 cards más para invertebrados -->
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Peces -->
-        <div class="accordion-item">
-            <h2 class="accordion-header" id="pecesHeading">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#pecesCollapse" aria-expanded="false" aria-controls="pecesCollapse">
-                    Peces
-                </button>
-            </h2>
-            <div id="pecesCollapse" class="accordion-collapse collapse" aria-labelledby="pecesHeading" data-bs-parent="#animalAccordion">
-                <div class="accordion-body">
-                    <div class="row">
-                        <div class="col-md-4 mb-3">
-                            <div class="card">
-                                <img src="~/Content/Images/pez_payaso.jpg" class="card-img-top" alt="Pez payaso">
-                                <div class="card-body">
-                                    <h5 class="card-title">Pez payaso</h5>
-                                    <p class="card-text">El pez payaso es un pez pequeño y colorido que vive en los arrecifes de coral. Tiene rayas blancas y naranja. Vive en una relación especial con las anémonas de mar.</p>
-                                    <button class="btn btn-primary btn-speak" data-text="El pez payaso es un pez pequeño y colorido que vive en los arrecifes de coral. Tiene rayas blancas y naranja. Vive en una relación especial con las anémonas de mar.">
-                                        <i class="fas fa-volume-up"></i> Escuchar
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Agrega 5 cards más para peces -->
+                        }
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <div class="Memoria">
+        <h1>Memoria de Animales</h1>
+        <div id="memory-board"></div>
+        <div id="attempts">Intentos: 0</div>
+
+    </div>
+
+    <div class="row justify-content-center mt-4 mb-4">
+        <div class="col-auto">
+            <a href="@Url.Action("Index", "Home")" class="btn btn-danger">Regresar</a>
+        </div>
+    </div>
+
 </body>
 </html>
 
 @section Scripts {
-    
+
     <script>
         function speak(text) {
             if ('speechSynthesis' in window) {
-                var msg = new SpeechSynthesisUtterance();
-                msg.text = text;
-                msg.lang = 'es-ES';
-                msg.rate = 0.9;
-                msg.pitch = 1.1;
-                window.speechSynthesis.speak(msg);
+                // Cancel any ongoing speech synthesis
+                window.speechSynthesis.cancel();
+
+                const maxChunkLength = 200; // Maximum length of each chunk
+                let chunks = [];
+
+                // Function to split the text into chunks
+                function splitTextIntoChunks(text) {
+                    while (text.length > 0) {
+                        let chunk = text.slice(0, maxChunkLength);
+                        let lastSpaceIndex = chunk.lastIndexOf(' ');
+                        if (lastSpaceIndex > 0 && text.length > maxChunkLength) {
+                            chunk = chunk.slice(0, lastSpaceIndex);
+                        }
+                        chunks.push(chunk);
+                        text = text.slice(chunk.length).trim();
+                    }
+                }
+
+                splitTextIntoChunks(text);
+
+                let utterance = new SpeechSynthesisUtterance();
+                utterance.lang = 'es-ES';
+                utterance.rate = 0.7;
+                utterance.pitch = 1.3;
+
+                // Set the voice
+                let voices = window.speechSynthesis.getVoices();
+                utterance.voice = voices.find(voice => voice.lang === 'es-ES' && voice.name.includes('Female')) || voices[0];
+
+                let currentChunk = 0;
+
+                utterance.onend = () => {
+                    currentChunk++;
+                    if (currentChunk < chunks.length) {
+                        utterance.text = chunks[currentChunk];
+                        window.speechSynthesis.speak(utterance);
+                    }
+                };
+
+                utterance.onerror = (event) => {
+                    console.error('SpeechSynthesisUtterance.onerror', event);
+                };
+
+                // Start speaking
+                utterance.text = chunks[0];
+                window.speechSynthesis.speak(utterance);
+
             } else {
                 alert('Lo siento, tu navegador no soporta la síntesis de voz.');
             }
@@ -273,7 +466,65 @@
                 var text = $(this).data('text');
                 speak(text);
             });
+
+            // Ensure voices are loaded
+            speechSynthesis.onvoiceschanged = () => {
+                window.speechSynthesis.getVoices();
+            };
         });
+
+
+        //codigo de memoria
+        const animals = ['🐶', '🐱', '🐭', '🐹', '🐰', '🦊', '🐻', '🐼'];
+        const memoryBoard = document.getElementById('memory-board');
+        const attemptsDisplay = document.getElementById('attempts');
+        let cards = [...animals, ...animals];
+        let flippedCards = [];
+        let matchedPairs = 0;
+        let attempts = 0;
+
+        // Mezclar las cartas
+        cards.sort(() => Math.random() - 0.5);
+
+        // Crear las cartas en el tablero
+        cards.forEach((animal, index) => {
+            const card = document.createElement('div');
+            card.className = 'memory-card';
+            card.dataset.animal = animal;
+            card.dataset.index = index;
+            card.addEventListener('click', flipCard);
+            memoryBoard.appendChild(card);
+        });
+
+        function flipCard() {
+            if (flippedCards.length < 2 && !this.classList.contains('flipped')) {
+                this.classList.add('flipped');
+                this.textContent = this.dataset.animal;
+                flippedCards.push(this);
+
+                if (flippedCards.length === 2) {
+                    attempts++;
+                    attemptsDisplay.textContent = `Intentos: ${attempts}`;
+                    setTimeout(checkMatch, 1000);
+                }
+            }
+        }
+
+        function checkMatch() {
+            const [card1, card2] = flippedCards;
+            if (card1.dataset.animal === card2.dataset.animal) {
+                matchedPairs++;
+                if (matchedPairs === animals.length) {
+                    alert(`¡Felicidades! Has completado el juego en ${attempts} intentos.`);
+                }
+            } else {
+                card1.classList.remove('flipped');
+                card2.classList.remove('flipped');
+                card1.textContent = '';
+                card2.textContent = '';
+            }
+            flippedCards = [];
+        }
+    
     </script>
 }
-

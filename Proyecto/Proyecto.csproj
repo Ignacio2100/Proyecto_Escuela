@@ -58,6 +58,8 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -127,6 +129,24 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AnimalCLS.cs" />
+    <Compile Include="Models\Animales.cs">
+      <DependentUpon>BDEscuela.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\BDEscuela.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BDEscuela.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\BDEscuela.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BDEscuela.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\BDEscuela.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BDEscuela.edmx</DependentUpon>
+    </Compile>
     <Compile Include="Models\UsuarioCLS.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -150,6 +170,16 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Models\BDEscuela.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>BDEscuela.edmx</DependentUpon>
+      <LastGenOutput>BDEscuela.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\BDEscuela.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>BDEscuela.edmx</DependentUpon>
+      <LastGenOutput>BDEscuela.cs</LastGenOutput>
+    </Content>
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.esm.js" />
@@ -178,6 +208,13 @@
     <Content Include="Content\bootstrap-grid.rtl.css.map" />
     <Content Include="Content\bootstrap-grid.min.css.map" />
     <Content Include="Content\bootstrap-grid.css.map" />
+    <EntityDeploy Include="Models\BDEscuela.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>BDEscuela.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\BDEscuela.edmx.diagram">
+      <DependentUpon>BDEscuela.edmx</DependentUpon>
+    </Content>
     <None Include="Scripts\jquery-3.7.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.7.1.js" />
     <Content Include="Scripts\jquery-3.7.1.min.js" />
@@ -216,6 +253,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

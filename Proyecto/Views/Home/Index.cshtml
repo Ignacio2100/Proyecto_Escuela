@@ -29,6 +29,9 @@
             transition: transform 0.3s;
             margin-bottom: 20px;
             background-color: var(--primary-white);
+            display: flex;
+            flex-direction: column;
+      
         }
 
             .card:hover {
@@ -117,7 +120,7 @@
                     <img src="~/Imagenes/Animal.jpg" class="card-img-top" alt="Animales">
                     <div class="card-body">
                         <h5 class="card-title">Módulo de Tipos de Animales</h5>
-                        <p class="card-text">Conoce los diferentes tipos de animales.</p>
+                        <p class="card-text">Conoce los diferentes tipos de animales en el mundo.</p>
                         <a href="@Url.Action("Index", "Animales")" class="btn btn-primary">¡Conozcamos !</a>
                     </div>
                 </div>
