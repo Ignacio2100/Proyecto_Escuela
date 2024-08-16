@@ -120,6 +120,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\AbecedarioController.cs" />
     <Compile Include="Controllers\AnimalesController.cs" />
     <Compile Include="Controllers\ColorController.cs" />
     <Compile Include="Controllers\GeometricasController.cs" />
@@ -246,6 +247,7 @@
     <Content Include="Views\Color\Index.cshtml" />
     <Content Include="Views\Geometricas\Index.cshtml" />
     <Content Include="Views\Animales\Index.cshtml" />
+    <Content Include="Views\Abecedario\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

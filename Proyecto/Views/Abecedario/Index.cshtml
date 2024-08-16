@@ -1,0 +1,721 @@
+﻿@{
+    ViewBag.Title = "Abecedario Mágico";
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mundo de Aprendizaje Infantil</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Comic Sans MS', cursive;
+            text-align: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        h2 {
+            color: #ff6b6b;
+            font-size: 4em;
+            text-shadow: 3px 3px #feca57, 5px 5px #48dbfb;
+            margin-bottom: 30px;
+            animation: bounce 2s infinite;
+        }
+
+        @@keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        #abecedario {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin: 20px auto;
+            max-width: 2000px;
+        }
+
+        .letra {
+            perspective: 1000px;
+            margin: 15px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+            .letra:hover {
+                transform: scale(1.1);
+            }
+
+        .carta {
+            width: 120px;
+            height: 120px;
+            transition: transform 0.8s;
+            transform-style: preserve-3d;
+        }
+
+        .frente, .reverso {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 20px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+        }
+
+        .frente {
+            background: linear-gradient(135deg, #0056b3, #00bfff);
+            color: #FFD700;
+            border: 4px solid #FFD700;
+        }
+
+        .reverso {
+            background: linear-gradient(135deg, #ff6b6b, #feca57);
+            color: #0056b3;
+            transform: rotateY(180deg);
+            border: 4px solid #0056b3;
+        }
+
+        .mayuscula {
+            font-size: 70px;
+            font-weight: bold;
+            text-shadow: 2px 2px #000;
+        }
+
+        .minuscula {
+            font-size: 80px;
+            text-shadow: 2px 2px #000;
+        }
+
+        #imagen-container {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #imagen-letra {
+            max-width: 250px;
+            border-radius: 20px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+            transition: transform 0.3s;
+            border: 5px solid #fff;
+        }
+
+            #imagen-letra:hover {
+                transform: scale(1.05);
+            }
+
+        @@media (max-width: 768px) {
+            .carta {
+                width: 80px;
+                height: 80px;
+            }
+
+            .mayuscula {
+                font-size: 50px;
+            }
+
+            .minuscula {
+                font-size: 60px;
+            }
+        }
+
+        #pronunciacion-container {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        #btn-pronunciar {
+            font-size: 1.2em;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+            #btn-pronunciar:hover {
+                background-color: #ff6b6b;
+            }
+
+        #btn-actualizar {
+            font-size: 1.2em;
+            padding: 10px 20px;
+            background-color: red;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+            #btn-actualizar:hover {
+                background-color: darkblue;
+            }
+
+
+        #mensaje-resultado {
+            margin-top: 20px;
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #ff6b6b;
+        }
+
+        #canvas {
+            max-width: 100%;
+            height: auto;
+            border: 2px solid #333;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .controls {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        label {
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        #difficulty {
+            width: 200px;
+            max-width: 100%;
+        }
+
+        
+    </style>
+
+</head>
+<body>
+
+    <h2>Descubre el Abecedario</h2>
+
+    <div id="abecedario">
+        @foreach (char letra in "ABCDEFGHIJKLMNÑOPQRSTUVWXYZ")
+        {
+            <div class="letra" onclick="interactuarConLetra(this, '@letra')">
+                <div class="carta">
+                    <div class="frente">
+                        <span class="mayuscula">@letra</span>
+                    </div>
+                    <div class="reverso">
+                        <span class="minuscula">@letra.ToString().ToLower()</span>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <div id="imagen-container">
+        <img id="imagen-letra" src="" alt="Imagen representativa" style="display: none;">
+    </div>
+
+    <div id="pronunciacion-container">
+        <button id="btn-pronunciar">Pronuncia una letra</button>
+        <button id="btn-actualizar">Refrescar</button>
+        <div id="mensaje-resultado"></div>
+    </div>
+
+    <h2>Rompecabezas</h2>
+
+    <canvas id="canvas"></canvas>
+    <div class="controls">
+        <label for="difficulty">¿Cuantas partes deseas dividir tu rompecabeza?</label>
+        <input type="range" min="2" max="16" value="4" id="difficulty" />
+    </div>
+
+
+    <div class="container">
+        <div class="row justify-content-center mt-4 mb-4">
+            <div class="col-auto">
+                <a href="@Url.Action("Index", "Home")" class="btn btn-primary">Regresar</a>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
+
+
+<script>
+
+    document.getElementById('btn-actualizar').addEventListener('click', function () {
+        location.reload();
+    });
+
+    const imagenesPorLetra = {
+        'A': 'Abeja.png',
+        'B': 'Burbujas.png',
+        'C': 'Conejo.png',
+        'D': 'Dinosaurio.png',
+        'E': 'Estrellas.png',
+        'F': 'Flamingo.png',
+        'G': 'Gato.png',
+        'H': 'Hilo.png',
+        'I': 'Iguana.png',
+        'J': 'Jirafa.png',
+        'K': 'Kiwi.png',
+        'L': 'Leon.png',
+        'M': 'Mapache.png',
+        'N': 'Nube.png',
+        'Ñ': 'Nu.png',
+        'O': 'Oso.png',
+        'P': 'Pastel.png',
+        'Q': 'Quetzal.png',
+        'R': 'Raton.png',
+        'S': 'Sol.png',
+        'T': 'Tigre.png',
+        'U': 'Unicornio.png',
+        'V': 'Vaca.png',
+        'W': 'Waffle.png',
+        'X': 'Xilofono.png',
+        'Y': 'Yogurt.png',
+        'Z': 'Zorro.png'
+    };
+
+    function interactuarConLetra(elemento, letra) {
+        // Pronunciar la letra
+        var utterance = new SpeechSynthesisUtterance(letra);
+        utterance.lang = 'es-ES';
+        window.speechSynthesis.speak(utterance);
+
+        // Mostrar imagen representativa
+        var imagenUrl = obtenerImagenParaLetra(letra);
+        var imagenLetra = document.getElementById('imagen-letra');
+        imagenLetra.src = imagenUrl;
+        imagenLetra.style.display = 'block';
+
+        // Animar la carta
+        var cartaElement = elemento.querySelector('.carta');
+        cartaElement.style.transform = 'rotateY(180deg)';
+        setTimeout(() => {
+            cartaElement.style.transform = 'rotateY(0deg)';
+        }, 1500);
+    }
+
+    function obtenerImagenParaLetra(letra) {
+        // Obtener la imagen correspondiente a la letra
+        const nombreImagen = imagenesPorLetra[letra] || 'placeholder.jpg';
+        // Asumimos que las imágenes están en una carpeta llamada 'images' en tu proyecto
+        return `/Imagenes/${nombreImagen}`;
+    }
+
+    const letras = "ABCDEFGHIJKLMNÑOPQRSTUVWXYZ";
+    let letraActual = '';
+    let recognition;
+    let isRecognizing = false;
+    let recognitionTimeout;
+
+    document.getElementById('btn-pronunciar').addEventListener('click', iniciarPronunciacion);
+
+    function iniciarPronunciacion() {
+        if (!recognition) {
+            setupRecognition();
+        }
+        if (isRecognizing) return;
+
+        letraActual = letras[Math.floor(Math.random() * letras.length)];
+        const mensaje = `Pronuncia la letra: ${letraActual} (Repite dos veces seguidas)`;
+        document.getElementById('mensaje-resultado').textContent = mensaje;
+        document.getElementById('btn-pronunciar').textContent = "Escuchando...";
+        isRecognizing = true;
+
+        recognition.start();
+
+        recognitionTimeout = setTimeout(() => {
+            recognition.stop();
+            isRecognizing = false;
+            document.getElementById('mensaje-resultado').textContent = "Tiempo agotado. Intenta de nuevo.";
+            document.getElementById('btn-pronunciar').textContent = "Intentar de nuevo";
+        }, 5000);
+    }
+
+    function setupRecognition() {
+        recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+        recognition.lang = 'es-ES';
+        recognition.continuous = true;
+        recognition.interimResults = true;
+        recognition.maxAlternatives = 1;
+
+        recognition.onresult = function (event) {
+            const results = event.results;
+            for (let i = event.resultIndex; i < results.length; i++) {
+                if (results[i].isFinal) {
+                    const transcript = results[i][0].transcript.toUpperCase().trim();
+                    if (transcript.length > 0) {
+                        verificarPronunciacion(transcript[0]);
+                        break;
+                    }
+                }
+            }
+        };
+
+        recognition.onerror = function (event) {
+            document.getElementById('mensaje-resultado').textContent = "No se pudo reconocer la voz. Intenta de nuevo.";
+            clearTimeout(recognitionTimeout);
+            isRecognizing = false;
+            document.getElementById('btn-pronunciar').textContent = "Intentar de nuevo";
+        };
+
+        recognition.onend = function () {
+            isRecognizing = false;
+        };
+    }
+
+    function verificarPronunciacion(resultado) {
+        clearTimeout(recognitionTimeout);
+
+        const letraLimpia = letraActual.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        const resultadoLimpio = resultado.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
+        if (resultadoLimpio === letraLimpia) {
+            document.getElementById('mensaje-resultado').textContent = "¡Correcto! Muy bien.";
+            var utterance = new SpeechSynthesisUtterance("¡Correcto!");
+            utterance.lang = 'es-ES';
+            window.speechSynthesis.speak(utterance);
+            mostrarImagenLetra(letraActual);
+        } else {
+            document.getElementById('mensaje-resultado').textContent = `Incorrecto, pronuncia la letra: ${letraActual}`;
+            var utterance = new SpeechSynthesisUtterance("Incorrecto");
+            utterance.lang = 'es-ES';
+            window.speechSynthesis.speak(utterance);
+        }
+
+        recognition.stop();
+        isRecognizing = false;
+        document.getElementById('btn-pronunciar').textContent = "Intentar de nuevo";
+    }
+
+    function mostrarImagenLetra(letra) {
+        var imagenUrl = obtenerImagenParaLetra(letra);
+        var imagenLetra = document.getElementById('imagen-letra');
+        imagenLetra.src = imagenUrl;
+        imagenLetra.style.display = 'block';
+    }
+
+    //logica del rompecabezas
+    // Constantes
+    const PUZZLE_HOVER_TINT = "#009900";
+    const IMG_SRC = "https://www.proferecursos.com/wp-content/uploads/Abecedario-para-Nin%CC%83os-de-Primaria.jpg";
+
+    // Estado del juego
+    let state = {
+        difficulty: 4,
+        pieces: [],
+        puzzleWidth: 0,
+        puzzleHeight: 0,
+        pieceWidth: 0,
+        pieceHeight: 0,
+        currentPiece: null,
+        currentDropPiece: null,
+        mouse: { x: 0, y: 0 }
+    };
+
+    // Elementos del DOM
+    const canvas = document.querySelector("#canvas");
+    const stage = canvas.getContext("2d");
+    const difficultySlider = document.querySelector("#difficulty");
+
+    // Imagen
+    const img = new Image();
+
+    // Funciones principales
+    const initPuzzle = () => {
+        state.pieces = [];
+        state.currentPiece = null;
+        state.currentDropPiece = null;
+        stage.drawImage(
+            img,
+            0,
+            0,
+            state.puzzleWidth,
+            state.puzzleHeight,
+            0,
+            0,
+            state.puzzleWidth,
+            state.puzzleHeight
+        );
+        createTitle("Click to Start Puzzle");
+        buildPieces();
+    };
+
+    const setCanvas = () => {
+        canvas.width = state.puzzleWidth;
+        canvas.height = state.puzzleHeight;
+        canvas.style.border = "1px solid black";
+    };
+
+    const onImage = () => {
+        state.pieceWidth = Math.floor(img.width / state.difficulty);
+        state.pieceHeight = Math.floor(img.height / state.difficulty);
+        state.puzzleWidth = state.pieceWidth * state.difficulty;
+        state.puzzleHeight = state.pieceHeight * state.difficulty;
+        setCanvas();
+        initPuzzle();
+    };
+
+    const createTitle = (msg) => {
+        stage.fillStyle = "#000000";
+        stage.globalAlpha = 0.4;
+        stage.fillRect(100, state.puzzleHeight - 40, state.puzzleWidth - 200, 40);
+        stage.fillStyle = "#FFFFFF";
+        stage.globalAlpha = 1;
+        stage.textAlign = "center";
+        stage.textBaseline = "middle";
+        stage.font = "20px Arial";
+        stage.fillText(msg, state.puzzleWidth / 2, state.puzzleHeight - 20);
+    };
+
+    const buildPieces = () => {
+        let i;
+        let piece;
+        let xPos = 0;
+        let yPos = 0;
+        for (i = 0; i < state.difficulty * state.difficulty; i++) {
+            piece = {};
+            piece.sx = xPos;
+            piece.sy = yPos;
+            state.pieces.push(piece);
+            xPos += state.pieceWidth;
+            if (xPos >= state.puzzleWidth) {
+                xPos = 0;
+                yPos += state.pieceHeight;
+            }
+        }
+        canvas.addEventListener('pointerdown', shufflePuzzle);
+    };
+
+    const shufflePuzzle = () => {
+        state.pieces = shuffleArray(state.pieces);
+        stage.clearRect(0, 0, state.puzzleWidth, state.puzzleHeight);
+        let xPos = 0;
+        let yPos = 0;
+        for (const piece of state.pieces) {
+            piece.xPos = xPos;
+            piece.yPos = yPos;
+            stage.drawImage(
+                img,
+                piece.sx,
+                piece.sy,
+                state.pieceWidth,
+                state.pieceHeight,
+                xPos,
+                yPos,
+                state.pieceWidth,
+                state.pieceHeight
+            );
+            stage.strokeRect(xPos, yPos, state.pieceWidth, state.pieceHeight);
+            xPos += state.pieceWidth;
+            if (xPos >= state.puzzleWidth) {
+                xPos = 0;
+                yPos += state.pieceHeight;
+            }
+        }
+        canvas.removeEventListener('pointerdown', shufflePuzzle);
+        canvas.addEventListener('pointerdown', onPuzzleClick);
+    };
+
+    const checkPieceClicked = () => {
+        for (const piece of state.pieces) {
+            if (
+                state.mouse.x < piece.xPos ||
+                state.mouse.x > (piece.xPos + state.pieceWidth) ||
+                state.mouse.y < piece.yPos ||
+                state.mouse.y > (piece.yPos + state.pieceHeight)
+            ) {
+                // PIECE NOT HIT
+            } else {
+                return piece;
+            }
+        }
+        return null;
+    };
+
+    const updatePuzzle = (e) => {
+        state.currentDropPiece = null;
+        state.mouse.x = e.offsetX;
+        state.mouse.y = e.offsetY;
+        stage.clearRect(0, 0, state.puzzleWidth, state.puzzleHeight);
+        for (const piece of state.pieces) {
+            if (piece === state.currentPiece) continue;
+            stage.drawImage(
+                img,
+                piece.sx,
+                piece.sy,
+                state.pieceWidth,
+                state.pieceHeight,
+                piece.xPos,
+                piece.yPos,
+                state.pieceWidth,
+                state.pieceHeight
+            );
+            stage.strokeRect(piece.xPos, piece.yPos, state.pieceWidth, state.pieceHeight);
+            if (state.currentDropPiece === null) {
+                if (
+                    state.mouse.x < piece.xPos ||
+                    state.mouse.x > (piece.xPos + state.pieceWidth) ||
+                    state.mouse.y < piece.yPos ||
+                    state.mouse.y > (piece.yPos + state.pieceHeight)
+                ) {
+                    // NOT OVER
+                } else {
+                    state.currentDropPiece = piece;
+                    stage.save();
+                    stage.globalAlpha = 0.4;
+                    stage.fillStyle = PUZZLE_HOVER_TINT;
+                    stage.fillRect(
+                        state.currentDropPiece.xPos,
+                        state.currentDropPiece.yPos,
+                        state.pieceWidth,
+                        state.pieceHeight
+                    );
+                    stage.restore();
+                }
+            }
+        }
+        stage.save();
+        stage.globalAlpha = 0.6;
+        stage.drawImage(
+            img,
+            state.currentPiece.sx,
+            state.currentPiece.sy,
+            state.pieceWidth,
+            state.pieceHeight,
+            state.mouse.x - state.pieceWidth / 2,
+            state.mouse.y - state.pieceHeight / 2,
+            state.pieceWidth,
+            state.pieceHeight
+        );
+        stage.restore();
+        stage.strokeRect(
+            state.mouse.x - state.pieceWidth / 2,
+            state.mouse.y - state.pieceHeight / 2,
+            state.pieceWidth,
+            state.pieceHeight
+        );
+    };
+
+    const onPuzzleClick = (e) => {
+        state.mouse.x = e.offsetX;
+        state.mouse.y = e.offsetY;
+        state.currentPiece = checkPieceClicked();
+        if (state.currentPiece !== null) {
+            stage.clearRect(
+                state.currentPiece.xPos,
+                state.currentPiece.yPos,
+                state.pieceWidth,
+                state.pieceHeight
+            );
+            stage.save();
+            stage.globalAlpha = 0.9;
+            stage.drawImage(
+                img,
+                state.currentPiece.sx,
+                state.currentPiece.sy,
+                state.pieceWidth,
+                state.pieceHeight,
+                state.mouse.x - state.pieceWidth / 2,
+                state.mouse.y - state.pieceHeight / 2,
+                state.pieceWidth,
+                state.pieceHeight
+            );
+            stage.restore();
+            canvas.addEventListener('pointermove', updatePuzzle);
+            canvas.addEventListener('pointerup', pieceDropped);
+        }
+    };
+
+    const gameOver = () => {
+        canvas.removeEventListener('pointerdown', onPuzzleClick);
+        canvas.removeEventListener('pointermove', updatePuzzle);
+        canvas.removeEventListener('pointerup', pieceDropped);
+        initPuzzle();
+    };
+
+    const pieceDropped = (e) => {
+        canvas.removeEventListener('pointermove', updatePuzzle);
+        canvas.removeEventListener('pointerup', pieceDropped);
+        if (state.currentDropPiece !== null) {
+            let tmp = {
+                xPos: state.currentPiece.xPos,
+                yPos: state.currentPiece.yPos
+            };
+            state.currentPiece.xPos = state.currentDropPiece.xPos;
+            state.currentPiece.yPos = state.currentDropPiece.yPos;
+            state.currentDropPiece.xPos = tmp.xPos;
+            state.currentDropPiece.yPos = tmp.yPos;
+        }
+        resetPuzzleAndCheckWin();
+    };
+
+    const resetPuzzleAndCheckWin = () => {
+        stage.clearRect(0, 0, state.puzzleWidth, state.puzzleHeight);
+        let gameWin = true;
+        for (let piece of state.pieces) {
+            stage.drawImage(
+                img,
+                piece.sx,
+                piece.sy,
+                state.pieceWidth,
+                state.pieceHeight,
+                piece.xPos,
+                piece.yPos,
+                state.pieceWidth,
+                state.pieceHeight
+            );
+            stage.strokeRect(piece.xPos, piece.yPos, state.pieceWidth, state.pieceHeight);
+            if (piece.xPos !== piece.sx || piece.yPos !== piece.sy) {
+                gameWin = false;
+            }
+        }
+        if (gameWin) {
+            setTimeout(gameOver, 500);
+        }
+    };
+
+    const updateDifficulty = (e) => {
+        state.difficulty = parseInt(e.target.value);
+        state.pieceWidth = Math.floor(img.width / state.difficulty);
+        state.pieceHeight = Math.floor(img.height / state.difficulty);
+        state.puzzleWidth = state.pieceWidth * state.difficulty;
+        state.puzzleHeight = state.pieceHeight * state.difficulty;
+        gameOver();
+    };
+
+    // Funciones auxiliares
+    const shuffleArray = (array) => {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    };
+
+    // Event Listeners
+    window.addEventListener('load', () => {
+        img.addEventListener("load", onImage);
+        img.src = IMG_SRC;
+    });
+
+    difficultySlider.addEventListener('input', updateDifficulty);
+</script>
+
+
