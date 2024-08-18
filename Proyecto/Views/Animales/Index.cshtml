@@ -16,7 +16,7 @@
         .form-control {
             min-width: 100%;
         }
-
+        
         .card {
             display: flex;
             flex-direction: column;
@@ -94,8 +94,8 @@
             align-items: center;
         }
 
-        h1 {
-            color: white; /* Color de texto brillante */
+        h3 {
+            color: #1E90FF; /* Color de texto brillante */
             margin-bottom: 20px;
             font-size: 2.5rem; /* Tamaño de fuente grande */
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); /* Sombra para mayor impacto */
@@ -111,8 +111,8 @@
         <div class="row justify-content-center">
             <div class="col-md-10">
                 <div class="p-4 shadow bg-white rounded">
-                    <div class="text-center mb-4">
-                        <h3 class="text-black">Agregar Nuevo Animal</h3>
+                    <div class="text-center mb-3">
+                        <h3 class=" text-xxl-center">Agregar Nuevo Animal</h3>
                     </div>
                     @using (Html.BeginForm("Agregar", "Animales", FormMethod.Post, new { enctype = "multipart/form-data" }))
                     {
@@ -150,7 +150,7 @@
                             </div>
                         </div>
                         <div class="text-center">
-                            <button type="submit" class="btn btn-primary">Guardar Animal</button>
+                            <button type="submit" class="btn-primary">Guardar Animal</button>
                         </div>
                     }
                 </div>

@@ -1,0 +1,378 @@
+﻿@{
+    ViewBag.Title = "Aprende las Vocales";
+}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mundo de Aprendizaje Infantil - Vocales</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f0f8ff;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+        }
+
+        .vowel-container {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+
+        .vowel-card {
+            width: 180px;
+            height: 250px;
+            background: linear-gradient(45deg, #ff9a9e, #fad0c4);
+            border-radius: 20px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            margin: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            border: 4px solid #fff;
+        }
+
+            .vowel-card:hover {
+                transform: translateY(-10px) rotate(3deg);
+                box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+            }
+
+            .vowel-card::before {
+                content: '';
+                position: absolute;
+                top: -50%;
+                left: -50%;
+                width: 200%;
+                height: 200%;
+                background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 70%);
+                transform: scale(0);
+                transition: transform 0.5s;
+            }
+
+            .vowel-card:hover::before {
+                transform: scale(1);
+            }
+
+        .vowel {
+            font-size: 120px;
+            font-weight: bold;
+            color: #ffffff;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            z-index: 1;
+            transition: all 0.3s ease;
+        }
+
+        .vowel-name {
+            font-size: 28px;
+            margin-top: 10px;
+            color: #ffffff;
+            background-color: rgba(0,0,0,0.1);
+            padding: 5px 15px;
+            border-radius: 15px;
+            z-index: 1;
+            transition: all 0.3s ease;
+        }
+
+        .vowel-card:hover .vowel,
+        .vowel-card:hover .vowel-name {
+            opacity: 0;
+            visibility: hidden;
+        }
+        /* Colores específicos para cada vocal */
+        .vowel-card:nth-child(1) {
+            background: linear-gradient(45deg, #FF6B6B, #FFD93D);
+        }
+
+        .vowel-card:nth-child(2) {
+            background: linear-gradient(45deg, #6BCB77, #4D96FF);
+        }
+
+        .vowel-card:nth-child(3) {
+            background: linear-gradient(45deg, #FF9A8B, #FF6A88);
+        }
+
+        .vowel-card:nth-child(4) {
+            background: linear-gradient(45deg, #FFA62B, #FF5733);
+        }
+
+        .vowel-card:nth-child(5) {
+            background: linear-gradient(45deg, #9B59B6, #3498DB);
+        }
+
+        #image-container {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        #vowel-image {
+            max-width: 500px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            display: none;
+        }
+
+        .card-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: 0;
+        }
+
+        .vowel-card:hover .card-image {
+            opacity: 1;
+            z-index: 2;
+        }
+
+        h1{
+            color: #ff6b6b;
+            font-size: 4em;
+            text-shadow: 3px 3px #feca57, 5px 5px #48dbfb;
+            margin-bottom: 30px;
+            animation: bounce 2s infinite;
+        }
+
+        @@keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        .image-card, .vowel-drop {
+            width: 120px;
+            height: 120px;
+            margin: 10px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            cursor: move;
+        }
+
+        .image-card {
+            background-color: #f8f9fa;
+            border: 2px solid #dee2e6;
+        }
+
+        .vowel-drop {
+            background-color: #e9ecef;
+            border: 2px dashed #6c757d;
+        }
+
+        .correct {
+            border-color: #28a745;
+            background-color: #d4edda;
+        }
+
+        h2 {
+            color: #1E90FF; /* Color de texto brillante */
+            margin-bottom: 20px;
+            font-size: 2.5rem; /* Tamaño de fuente grande */
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); /* Sombra para mayor impacto */
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center mt-4 mb-4">¡Aprende las Vocales!</h1>
+        <div class="vowel-container">
+            <div class="vowel-card" onclick="showVowel('a')">
+                <img src="~/Imagenes/VocalA.png" alt="Fondo A" class="card-image">
+                <div class="vowel">A</div>
+                <div class="vowel-name">Vocal A</div>
+            </div>
+            <div class="vowel-card" onclick="showVowel('e')">
+                <img src="~/Imagenes/VocalE.png" alt="Fondo E" class="card-image">
+                <div class="vowel">E</div>
+                <div class="vowel-name">Vocal E</div>
+            </div>
+            <div class="vowel-card" onclick="showVowel('i')">
+                <img src="~/Imagenes/VocalI.png" alt="Fondo I" class="card-image">
+                <div class="vowel">I</div>
+                <div class="vowel-name">Vocal I</div>
+            </div>
+            <div class="vowel-card" onclick="showVowel('o')">
+                <img src="~/Imagenes/VocalO.png" alt="Fondo O" class="card-image">
+                <div class="vowel">O</div>
+                <div class="vowel-name">Vocal O</div>
+            </div>
+            <div class="vowel-card" onclick="showVowel('u')">
+                <img src="~/Imagenes/VocalU.png" alt="Fondo U" class="card-image">
+                <div class="vowel">U</div>
+                <div class="vowel-name">Vocal U</div>
+            </div>
+        </div>
+        <div id="image-container">
+            <img id="vowel-image" src="" alt="Imagen de la vocal">
+        </div>
+    </div>
+
+
+    <div class="container mt-5">
+        <h2 class="text-center mb-4">¡Relaciona las Imágenes con su Vocal!</h2>
+        <div class="row" id="matching-game">
+            <!-- Las imágenes y vocales se generarán dinámicamente aquí -->
+        </div>
+
+    </div>
+
+
+    <div class="container">
+        <div class="row justify-content-center mt-4 mb-4">
+            <div class="col-auto">
+                <a href="@Url.Action("Index", "Home")" class="btn btn-primary">Regresar</a>
+                <button class="btn btn-danger" id="btn-actualizar">Refrescar</button>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
+
+<script>
+    document.getElementById('btn-actualizar').addEventListener('click', function () {
+        location.reload();
+    });
+
+    function showVowel(vowel) {
+        var image = document.getElementById('vowel-image');
+
+        // Objeto que mapea las vocales a sus rutas de imágenes
+        var vowelImages = {
+            'a': '/Imagenes/Ardilla.png',
+            'e': '/Imagenes/Elote.png',
+            'i': '/Imagenes/Isla.png',
+            'o': '/Imagenes/Osa.png',
+            'u': '/Imagenes/Uvas.png'
+        };
+
+        // Asignar la imagen correspondiente a la vocal
+        image.src = vowelImages[vowel.toLowerCase()];
+        image.style.display = 'inline';
+        // Pronunciar la vocal usando Web Speech API
+        var speech = new SpeechSynthesisUtterance(vowel);
+        speech.lang = 'es-ES';
+        window.speechSynthesis.speak(speech);
+    }
+
+    const images = [
+        { src: '/Imagenes/Abeja1.png', vowel: 'A' },
+        { src: '/Imagenes/Estrella2.png', vowel: 'E' },
+        { src: '/Imagenes/Iguana3.png', vowel: 'I' },
+        { src: '/Imagenes/Ojos4.png', vowel: 'O' },
+        { src: '/Imagenes/Unicornio5.png', vowel: 'U' }
+    ];
+
+    let correctMatches = 0;
+
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+    }
+
+    function createMatchingGame() {
+        const gameContainer = document.getElementById('matching-game');
+        gameContainer.innerHTML = '';
+        correctMatches = 0;
+
+        // Crear tarjetas de imágenes
+        const imageRow = document.createElement('div');
+        imageRow.className = 'row justify-content-center mb-4';
+        shuffleArray(images);
+        images.forEach(img => {
+            const card = document.createElement('div');
+            card.className = 'image-card';
+            card.draggable = true;
+            card.dataset.vowel = img.vowel;
+            card.style.backgroundImage = `url(${img.src})`;
+            card.style.backgroundSize = 'cover';
+            card.style.backgroundPosition = 'center';
+            imageRow.appendChild(card);
+
+            card.addEventListener('dragstart', drag);
+        });
+        gameContainer.appendChild(imageRow);
+
+        // Crear zonas de vocales
+        const vowelRow = document.createElement('div');
+        vowelRow.className = 'row justify-content-center';
+        ['A', 'E', 'I', 'O', 'U'].forEach(vowel => {
+            const dropZone = document.createElement('div');
+            dropZone.className = 'vowel-drop';
+            dropZone.textContent = vowel;
+            dropZone.dataset.vowel = vowel;
+            vowelRow.appendChild(dropZone);
+
+            dropZone.addEventListener('dragover', allowDrop);
+            dropZone.addEventListener('drop', drop);
+        });
+        gameContainer.appendChild(vowelRow);
+    }
+
+    function drag(ev) {
+        ev.dataTransfer.setData("text", ev.target.dataset.vowel);
+        ev.dataTransfer.setDragImage(ev.target, ev.target.offsetWidth / 2, ev.target.offsetHeight / 2);
+    }
+
+    function allowDrop(ev) {
+        ev.preventDefault();
+    }
+
+    function drop(ev) {
+        ev.preventDefault();
+        const data = ev.dataTransfer.getData("text");
+        const targetVowel = ev.target.dataset.vowel;
+
+        if (data === targetVowel) {
+            ev.target.classList.add('correct');
+            ev.target.style.backgroundImage = `url(${images.find(img => img.vowel === data).src})`;
+            ev.target.style.backgroundSize = 'cover';
+            ev.target.style.backgroundPosition = 'center';
+            playCorrectSound();
+            correctMatches++;
+
+            if (correctMatches === images.length) {
+                setTimeout(() => {
+                    alert('¡Felicidades, buen trabajo!');
+                }, 500);
+            }
+        } else {
+            playIncorrectSound();
+        }
+    }
+
+    function playCorrectSound() {
+        const speech = new SpeechSynthesisUtterance("¡Correcto!");
+        speech.lang = 'es-ES';
+        window.speechSynthesis.speak(speech);
+    }
+
+    function playIncorrectSound() {
+        const speech = new SpeechSynthesisUtterance("Intenta de nuevo");
+        speech.lang = 'es-ES';
+        window.speechSynthesis.speak(speech);
+    }
+
+    // Iniciar el juego cuando la página esté lista
+    document.addEventListener('DOMContentLoaded', createMatchingGame);
+
+</script>

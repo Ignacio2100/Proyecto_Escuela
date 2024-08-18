@@ -126,6 +126,7 @@
     <Compile Include="Controllers\GeometricasController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\VocalController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -248,6 +249,7 @@
     <Content Include="Views\Geometricas\Index.cshtml" />
     <Content Include="Views\Animales\Index.cshtml" />
     <Content Include="Views\Abecedario\Index.cshtml" />
+    <Content Include="Views\Vocal\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
