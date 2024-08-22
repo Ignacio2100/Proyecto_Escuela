@@ -123,6 +123,7 @@
     <Compile Include="Controllers\AbecedarioController.cs" />
     <Compile Include="Controllers\AnimalesController.cs" />
     <Compile Include="Controllers\ColorController.cs" />
+    <Compile Include="Controllers\FrutaController.cs" />
     <Compile Include="Controllers\GeometricasController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
@@ -148,6 +149,10 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>BDEscuela.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\FrutaCLS.cs" />
+    <Compile Include="Models\Frutas.cs">
+      <DependentUpon>BDEscuela.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\UsuarioCLS.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -250,6 +255,7 @@
     <Content Include="Views\Animales\Index.cshtml" />
     <Content Include="Views\Abecedario\Index.cshtml" />
     <Content Include="Views\Vocal\Index.cshtml" />
+    <Content Include="Views\Fruta\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

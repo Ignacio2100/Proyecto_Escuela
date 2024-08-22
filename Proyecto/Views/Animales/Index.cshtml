@@ -99,9 +99,43 @@
             margin-bottom: 20px;
             font-size: 2.5rem; /* Tamaño de fuente grande */
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); /* Sombra para mayor impacto */
+            text-align: center;
         }
 
-       
+        #congratulationsModal .modal-content {
+            background-color: #fff5e6;
+            border: none;
+            border-radius: 15px;
+        }
+
+        #congratulationsModal .modal-header {
+            background-color: #ffd700;
+            color: #ffffff;
+            border-top-left-radius: 15px;
+            border-top-right-radius: 15px;
+        }
+
+        #congratulationsModal .modal-body {
+            font-size: 1.2em;
+        }
+
+        #congratulationsModal .btn-primary {
+            background-color: #4CAF50;
+            border: none;
+        }
+
+            #congratulationsModal .btn-primary:hover {
+                background-color: #45a049;
+            }
+
+        h2 {
+            color: white; /* Color de texto brillante */
+            margin-bottom: 20px;
+            font-size: 2.5rem; /* Tamaño de fuente grande */
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); /* Sombra para mayor impacto */
+            text-align: center;
+        }
+
     </style>
 </head>
 <body>
@@ -388,11 +422,31 @@
     </div>
 
     <div class="Memoria">
-        <h1>Memoria de Animales</h1>
+        <h2>Memoria de Animales</h2>
         <div id="memory-board"></div>
         <div id="attempts">Intentos: 0</div>
 
     </div>
+
+    <!-- Modal de Felicitaciones -->
+    <div class="modal fade" id="congratulationsModal" tabindex="-1" aria-labelledby="congratulationsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header d-flex justify-content-center">
+                    <h5 class="modal-title text-center w-100" id="congratulationsModalLabel">¡Felicitaciones!</h5>
+                    <button type="button" class="btn-close position-absolute end-0 me-3" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <p>¡Has completado el juego de memoria!</p>
+                    <p>Número total de intentos: <span id="finalAttempts"></span></p>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-success" data-bs-dismiss="modal" onclick="location.reload();">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <div class="row justify-content-center mt-4 mb-4">
         <div class="col-auto">
@@ -406,6 +460,9 @@
 @section Scripts {
 
     <script>
+
+       
+
         function speak(text) {
             if ('speechSynthesis' in window) {
                 // Cancel any ongoing speech synthesis
@@ -483,6 +540,8 @@
         let matchedPairs = 0;
         let attempts = 0;
 
+        const congratulationsModal = new bootstrap.Modal(document.getElementById('congratulationsModal'));
+
         // Mezclar las cartas
         cards.sort(() => Math.random() - 0.5);
 
@@ -515,7 +574,7 @@
             if (card1.dataset.animal === card2.dataset.animal) {
                 matchedPairs++;
                 if (matchedPairs === animals.length) {
-                    alert(`¡Felicidades! Has completado el juego en ${attempts} intentos.`);
+                    showCongratulations();
                 }
             } else {
                 card1.classList.remove('flipped');
@@ -525,6 +584,13 @@
             }
             flippedCards = [];
         }
+
+        function showCongratulations() {
+            document.getElementById('finalAttempts').textContent = attempts;
+            congratulationsModal.show();
+        }
+
+      
     
     </script>
 }

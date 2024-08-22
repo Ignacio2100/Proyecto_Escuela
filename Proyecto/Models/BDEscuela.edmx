@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="ESCUELAModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="ESCUELAModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Animales">
           <Key>
             <PropertyRef Name="ID_Animal" />
@@ -15,11 +15,21 @@
           <Property Name="TipoAnimal" Type="nvarchar" MaxLength="250" />
           <Property Name="Imagen" Type="nvarchar" MaxLength="250" />
         </EntityType>
+        <EntityType Name="Frutas">
+          <Key>
+            <PropertyRef Name="ID_Fruta" />
+          </Key>
+          <Property Name="ID_Fruta" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="nvarchar" MaxLength="250" />
+          <Property Name="Descripcion" Type="nvarchar" MaxLength="700" />
+          <Property Name="TipoElemento" Type="nvarchar" MaxLength="250" />
+          <Property Name="Imagen" Type="nvarchar" MaxLength="250" />
+        </EntityType>
         <EntityContainer Name="ESCUELAModelStoreContainer">
           <EntitySet Name="Animales" EntityType="Self.Animales" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Frutas" EntityType="Self.Frutas" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="ESCUELAModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -35,7 +45,18 @@
         </EntityType>
         <EntityContainer Name="ESCUELAEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Animales" EntityType="Self.Animales" />
+          <EntitySet Name="Frutas" EntityType="ESCUELAModel.Frutas" />
         </EntityContainer>
+        <EntityType Name="Frutas">
+          <Key>
+            <PropertyRef Name="ID_Fruta" />
+          </Key>
+          <Property Name="ID_Fruta" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Descripcion" Type="String" MaxLength="700" FixedLength="false" Unicode="true" />
+          <Property Name="TipoElemento" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Imagen" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -50,6 +71,17 @@
                 <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
                 <ScalarProperty Name="TipoAnimal" ColumnName="TipoAnimal" />
                 <ScalarProperty Name="Imagen" ColumnName="Imagen" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Frutas">
+            <EntityTypeMapping TypeName="ESCUELAModel.Frutas">
+              <MappingFragment StoreEntitySet="Frutas">
+                <ScalarProperty Name="Imagen" ColumnName="Imagen" />
+                <ScalarProperty Name="TipoElemento" ColumnName="TipoElemento" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="ID_Fruta" ColumnName="ID_Fruta" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
