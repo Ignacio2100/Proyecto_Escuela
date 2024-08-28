@@ -27,5 +27,6 @@ namespace Proyecto.Models
     
         public virtual DbSet<Animales> Animales { get; set; }
         public virtual DbSet<Frutas> Frutas { get; set; }
+        public virtual DbSet<Canciones> Canciones { get; set; }
     }
 }

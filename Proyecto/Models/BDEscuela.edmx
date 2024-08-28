@@ -15,6 +15,16 @@
           <Property Name="TipoAnimal" Type="nvarchar" MaxLength="250" />
           <Property Name="Imagen" Type="nvarchar" MaxLength="250" />
         </EntityType>
+        <EntityType Name="Canciones">
+          <Key>
+            <PropertyRef Name="ID_Cancion" />
+          </Key>
+          <Property Name="ID_Cancion" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="nvarchar" MaxLength="250" />
+          <Property Name="Descripcion" Type="nvarchar" MaxLength="700" />
+          <Property Name="Link" Type="nvarchar" MaxLength="250" />
+          <Property Name="Imagen" Type="nvarchar" MaxLength="250" />
+        </EntityType>
         <EntityType Name="Frutas">
           <Key>
             <PropertyRef Name="ID_Fruta" />
@@ -27,6 +37,7 @@
         </EntityType>
         <EntityContainer Name="ESCUELAModelStoreContainer">
           <EntitySet Name="Animales" EntityType="Self.Animales" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Canciones" EntityType="Self.Canciones" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Frutas" EntityType="Self.Frutas" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -46,6 +57,7 @@
         <EntityContainer Name="ESCUELAEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Animales" EntityType="Self.Animales" />
           <EntitySet Name="Frutas" EntityType="ESCUELAModel.Frutas" />
+          <EntitySet Name="Canciones" EntityType="ESCUELAModel.Canciones" />
         </EntityContainer>
         <EntityType Name="Frutas">
           <Key>
@@ -55,6 +67,16 @@
           <Property Name="Nombre" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="Descripcion" Type="String" MaxLength="700" FixedLength="false" Unicode="true" />
           <Property Name="TipoElemento" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Imagen" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Canciones">
+          <Key>
+            <PropertyRef Name="ID_Cancion" />
+          </Key>
+          <Property Name="ID_Cancion" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Descripcion" Type="String" MaxLength="700" FixedLength="false" Unicode="true" />
+          <Property Name="Link" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="Imagen" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
         </EntityType>
       </Schema>
@@ -82,6 +104,17 @@
                 <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
                 <ScalarProperty Name="Nombre" ColumnName="Nombre" />
                 <ScalarProperty Name="ID_Fruta" ColumnName="ID_Fruta" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Canciones">
+            <EntityTypeMapping TypeName="ESCUELAModel.Canciones">
+              <MappingFragment StoreEntitySet="Canciones">
+                <ScalarProperty Name="Imagen" ColumnName="Imagen" />
+                <ScalarProperty Name="Link" ColumnName="Link" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="ID_Cancion" ColumnName="ID_Cancion" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
