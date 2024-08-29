@@ -251,6 +251,14 @@
         </div>
     </div>
 
+    <!-- Mostrar mensaje de error si no se puede conectar a la base de datos -->
+    @if (ViewBag.ErrorMessage != null)
+    {
+        <div class="alert alert-danger text-center">
+            @ViewBag.ErrorMessage
+        </div>
+    }
+
     <div class="card-header m-4 text-xxl-center ">
         <h3 class="mb-0">Tipos de Verduras y Frutas</h3>
     </div>

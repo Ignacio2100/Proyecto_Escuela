@@ -23,8 +23,9 @@ namespace Proyecto.Controllers
         {
             ElementoViewModel viewModel = new ElementoViewModel();
             viewModel.NuevoElemento = new FrutaCLS();
-
-            using (var bd = new ESCUELAEntities())
+            try
+            {
+                using (var bd = new ESCUELAEntities())
             {
                 viewModel.ListaFrutas = (from Frutas in bd.Frutas
                                          where Frutas.TipoElemento == "Fruta"
@@ -45,6 +46,20 @@ namespace Proyecto.Controllers
                                                Descripcion = Frutas.Descripcion,
                                                ImagenUrl = Frutas.Imagen
                                            }).ToList();
+            }
+            }
+            catch (System.Data.Entity.Core.EntityException ex)
+            {
+                // Log o manejar el error de conexión aquí
+                // Ejemplo: Guardar en el log el mensaje de error
+                // Logger.LogError(ex.Message);
+
+                // Puedes asignar una lista vacía para que la vista no falle
+                viewModel.ListaVerduras = new List<FrutaCLS>();
+                viewModel.ListaFrutas = new List<FrutaCLS>();
+
+                // Opcional: Mostrar un mensaje de error en la vista
+                ViewBag.ErrorMessage = "No se pudo conectar a la base de datos. Mostrando datos vacíos.";
             }
             return View(viewModel);
         }
