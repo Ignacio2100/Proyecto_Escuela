@@ -16,7 +16,7 @@
         .form-control {
             min-width: 100%;
         }
-        
+
         .card {
             display: flex;
             flex-direction: column;
@@ -81,6 +81,7 @@
             color: white;
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3); /* Sombra para mejor visibilidad */
         }
+
         .Memoria {
             font-family: Arial, sans-serif;
             display: flex;
@@ -135,7 +136,6 @@
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); /* Sombra para mayor impacto */
             text-align: center;
         }
-
     </style>
 </head>
 <body>
@@ -431,7 +431,7 @@
     <!-- Modal de Felicitaciones -->
     <div class="modal fade" id="congratulationsModal" tabindex="-1" aria-labelledby="congratulationsModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
+            <div class="modal-content" id="modalContent">
                 <div class="modal-header d-flex justify-content-center">
                     <h5 class="modal-title text-center w-100" id="congratulationsModalLabel">¡Felicitaciones!</h5>
                     <button type="button" class="btn-close position-absolute end-0 me-3" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -442,6 +442,7 @@
                 </div>
                 <div class="modal-footer justify-content-center">
                     <button type="button" class="btn btn-success" data-bs-dismiss="modal" onclick="location.reload();">Cerrar</button>
+                    <button type="button" class="btn btn-danger" onclick="downloadImage()">Descargar</button>
                 </div>
             </div>
         </div>
@@ -458,10 +459,28 @@
 </html>
 
 @section Scripts {
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script>
 
-       
+        function downloadImage() {
+            const modalContent = document.getElementById('modalContent');
+            console.log(modalContent);
+            // Verifica si el elemento existe antes de pasar a html2canvas
+            if (modalContent) {
+                html2canvas(modalContent).then(function (canvas) {
+                    // Crear un enlace para la descarga
+                    const link = document.createElement('a');
+                    link.download = 'Nombre_Alumno.png';  // Nombre del archivo de descarga
+                    link.href = canvas.toDataURL('image/png');  // Convertir el canvas a una URL de imagen
+                    link.click();  // Simular un clic para descargar la imagen
+                }).catch(function (error) {
+                    console.error('Error al capturar el contenido:', error);
+                });
+            } else {
+                console.error('Elemento con ID "modalContent" no encontrado.');
+            }
+        }
+
 
         function speak(text) {
             if ('speechSynthesis' in window) {
@@ -590,7 +609,7 @@
             congratulationsModal.show();
         }
 
-      
-    
+
+
     </script>
 }
