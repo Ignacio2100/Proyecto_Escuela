@@ -8,17 +8,28 @@ namespace Proyecto.Models
 {
     public class UsuarioCLS
     {
-        public int iidusuario { get; set; }
+        public int USUARIO_ID { get; set; }
+
+       
+        public string USUARIO_CODIGO { get; set; }
 
         [Required]
-        public string nombreusuario { get; set; }
+        [EmailAddress]
+        public string USUARIO_EMAIL { get; set; }
 
         [Required]
-        public string contra { get; set; }
+        public string USUARIO_PASSWORD { get; set; }
 
-        public string iidtipousuario { get; set; }
-        [Required]
-        public int iid { get; set; }
+       
+        public int ROL_ID { get; set; }
+
+        public string ROL_NOMBRE { get; set; }
+
+        public bool ESTADO { get; set; }
+
+        public bool CAMBIO_PASSWORD { get; set; }
+
+        public int INTENTOS_AUTENTICACION { get; set; }
 
     }
 }

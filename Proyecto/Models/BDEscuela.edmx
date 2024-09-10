@@ -35,10 +35,100 @@
           <Property Name="TipoElemento" Type="nvarchar" MaxLength="250" />
           <Property Name="Imagen" Type="nvarchar" MaxLength="250" />
         </EntityType>
+        <EntityType Name="MENU">
+          <Key>
+            <PropertyRef Name="MENU_ID" />
+          </Key>
+          <Property Name="MENU_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ROL_ID" Type="int" />
+          <Property Name="PERMISO_ID" Type="int" />
+          <Property Name="ESTADO" Type="bit" />
+        </EntityType>
+        <EntityType Name="PERMISO">
+          <Key>
+            <PropertyRef Name="PERMISO_ID" />
+          </Key>
+          <Property Name="PERMISO_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PERMISO_NOMBRE" Type="varchar" MaxLength="50" />
+          <Property Name="PERMISO_CONTROLLER" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="ROL">
+          <Key>
+            <PropertyRef Name="ROL_ID" />
+          </Key>
+          <Property Name="ROL_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ROL_NOMBRE" Type="varchar" MaxLength="50" />
+          <Property Name="ESTADO" Type="bit" />
+        </EntityType>
+        <EntityType Name="USUARIO">
+          <Key>
+            <PropertyRef Name="USUARIO_ID" />
+          </Key>
+          <Property Name="USUARIO_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="USUARIO_CODIGO" Type="varchar" MaxLength="50" />
+          <Property Name="USUARIO_EMAIL" Type="varchar" MaxLength="100" />
+          <Property Name="USUARIO_PASSWORD" Type="varchar" MaxLength="200" />
+          <Property Name="ROL_ID" Type="int" />
+          <Property Name="ESTADO" Type="bit" />
+          <Property Name="CAMBIO_PASSWORD" Type="bit" />
+          <Property Name="INTENTOS_AUTENTICACION" Type="int" />
+        </EntityType>
+        <Association Name="MENU_PERMISO">
+          <End Role="PERMISO" Type="Self.PERMISO" Multiplicity="0..1" />
+          <End Role="MENU" Type="Self.MENU" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PERMISO">
+              <PropertyRef Name="PERMISO_ID" />
+            </Principal>
+            <Dependent Role="MENU">
+              <PropertyRef Name="PERMISO_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="MENU_ROL">
+          <End Role="ROL" Type="Self.ROL" Multiplicity="0..1" />
+          <End Role="MENU" Type="Self.MENU" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ROL">
+              <PropertyRef Name="ROL_ID" />
+            </Principal>
+            <Dependent Role="MENU">
+              <PropertyRef Name="ROL_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="USUARIO_ROL">
+          <End Role="ROL" Type="Self.ROL" Multiplicity="0..1" />
+          <End Role="USUARIO" Type="Self.USUARIO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ROL">
+              <PropertyRef Name="ROL_ID" />
+            </Principal>
+            <Dependent Role="USUARIO">
+              <PropertyRef Name="ROL_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="ESCUELAModelStoreContainer">
           <EntitySet Name="Animales" EntityType="Self.Animales" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Canciones" EntityType="Self.Canciones" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Frutas" EntityType="Self.Frutas" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MENU" EntityType="Self.MENU" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PERMISO" EntityType="Self.PERMISO" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ROL" EntityType="Self.ROL" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="USUARIO" EntityType="Self.USUARIO" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="MENU_PERMISO" Association="Self.MENU_PERMISO">
+            <End Role="PERMISO" EntitySet="PERMISO" />
+            <End Role="MENU" EntitySet="MENU" />
+          </AssociationSet>
+          <AssociationSet Name="MENU_ROL" Association="Self.MENU_ROL">
+            <End Role="ROL" EntitySet="ROL" />
+            <End Role="MENU" EntitySet="MENU" />
+          </AssociationSet>
+          <AssociationSet Name="USUARIO_ROL" Association="Self.USUARIO_ROL">
+            <End Role="ROL" EntitySet="ROL" />
+            <End Role="USUARIO" EntitySet="USUARIO" />
+          </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -58,6 +148,22 @@
           <EntitySet Name="Animales" EntityType="Self.Animales" />
           <EntitySet Name="Frutas" EntityType="ESCUELAModel.Frutas" />
           <EntitySet Name="Canciones" EntityType="ESCUELAModel.Canciones" />
+          <EntitySet Name="MENU" EntityType="ESCUELAModel.MENU" />
+          <EntitySet Name="PERMISO" EntityType="ESCUELAModel.PERMISO" />
+          <EntitySet Name="ROL" EntityType="ESCUELAModel.ROL" />
+          <EntitySet Name="USUARIO" EntityType="ESCUELAModel.USUARIO" />
+          <AssociationSet Name="MENU_PERMISO" Association="ESCUELAModel.MENU_PERMISO">
+            <End Role="PERMISO" EntitySet="PERMISO" />
+            <End Role="MENU" EntitySet="MENU" />
+          </AssociationSet>
+          <AssociationSet Name="MENU_ROL" Association="ESCUELAModel.MENU_ROL">
+            <End Role="ROL" EntitySet="ROL" />
+            <End Role="MENU" EntitySet="MENU" />
+          </AssociationSet>
+          <AssociationSet Name="USUARIO_ROL" Association="ESCUELAModel.USUARIO_ROL">
+            <End Role="ROL" EntitySet="ROL" />
+            <End Role="USUARIO" EntitySet="USUARIO" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Frutas">
           <Key>
@@ -79,6 +185,86 @@
           <Property Name="Link" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="Imagen" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
         </EntityType>
+        <EntityType Name="MENU">
+          <Key>
+            <PropertyRef Name="MENU_ID" />
+          </Key>
+          <Property Name="MENU_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ROL_ID" Type="Int32" />
+          <Property Name="PERMISO_ID" Type="Int32" />
+          <Property Name="ESTADO" Type="Boolean" />
+          <NavigationProperty Name="PERMISO" Relationship="ESCUELAModel.MENU_PERMISO" FromRole="MENU" ToRole="PERMISO" />
+          <NavigationProperty Name="ROL" Relationship="ESCUELAModel.MENU_ROL" FromRole="MENU" ToRole="ROL" />
+        </EntityType>
+        <EntityType Name="PERMISO">
+          <Key>
+            <PropertyRef Name="PERMISO_ID" />
+          </Key>
+          <Property Name="PERMISO_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PERMISO_NOMBRE" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PERMISO_CONTROLLER" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="MENU" Relationship="ESCUELAModel.MENU_PERMISO" FromRole="PERMISO" ToRole="MENU" />
+        </EntityType>
+        <EntityType Name="ROL">
+          <Key>
+            <PropertyRef Name="ROL_ID" />
+          </Key>
+          <Property Name="ROL_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ROL_NOMBRE" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ESTADO" Type="Boolean" />
+          <NavigationProperty Name="MENU" Relationship="ESCUELAModel.MENU_ROL" FromRole="ROL" ToRole="MENU" />
+          <NavigationProperty Name="USUARIO" Relationship="ESCUELAModel.USUARIO_ROL" FromRole="ROL" ToRole="USUARIO" />
+        </EntityType>
+        <EntityType Name="USUARIO">
+          <Key>
+            <PropertyRef Name="USUARIO_ID" />
+          </Key>
+          <Property Name="USUARIO_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="USUARIO_CODIGO" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="USUARIO_EMAIL" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="USUARIO_PASSWORD" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="ROL_ID" Type="Int32" />
+          <Property Name="ESTADO" Type="Boolean" />
+          <Property Name="CAMBIO_PASSWORD" Type="Boolean" />
+          <Property Name="INTENTOS_AUTENTICACION" Type="Int32" />
+          <NavigationProperty Name="ROL" Relationship="ESCUELAModel.USUARIO_ROL" FromRole="USUARIO" ToRole="ROL" />
+        </EntityType>
+        <Association Name="MENU_PERMISO">
+          <End Type="ESCUELAModel.PERMISO" Role="PERMISO" Multiplicity="0..1" />
+          <End Type="ESCUELAModel.MENU" Role="MENU" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PERMISO">
+              <PropertyRef Name="PERMISO_ID" />
+            </Principal>
+            <Dependent Role="MENU">
+              <PropertyRef Name="PERMISO_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="MENU_ROL">
+          <End Type="ESCUELAModel.ROL" Role="ROL" Multiplicity="0..1" />
+          <End Type="ESCUELAModel.MENU" Role="MENU" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ROL">
+              <PropertyRef Name="ROL_ID" />
+            </Principal>
+            <Dependent Role="MENU">
+              <PropertyRef Name="ROL_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="USUARIO_ROL">
+          <End Type="ESCUELAModel.ROL" Role="ROL" Multiplicity="0..1" />
+          <End Type="ESCUELAModel.USUARIO" Role="USUARIO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ROL">
+              <PropertyRef Name="ROL_ID" />
+            </Principal>
+            <Dependent Role="USUARIO">
+              <PropertyRef Name="ROL_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -115,6 +301,48 @@
                 <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
                 <ScalarProperty Name="Nombre" ColumnName="Nombre" />
                 <ScalarProperty Name="ID_Cancion" ColumnName="ID_Cancion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MENU">
+            <EntityTypeMapping TypeName="ESCUELAModel.MENU">
+              <MappingFragment StoreEntitySet="MENU">
+                <ScalarProperty Name="ESTADO" ColumnName="ESTADO" />
+                <ScalarProperty Name="PERMISO_ID" ColumnName="PERMISO_ID" />
+                <ScalarProperty Name="ROL_ID" ColumnName="ROL_ID" />
+                <ScalarProperty Name="MENU_ID" ColumnName="MENU_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PERMISO">
+            <EntityTypeMapping TypeName="ESCUELAModel.PERMISO">
+              <MappingFragment StoreEntitySet="PERMISO">
+                <ScalarProperty Name="PERMISO_CONTROLLER" ColumnName="PERMISO_CONTROLLER" />
+                <ScalarProperty Name="PERMISO_NOMBRE" ColumnName="PERMISO_NOMBRE" />
+                <ScalarProperty Name="PERMISO_ID" ColumnName="PERMISO_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ROL">
+            <EntityTypeMapping TypeName="ESCUELAModel.ROL">
+              <MappingFragment StoreEntitySet="ROL">
+                <ScalarProperty Name="ESTADO" ColumnName="ESTADO" />
+                <ScalarProperty Name="ROL_NOMBRE" ColumnName="ROL_NOMBRE" />
+                <ScalarProperty Name="ROL_ID" ColumnName="ROL_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="USUARIO">
+            <EntityTypeMapping TypeName="ESCUELAModel.USUARIO">
+              <MappingFragment StoreEntitySet="USUARIO">
+                <ScalarProperty Name="INTENTOS_AUTENTICACION" ColumnName="INTENTOS_AUTENTICACION" />
+                <ScalarProperty Name="CAMBIO_PASSWORD" ColumnName="CAMBIO_PASSWORD" />
+                <ScalarProperty Name="ESTADO" ColumnName="ESTADO" />
+                <ScalarProperty Name="ROL_ID" ColumnName="ROL_ID" />
+                <ScalarProperty Name="USUARIO_PASSWORD" ColumnName="USUARIO_PASSWORD" />
+                <ScalarProperty Name="USUARIO_EMAIL" ColumnName="USUARIO_EMAIL" />
+                <ScalarProperty Name="USUARIO_CODIGO" ColumnName="USUARIO_CODIGO" />
+                <ScalarProperty Name="USUARIO_ID" ColumnName="USUARIO_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

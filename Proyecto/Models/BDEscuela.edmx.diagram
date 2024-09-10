@@ -8,6 +8,13 @@
         <EntityTypeShape EntityType="ESCUELAModel.Animales" Width="1.5" PointX="4.5" PointY="1.5" IsExpanded="true" />
         <EntityTypeShape EntityType="ESCUELAModel.Frutas" Width="1.5" PointX="6.875" PointY="1.375" />
         <EntityTypeShape EntityType="ESCUELAModel.Canciones" Width="2.125" PointX="1.625" PointY="1.375" />
+        <EntityTypeShape EntityType="ESCUELAModel.MENU" Width="1.5" PointX="7.25" PointY="5.625" />
+        <EntityTypeShape EntityType="ESCUELAModel.PERMISO" Width="1.5" PointX="7.75" PointY="8.375" />
+        <EntityTypeShape EntityType="ESCUELAModel.ROL" Width="1.5" PointX="4.625" PointY="6.375" />
+        <EntityTypeShape EntityType="ESCUELAModel.USUARIO" Width="3" PointX="0.875" PointY="6.25" />
+        <AssociationConnector Association="ESCUELAModel.MENU_PERMISO" />
+        <AssociationConnector Association="ESCUELAModel.MENU_ROL" />
+        <AssociationConnector Association="ESCUELAModel.USUARIO_ROL" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
