@@ -46,12 +46,15 @@ namespace Proyecto.Controllers
 
                 using (var bd = new ESCUELAEntities())
                 {
-                    var usuario = bd.USUARIO.FirstOrDefault(u => u.USUARIO_EMAIL == email && u.USUARIO_PASSWORD == cadenaContraCifrada && u.ESTADO == true);
+                    var usuario = bd.USUARIO.Include(u => u.ROL).FirstOrDefault(u => u.USUARIO_EMAIL == email && u.USUARIO_PASSWORD == cadenaContraCifrada && u.ESTADO == true);
 
                     if (usuario != null)
                     {
                         // Login exitoso
+                        Session["Usuario"] = usuario.USUARIO_EMAIL;
+                        Session["Rol"] = usuario.ROL.ROL_NOMBRE; // Guardar el rol en sesión
                         mensaje = "Login exitoso";
+
                         // Restablecer intentos de autenticación
                         usuario.INTENTOS_AUTENTICACION = 0;
                         bd.SaveChanges();

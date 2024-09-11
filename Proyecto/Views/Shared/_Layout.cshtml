@@ -150,21 +150,26 @@
             <img src="~/Imagenes/Logo.png" alt="Logo Escuela Club de Leones" class="logo" />
             @Html.ActionLink("Club de Leones", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
 
-            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" title="Alternar navegación" aria-controls="navbarSupportedContent"  aria-expanded="false" aria-label="Toggle navigation">
+            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" title="Alternar navegación" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             </button>
             <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
                 <ul class="navbar-nav flex-grow-1">
+
                     <li>@Html.ActionLink("Modulos Aprendizajes", "Index", "Home", new { area = "" }, new { @class = "nav-link" })</li>
                     <li>@Html.ActionLink("Canciones", "Index", "Canciones", new { area = "" }, new { @class = "nav-link" })</li>
                     <li>@Html.ActionLink("Juegos", "Contact", "Home", new { area = "" }, new { @class = "nav-link" })</li>
-                    <li>@Html.ActionLink("Usuarios", "Index", "Usuario", new { area = "" }, new { @class = "nav-link" })</li>
-                    <li>@Html.ActionLink("Roles", "Index", "Rol", new { area = "" }, new { @class = "nav-link" })</li>
 
-                    <li class="nav-item">@Html.ActionLink("Cerrar sesión", "Index", "Login", new { area = "" }, new { @class = "nav-link" })</li>
+                    @if (Session["Rol"] != null && Session["Rol"].ToString() == "Administrador")
+                    {
+                        <!-- Mostrar solo al Administrador -->
+                        <li>@Html.ActionLink("Usuarios", "Index", "Usuario", new { area = "" }, new { @class = "nav-link" })</li>
+                        <li>@Html.ActionLink("Roles", "Index", "Rol", new { area = "" }, new { @class = "nav-link" })</li>
+                    }
 
+                <li class="nav-item ms-auto">
+                    @Html.ActionLink("Cerrar sesión", "Index", "Login", new { area = "" }, new { @class = "nav-link" })
+                </li>
                 </ul>
-
-
             </div>
         </div>
     </nav>
