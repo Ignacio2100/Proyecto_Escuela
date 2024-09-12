@@ -11,13 +11,14 @@ namespace Proyecto.Controllers
 {
     public class FrutaController : Controller
     {
+       
         public class ElementoViewModel
         {
             public List<FrutaCLS> ListaFrutas { get; set; }
             public List<FrutaCLS> ListaVerduras { get; set; }
             public FrutaCLS NuevoElemento { get; set; }
         }
-
+        [Authorize]
         // GET: Fruta
         public ActionResult Index()
         {
@@ -48,7 +49,7 @@ namespace Proyecto.Controllers
                                            }).ToList();
             }
             }
-            catch (System.Data.Entity.Core.EntityException ex)
+            catch (System.Data.Entity.Core.EntityException)
             {
                 // Log o manejar el error de conexión aquí
                 // Ejemplo: Guardar en el log el mensaje de error

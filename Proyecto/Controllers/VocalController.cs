@@ -8,6 +8,7 @@ namespace Proyecto.Controllers
 {
     public class VocalController : Controller
     {
+        [Authorize]
         // GET: Vocal
         public ActionResult Index()
         {

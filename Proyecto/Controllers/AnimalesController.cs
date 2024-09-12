@@ -8,8 +8,10 @@ using System.Web.Mvc;
 
 namespace Proyecto.Controllers
 {
+   
     public class AnimalesController : Controller
     {
+        [Authorize]
         public class AnimalesViewModel
         {
             public List<AnimalCLS> ListaMamiferos { get; set; }
@@ -92,7 +94,7 @@ namespace Proyecto.Controllers
 
             }
             }
-            catch (System.Data.Entity.Core.EntityException ex)
+            catch (System.Data.Entity.Core.EntityException )
             {
                 // Log o manejar el error de conexión aquí
                 // Ejemplo: Guardar en el log el mensaje de error

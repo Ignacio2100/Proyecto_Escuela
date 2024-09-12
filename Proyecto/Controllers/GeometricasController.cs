@@ -8,6 +8,7 @@ namespace Proyecto.Controllers
 {
     public class GeometricasController : Controller
     {
+        [Authorize]
         // GET: Geometricas
         public ActionResult Index()
         {

@@ -12,6 +12,7 @@ namespace Proyecto.Controllers
 {
     public class CancionesController : Controller
     {
+        [Authorize]
         public class CancionViewModel
         {
             public CancionCLS Cancion { get; set; }
@@ -39,7 +40,7 @@ namespace Proyecto.Controllers
                                             }).ToList();
             }
             }
-            catch (System.Data.Entity.Core.EntityException ex)
+            catch (System.Data.Entity.Core.EntityException)
             {
                 // Log o manejar el error de conexión aquí
                 // Ejemplo: Guardar en el log el mensaje de error

@@ -5,6 +5,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Web.Mvc;
 using System.Data.Entity;
+using System.Web.Security;
 
 namespace Proyecto.Controllers
 {
@@ -55,6 +56,8 @@ namespace Proyecto.Controllers
                         Session["Rol"] = usuario.ROL.ROL_NOMBRE; // Guardar el rol en sesión
                         mensaje = "Login exitoso";
 
+                        FormsAuthentication.SetAuthCookie(usuario.USUARIO_EMAIL,false);
+
                         // Restablecer intentos de autenticación
                         usuario.INTENTOS_AUTENTICACION = 0;
                         bd.SaveChanges();
@@ -84,5 +87,14 @@ namespace Proyecto.Controllers
 
             return mensaje;
         }
+
+        // Acción para cerrar sesión
+        public ActionResult Logout()
+        {
+            Session.Clear();  // Limpiar la sesión
+            FormsAuthentication.SignOut();  // Cerrar sesión
+            return RedirectToAction("Index", "Login");  // Redirigir a la página de login
+        }
     }
-}
+
+    }

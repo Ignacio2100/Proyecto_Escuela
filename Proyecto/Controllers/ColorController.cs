@@ -8,6 +8,7 @@ namespace Proyecto.Controllers
 {
     public class ColorController : Controller
     {
+        [Authorize]
         // GET: Color
         public ActionResult Index()
         {
