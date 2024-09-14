@@ -129,19 +129,23 @@
             }
 
         .forgot-password {
-            text-align: center;
-            font-size: 0.875rem;
-            margin-top: 20px;
+            display: flex;
+            justify-content: center; /* Centra horizontalmente */
+            align-items: center; /* Centra verticalmente si es necesario */
         }
 
-            .forgot-password a {
-                color: #0288d1;
-                text-decoration: none;
-                transition: color 0.3s ease;
+            .forgot-password .btn {
+                background: none;
+                border: none;
+                color: #007bff; /* Color azul */
+                padding: 0;
+                text-decoration: underline;
+                font-size: inherit; /* Mantiene el tamaño de fuente */
             }
 
-                .forgot-password a:hover {
-                    color: #01579b;
+                .forgot-password .btn:hover {
+                    color: #0056b3; /* Color azul más oscuro al pasar el mouse */
+                    text-decoration: none; /* Elimina el subrayado al pasar el mouse */
                 }
 
         #darkModeToggle {
@@ -234,7 +238,7 @@
             </div>
             <button type="submit" class="btn btn-lg btn-primary btn-login" id="IngresoLog">Entrar</button>
             <div class="forgot-password">
-                <a href="#">¿Olvidaste tu contraseña?</a>
+                <a href="@Url.Action("Index", "Recuperacion")" class="btn btn-primary">¿Olvidaste tu contraseña?</a>
             </div>
 
             <div class="container">

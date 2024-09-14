@@ -128,6 +128,7 @@
     <Compile Include="Controllers\GeometricasController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\RecuperacionController.cs" />
     <Compile Include="Controllers\RegistrarController.cs" />
     <Compile Include="Controllers\RolController.cs" />
     <Compile Include="Controllers\UsuarioController.cs" />
@@ -281,6 +282,7 @@
     <Content Include="Views\Usuario\Index.cshtml" />
     <Content Include="Views\Rol\Index.cshtml" />
     <Content Include="Views\Registrar\Index.cshtml" />
+    <Content Include="Views\Recuperacion\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
