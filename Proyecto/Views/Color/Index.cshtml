@@ -88,6 +88,14 @@
             font-size: 2.5rem; /* Tamaño de fuente grande */
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); /* Sombra para mayor impacto */
         }
+
+          /* Hacer que el canvas sea responsivo */
+        @@media (max-width: 768px) {
+            #drawingCanvas {
+                width: 100% !important;
+                height: auto !important;
+            }
+        }
     </style>
 </head>
 <body>
@@ -190,33 +198,55 @@
                 <div class="col-md-4">
                     <select id="color1" class="form-select mb-2">
                         <option value="">Elige el primer color</option>
-                        <option value="#FF0000">Rojo</option>
-                        <option value="#FFFF00">Amarillo</option>
-                        <option value="#0000FF">Azul</option>
-                        <option value="#FFA500">Anaranjado</option>
-                        <option value="#00FF00">Verde</option>
-                        <option value="#800080">Violeta</option>
+                        <option value="#FF0000" style="background-color:#FF0000; color:white;">
+                            &#9679; Rojo
+                        </option>
+                        <option value="#FFFF00" style="background-color:#FFFF00; color:black;">
+                            &#9679; Amarillo
+                        </option>
+                        <option value="#0000FF" style="background-color:#0000FF; color:white;">
+                            &#9679; Azul
+                        </option>
+                        <option value="#FFA500" style="background-color:#FFA500; color:black;">
+                            &#9679; Anaranjado
+                        </option>
+                        <option value="#00FF00" style="background-color:#00FF00; color:black;">
+                            &#9679; Verde
+                        </option>
+                        <option value="#800080" style="background-color:#800080; color:white;">
+                            &#9679; Violeta
+                        </option>
                     </select>
                 </div>
                 <div class="col-md-4">
                     <select id="color2" class="form-select mb-2">
                         <option value="">Elige el segundo color</option>
-                        <option value="#FF0000">Rojo</option>
-                        <option value="#FFFF00">Amarillo</option>
-                        <option value="#0000FF">Azul</option>
-                        <option value="#FFA500">Anaranjado</option>
-                        <option value="#00FF00">Verde</option>
-                        <option value="#800080">Violeta</option>
+                        <option value="#FF0000" style="background-color:#FF0000; color:white;">
+                            &#9679; Rojo
+                        </option>
+                        <option value="#FFFF00" style="background-color:#FFFF00; color:black;">
+                            &#9679; Amarillo
+                        </option>
+                        <option value="#0000FF" style="background-color:#0000FF; color:white;">
+                            &#9679; Azul
+                        </option>
+                        <option value="#FFA500" style="background-color:#FFA500; color:black;">
+                            &#9679; Anaranjado
+                        </option>
+                        <option value="#00FF00" style="background-color:#00FF00; color:black;">
+                            &#9679; Verde
+                        </option>
+                        <option value="#800080" style="background-color:#800080; color:white;">
+                            &#9679; Violeta
+                        </option>
                     </select>
                 </div>
                 <div class="col-md-4">
                     <button onclick="mixColors()" class="btn btn-primary w-100">Mezclar</button>
-
                 </div>
             </div>
             <div id="mixResult"></div>
             <p id="mixExplanation" class="text-center mt-3"></p>
-
         </div>
 
         <!-- Sección de reconocimiento de voz actualizada -->
@@ -235,42 +265,42 @@
         <div id="colorGame" class="animate__animated animate__fadeIn">
             <h2 class="text-center mb-4">¡Haz un dibujo que te indique la maestra!</h2>
             <div class="row justify-content-center mb-3">
-                <div class="col-md-2">
+                <div class="col-md-2 col-sm-4">
                     <select id="colorSelect" class="form-select mb-2">
-                        <option value="#FF0000">Rojo</option>
-                        <option value="#FFFF00">Amarillo</option>
-                        <option value="#0000FF">Azul</option>
-                        <option value="#FFA500">Anaranjado</option>
-                        <option value="#00FF00">Verde</option>
-                        <option value="#800080">Violeta</option>
-                        <option value="#000000">Negro</option>
-                        <option value="#FFFFFF">Blanco</option>
-                        <option value="#FFC0CB">Rosa</option>
-                        <option value="#A52A2A">Marrón</option>
-                        <option value="#808080">Gris</option>
-                        <option value="#C0C0C0">Plata</option>
-                        <option value="#FFD700">Oro</option>
-                        <option value="#00FFFF">Cian</option>
-                        <option value="#FF1493">Rosa intenso</option>
-                        <option value="#B22222">Rojo ladrillo</option>
-                        <option value="#8A2BE2">Violeta azulado</option>
-                        <option value="#D2691E">Chocolate</option>
-                        <option value="#5F9EA0">Azul pizarra</option>
-                        <option value="#7FFF00">Chartreuse</option>
-                        <option value="#DCDCDC">Gainsboro</option>
-                        <option value="#ADFF2F">Verde amarillento</option>
+                        <option value="#FF0000" style="background-color:#FF0000; color:white;">&#9679; Rojo</option>
+                        <option value="#FFFF00" style="background-color:#FFFF00; color:black;">&#9679; Amarillo</option>
+                        <option value="#0000FF" style="background-color:#0000FF; color:white;">&#9679; Azul</option>
+                        <option value="#FFA500" style="background-color:#FFA500; color:black;">&#9679; Anaranjado</option>
+                        <option value="#00FF00" style="background-color:#00FF00; color:black;">&#9679; Verde</option>
+                        <option value="#800080" style="background-color:#800080; color:white;">&#9679; Violeta</option>
+                        <option value="#000000" style="background-color:#000000; color:white;">&#9679; Negro</option>
+                        <option value="#FFFFFF" style="background-color:#FFFFFF; color:black;">&#9679; Blanco</option>
+                        <option value="#FFC0CB" style="background-color:#FFC0CB; color:black;">&#9679; Rosa</option>
+                        <option value="#A52A2A" style="background-color:#A52A2A; color:white;">&#9679; Marrón</option>
+                        <option value="#808080" style="background-color:#808080; color:white;">&#9679; Gris</option>
+                        <option value="#C0C0C0" style="background-color:#C0C0C0; color:black;">&#9679; Plata</option>
+                        <option value="#FFD700" style="background-color:#FFD700; color:black;">&#9679; Oro</option>
+                        <option value="#00FFFF" style="background-color:#00FFFF; color:black;">&#9679; Cian</option>
+                        <option value="#FF1493" style="background-color:#FF1493; color:white;">&#9679; Rosa intenso</option>
+                        <option value="#B22222" style="background-color:#B22222; color:white;">&#9679; Rojo ladrillo</option>
+                        <option value="#8A2BE2" style="background-color:#8A2BE2; color:white;">&#9679; Violeta azulado</option>
+                        <option value="#D2691E" style="background-color:#D2691E; color:white;">&#9679; Chocolate</option>
+                        <option value="#5F9EA0" style="background-color:#5F9EA0; color:white;">&#9679; Azul pizarra</option>
+                        <option value="#7FFF00" style="background-color:#7FFF00; color:black;">&#9679; Chartreuse</option>
+                        <option value="#DCDCDC" style="background-color:#DCDCDC; color:black;">&#9679; Gainsboro</option>
+                        <option value="#ADFF2F" style="background-color:#ADFF2F; color:black;">&#9679; Verde amarillento</option>
                     </select>
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-2 col-sm-4">
                     <input type="range" id="brushSize" min="1" max="20" value="5" class="form-range">
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-2 col-sm-6">
                     <button id="clearCanvas" class="btn btn-secondary w-100">Limpiar</button>
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-2 col-sm-6">
                     <button id="eraser" class="btn btn-info w-100">Borrador</button>
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-2 col-sm-6">
                     <button id="captureCanvas" class="btn btn-primary w-100">Capturar</button>
                 </div>
             </div>
@@ -446,57 +476,115 @@
             //juego de canvas
             const canvas = document.getElementById('drawingCanvas');
             const ctx = canvas.getContext('2d');
-            let isDrawing = false;
-            let lastX = 0;
-            let lastY = 0;
-            let isEraser = false;
+            let painting = false;
+            let brushColor = document.getElementById('colorSelect').value;
+            let brushSize = document.getElementById('brushSize').value;
+
+            // Actualiza el color y tamaño del pincel
+            document.getElementById('colorSelect').addEventListener('change', (e) => {
+                brushColor = e.target.value;
+            });
+
+            document.getElementById('brushSize').addEventListener('input', (e) => {
+                brushSize = e.target.value;
+            });
+
+            // Función para obtener las coordenadas del ratón/touch relativas al canvas
+            function getMousePosition(canvas, event) {
+                const rect = canvas.getBoundingClientRect();
+                const scaleX = canvas.width / rect.width;
+                const scaleY = canvas.height / rect.height;
+
+                return {
+                    x: (event.clientX - rect.left) * scaleX,
+                    y: (event.clientY - rect.top) * scaleY
+                };
+            }
 
             function startPosition(e) {
-                isDrawing = true;
-                [lastX, lastY] = [e.offsetX, e.offsetY];
+                painting = true;
+                draw(e);
             }
 
             function endPosition() {
-                isDrawing = false;
+                painting = false;
+                ctx.beginPath();
             }
 
             function draw(e) {
-                if (!isDrawing) return;
-                ctx.beginPath();
-                ctx.moveTo(lastX, lastY);
-                ctx.lineTo(e.offsetX, e.offsetY);
+                if (!painting) return;
+
+                const pos = getMousePosition(canvas, e);
+
+                ctx.lineWidth = brushSize;
+                ctx.lineCap = 'round';
+                ctx.strokeStyle = brushColor;
+
+                ctx.lineTo(pos.x, pos.y);
                 ctx.stroke();
-                [lastX, lastY] = [e.offsetX, e.offsetY];
+                ctx.beginPath();
+                ctx.moveTo(pos.x, pos.y);
             }
 
+            // Eventos para ratón
             canvas.addEventListener('mousedown', startPosition);
             canvas.addEventListener('mouseup', endPosition);
             canvas.addEventListener('mousemove', draw);
 
-            document.getElementById('colorSelect').addEventListener('change', function () {
-                ctx.strokeStyle = this.value;
-                isEraser = false;
+            // Eventos para dispositivos táctiles
+            canvas.addEventListener('touchstart', (e) => {
+                const touch = e.touches[0];
+                const mouseEvent = new MouseEvent('mousedown', {
+                    clientX: touch.clientX,
+                    clientY: touch.clientY
+                });
+                canvas.dispatchEvent(mouseEvent);
             });
 
-            document.getElementById('brushSize').addEventListener('input', function () {
-                ctx.lineWidth = this.value;
+            canvas.addEventListener('touchend', () => {
+                const mouseEvent = new MouseEvent('mouseup', {});
+                canvas.dispatchEvent(mouseEvent);
             });
 
-            document.getElementById('clearCanvas').addEventListener('click', function () {
-                ctx.fillStyle = 'white';
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
+            canvas.addEventListener('touchmove', (e) => {
+                const touch = e.touches[0];
+                const mouseEvent = new MouseEvent('mousemove', {
+                    clientX: touch.clientX,
+                    clientY: touch.clientY
+                });
+                canvas.dispatchEvent(mouseEvent);
             });
 
-            document.getElementById('eraser').addEventListener('click', function () {
-                isEraser = true;
-                ctx.strokeStyle = 'white';
+            // Limpiar el canvas
+            document.getElementById('clearCanvas').addEventListener('click', () => {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+            });
+
+            // Modo borrador
+            document.getElementById('eraser').addEventListener('click', () => {
+                brushColor = '#FFFFFF'; // Cambia el color del pincel a blanco (borrador)
             });
 
             document.getElementById('captureCanvas').addEventListener('click', function () {
-                const image = canvas.toDataURL("image/jpeg");
+                const tempCanvas = document.createElement('canvas');
+                const tempCtx = tempCanvas.getContext('2d');
+                tempCanvas.width = canvas.width;
+                tempCanvas.height = canvas.height;
+
+                // Dibujar el fondo blanco antes de copiar el contenido del canvas
+                tempCtx.fillStyle = '#FFFFFF';
+                tempCtx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
+
+                // Copiar el contenido del canvas original al temporal
+                tempCtx.drawImage(canvas, 0, 0);
+
+                // Convertir el canvas a imagen JPEG
+                const image = tempCanvas.toDataURL("image/jpeg");
+
+                // Crear un enlace para descargar la imagen
                 const link = document.createElement('a');
                 link.href = image;
-                link.download = 'NOMBRE DEL ALUMNO';
+                link.download = 'NOMBRE_DEL_ALUMNO.jpeg';  // Cambia aquí por el nombre que quieras
                 link.click();
             });
 
