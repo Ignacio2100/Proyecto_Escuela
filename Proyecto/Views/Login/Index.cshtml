@@ -14,6 +14,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-ajax-unobtrusive/3.2.6/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/schmich/instascan-builds/instascan.min.js"></script>
     <style>
         body {
             font-family: 'Fredoka One', cursive;
@@ -211,6 +212,31 @@
                 .dark-mode .login-icon-circle:hover {
                     box-shadow: 0 15px 30px rgba(1, 87, 155, 0.4);
                 }
+
+        .btn-qr {
+            background: linear-gradient(to right, #4CAF50, #45a049);
+            border: none;
+            color: white;
+            font-size: 16px;
+            padding: 12px 20px;
+            width: 100%;
+            transition: all 0.3s ease;
+            border-radius: 30px;
+            margin-top: 10px;
+        }
+
+            .btn-qr:hover {
+                background: linear-gradient(to right, #45a049, #4CAF50);
+                transform: translateY(-2px);
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            }
+
+        #qr-reader {
+            display: none;
+            width: 100%;
+            max-width: 400px;
+            margin: 20px auto;
+        }
     </style>
 </head>
 <body>
@@ -250,6 +276,9 @@
                 </div>
             </div>
         }
+        <button id="qrLoginBtn" class="btn btn-lg btn-qr">Login con QR</button>
+        <video id="qr-reader" style="width: 100%;"></video>
+
         <div class="text-bg-danger text-center mt-3" id="divRespuesta"></div>
     </div>
 
@@ -291,6 +320,51 @@
         function MostrarError(xhr, status, error) {
             document.getElementById('divRespuesta').innerHTML = "Error en la solicitud: " + error;
         }
+
+
+        let scanner;
+
+        document.getElementById('qrLoginBtn').addEventListener('click', () => {
+            const qrReader = document.getElementById('qr-reader');
+            if (qrReader.style.display === 'none' || qrReader.style.display === '') {
+                qrReader.style.display = 'block';
+                scanner = new Instascan.Scanner({ video: document.getElementById('qr-reader') });
+                scanner.addListener('scan', function (content) {
+                    loginWithQR(content);
+                });
+                Instascan.Camera.getCameras().then(function (cameras) {
+                    if (cameras.length > 0) {
+                        scanner.start(cameras[0]);
+                    } else {
+                        console.error('No cameras found.');
+                        alert('No se encontraron cámaras.');
+                    }
+                }).catch(function (e) {
+                    console.error(e);
+                    alert('Error al acceder a la cámara.');
+                });
+            } else {
+                qrReader.style.display = 'none';
+                if (scanner) {
+                    scanner.stop();
+                }
+            }
+        });
+
+        function loginWithQR(qrContent) {
+            $.ajax({
+                url: '@Url.Action("LoginQR", "Login")',
+                type: 'POST',
+                data: { qrContent: qrContent },
+                success: function(response) {
+                    Ingresar(response);
+                },
+                error: function(xhr, status, error) {
+                    MostrarError(xhr, status, error);
+                }
+            });
+        }
+
     </script>
 </body>
 </html>

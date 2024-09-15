@@ -95,6 +95,43 @@ namespace Proyecto.Controllers
             FormsAuthentication.SignOut();  // Cerrar sesión
             return RedirectToAction("Index", "Login");  // Redirigir a la página de login
         }
+
+
+        [HttpPost]
+        public string LoginQR(string qrContent)
+        {
+            string mensaje = "";
+            try
+            {
+                using (var bd = new ESCUELAEntities())
+                {
+                    var usuario = bd.USUARIO.Include(u => u.ROL).FirstOrDefault(u => u.USUARIO_EMAIL == qrContent && u.ESTADO == true);
+                    if (usuario != null)
+                    {
+                        // Login exitoso
+                        Session["Usuario"] = usuario.USUARIO_EMAIL;
+                        Session["Rol"] = usuario.ROL.ROL_NOMBRE;
+                        mensaje = "Login exitoso";
+                        FormsAuthentication.SetAuthCookie(usuario.USUARIO_EMAIL, false);
+                        // Restablecer intentos de autenticación
+                        usuario.INTENTOS_AUTENTICACION = 0;
+                        bd.SaveChanges();
+                    }
+                    else
+                    {
+                        mensaje = "Código QR inválido o usuario no encontrado";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                mensaje = "Error al procesar el login con QR: " + ex.Message;
+            }
+            return mensaje;
+        }
+
+
+
     }
 
     }
