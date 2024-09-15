@@ -109,42 +109,90 @@
             margin-top: 1rem;
         }
 
-        .tabla-usuarios {
-            width: 100%;
-            margin-top: 2rem;
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
+        .table-responsive {
+    margin-top: 2rem;
+    border-radius: 10px;
+    overflow-x: auto; /* Barra de desplazamiento horizontal si es necesario */
+}
 
-        th, td {
-            padding: 12px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
+.tabla-usuarios {
+    width: 100%;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
 
-        th {
-            background-color: #0288d1;
-            color: white;
-        }
+th, td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
 
-        .table-container {
-            width: 100%;
-            margin-top: 20px;
-        }
+th {
+    background-color: #0288d1;
+    color: white;
+    text-align: center;
+    font-weight: bold;
+}
 
-        .btn-eliminar {
-            background-color: #dc3545;
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
+td {
+    text-align: left;
+    vertical-align: middle;
+}
 
-            .btn-eliminar:hover {
-                background-color: #c82333;
-            }
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+tr:hover {
+    background-color: #f1f1f1;
+}
+
+.btn-group {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.btn-sm {
+    padding: 6px 10px;
+    font-size: 14px;
+    border-radius: 4px;
+}
+
+.btn-danger {
+    background-color: #e74c3c;
+    color: white;
+}
+
+.btn-danger:hover {
+    background-color: #c0392b;
+}
+
+.btn-warning {
+    background-color: #f39c12;
+    color: white;
+}
+
+.btn-warning:hover {
+    background-color: #e67e22;
+}
+
+/* Responsivo */
+@@media (max-width: 768px) {
+    th, td {
+        font-size: 14px;
+        padding: 8px;
+    }
+
+    .btn-group {
+        flex-direction: column;
+    }
+
+    .tabla-usuarios {
+        box-shadow: none;
+    }
+}
     </style>
 </head>
 <body>
@@ -190,7 +238,7 @@
             </form>
             <div id="divRespuesta"></div>
             <!-- Tabla de Usuarios -->
-            <div class="table-container">
+            <div class="table-responsive">
                 <table class="tabla-usuarios table table-hover">
                     <thead>
                         <tr>
@@ -210,7 +258,10 @@
                                 <td>@(usuario.ESTADO ? "Activo" : "Inactivo")</td>
                                 <td>@usuario.ROL_NOMBRE</td>
                                 <td>
-                                    <button class="btn-eliminar" onclick="eliminarUsuario(@usuario.USUARIO_ID)">Eliminar</button>
+                                    <div class="btn-group" role="group">
+                                        <button class="btn btn-danger btn-sm" onclick="eliminarUsuario(@usuario.USUARIO_ID)">Eliminar</button>
+                                        <a href="@Url.Action("Editar", "Usuario", new { id = usuario.USUARIO_ID })" class="btn btn-warning btn-sm">Actualizar</a>
+                                    </div>
                                 </td>
                             </tr>
                         }

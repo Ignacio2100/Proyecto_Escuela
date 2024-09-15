@@ -127,5 +127,89 @@ namespace Proyecto.Controllers
                 return builder.ToString();
             }
         }
+
+
+
+        // GET: Usuario/Editar/5
+        public ActionResult Editar(int id)
+        {
+            using (var db = new ESCUELAEntities())
+            {
+                var usuario = db.USUARIO.Find(id);
+                if (usuario == null)
+                {
+                    return HttpNotFound();
+                }
+
+                var usuarioCLS = new UsuarioCLS
+                {
+                    USUARIO_ID = usuario.USUARIO_ID,
+                    USUARIO_CODIGO = usuario.USUARIO_CODIGO,
+                    USUARIO_EMAIL = usuario.USUARIO_EMAIL,
+                    ROL_ID = (int)usuario.ROL_ID,
+                    ESTADO = usuario.ESTADO ?? false
+                };
+
+                ViewBag.Roles = db.ROL.Where(r => r.ESTADO == true)
+                    .Select(r => new SelectListItem
+                    {
+                        Value = r.ROL_ID.ToString(),
+                        Text = r.ROL_NOMBRE,
+                        Selected = r.ROL_ID == usuario.ROL_ID
+                    }).ToList();
+
+                return View(usuarioCLS);
+            }
+        }
+
+        // POST: Usuario/Editar
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Editar(UsuarioCLS modelo)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    using (var db = new ESCUELAEntities())
+                    {
+                        var usuario = db.USUARIO.Find(modelo.USUARIO_ID);
+                        if (usuario == null)
+                        {
+                            return Json(new { success = false, message = "Usuario no encontrado" });
+                        }
+
+                        usuario.USUARIO_CODIGO = modelo.USUARIO_CODIGO;
+                        usuario.USUARIO_EMAIL = modelo.USUARIO_EMAIL;
+                        usuario.ROL_ID = modelo.ROL_ID;
+                        usuario.ESTADO = modelo.ESTADO;
+
+                        if (!string.IsNullOrEmpty(modelo.USUARIO_PASSWORD))
+                        {
+                            usuario.USUARIO_PASSWORD = CifrarContraseña(modelo.USUARIO_PASSWORD);
+                            usuario.CAMBIO_PASSWORD = true;
+                        }
+
+                        db.SaveChanges();
+                        return Json(new { success = true, message = "Usuario actualizado con éxito" });
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return Json(new { success = false, message = "Error al actualizar: " + ex.Message });
+                }
+            }
+
+            var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage);
+            return Json(new { success = false, message = "Datos inválidos", errors = errors });
+        }
+
+
+
+
+
+
+
+
     }
 }

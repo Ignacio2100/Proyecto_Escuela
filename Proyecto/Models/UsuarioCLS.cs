@@ -17,7 +17,7 @@ namespace Proyecto.Models
         [EmailAddress]
         public string USUARIO_EMAIL { get; set; }
 
-        [Required]
+      
         public string USUARIO_PASSWORD { get; set; }
 
        

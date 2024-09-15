@@ -283,6 +283,7 @@
     <Content Include="Views\Rol\Index.cshtml" />
     <Content Include="Views\Registrar\Index.cshtml" />
     <Content Include="Views\Recuperacion\Index.cshtml" />
+    <Content Include="Views\Usuario\Editar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
