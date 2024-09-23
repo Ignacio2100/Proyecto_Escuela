@@ -52,6 +52,16 @@
           <Property Name="PERMISO_NOMBRE" Type="varchar" MaxLength="50" />
           <Property Name="PERMISO_CONTROLLER" Type="varchar" MaxLength="50" />
         </EntityType>
+        <EntityType Name="ResultadosTest">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NombreEstudiante" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Pregunta" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="Respuesta" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="EsCorrecta" Type="bit" Nullable="false" />
+        </EntityType>
         <EntityType Name="ROL">
           <Key>
             <PropertyRef Name="ROL_ID" />
@@ -115,6 +125,7 @@
           <EntitySet Name="Frutas" EntityType="Self.Frutas" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MENU" EntityType="Self.MENU" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PERMISO" EntityType="Self.PERMISO" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ResultadosTest" EntityType="Self.ResultadosTest" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ROL" EntityType="Self.ROL" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="USUARIO" EntityType="Self.USUARIO" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="MENU_PERMISO" Association="Self.MENU_PERMISO">
@@ -164,6 +175,7 @@
             <End Role="ROL" EntitySet="ROL" />
             <End Role="USUARIO" EntitySet="USUARIO" />
           </AssociationSet>
+          <EntitySet Name="ResultadosTest" EntityType="ESCUELAModel.ResultadosTest" />
         </EntityContainer>
         <EntityType Name="Frutas">
           <Key>
@@ -265,6 +277,16 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="ResultadosTest">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NombreEstudiante" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Pregunta" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Respuesta" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="EsCorrecta" Type="Boolean" Nullable="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -343,6 +365,17 @@
                 <ScalarProperty Name="USUARIO_EMAIL" ColumnName="USUARIO_EMAIL" />
                 <ScalarProperty Name="USUARIO_CODIGO" ColumnName="USUARIO_CODIGO" />
                 <ScalarProperty Name="USUARIO_ID" ColumnName="USUARIO_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ResultadosTest">
+            <EntityTypeMapping TypeName="ESCUELAModel.ResultadosTest">
+              <MappingFragment StoreEntitySet="ResultadosTest">
+                <ScalarProperty Name="EsCorrecta" ColumnName="EsCorrecta" />
+                <ScalarProperty Name="Respuesta" ColumnName="Respuesta" />
+                <ScalarProperty Name="Pregunta" ColumnName="Pregunta" />
+                <ScalarProperty Name="NombreEstudiante" ColumnName="NombreEstudiante" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

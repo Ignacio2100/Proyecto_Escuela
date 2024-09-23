@@ -15,6 +15,7 @@
         <AssociationConnector Association="ESCUELAModel.MENU_PERMISO" />
         <AssociationConnector Association="ESCUELAModel.MENU_ROL" />
         <AssociationConnector Association="ESCUELAModel.USUARIO_ROL" />
+        <EntityTypeShape EntityType="ESCUELAModel.ResultadosTest" Width="1.5" PointX="4" PointY="4" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -182,6 +182,9 @@
                     <li class="nav-item">
                         @Html.ActionLink("Juegos", "Contact", "Home", new { area = "" }, new { @class = "nav-link" })
                     </li>
+                    <li class="nav-item">
+                        @Html.ActionLink("Test", "Index", "Test", new { area = "" }, new { @class = "nav-link" })
+                    </li>
 
                     @if (Session["Rol"] != null && Session["Rol"].ToString() == "Administrador")
                     {

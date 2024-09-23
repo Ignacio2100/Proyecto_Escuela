@@ -32,5 +32,6 @@ namespace Proyecto.Models
         public virtual DbSet<PERMISO> PERMISO { get; set; }
         public virtual DbSet<ROL> ROL { get; set; }
         public virtual DbSet<USUARIO> USUARIO { get; set; }
+        public virtual DbSet<ResultadosTest> ResultadosTest { get; set; }
     }
 }
