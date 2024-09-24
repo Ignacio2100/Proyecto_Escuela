@@ -13,20 +13,81 @@ namespace Proyecto.Controllers
     {
         private static List<Pregunta> preguntas = new List<Pregunta>
         {
-           new Pregunta { Id = 1, Texto = "¿Cuál es el color rojo?", Opciones = new List<string> { "Rojo", "Negro", "Azul" }, RespuestaCorrecta = "Rojo", ImagenUrl = "Imagenes/Rojo.png" },
-           new Pregunta { Id = 2, Texto = "¿Cuál es la primera letra del abecedario?", Opciones = new List<string> { "A", "B", "C" }, RespuestaCorrecta = "A", ImagenUrl = "/images/a.png" },
-           new Pregunta { Id = 3, Texto = "¿Qué tipo de fruta es una manzana?", Opciones = new List<string> { "Fruta", "Verdura", "Carne" }, RespuestaCorrecta = "Fruta", ImagenUrl = "/images/fruta.png" },
-           new Pregunta { Id = 4, Texto = "¿Qué tipo de animal es un perro?", Opciones = new List<string> { "Mamífero", "Ave", "Reptil" }, RespuestaCorrecta = "Mamífero", ImagenUrl = "/images/mamifero.png" },
-           new Pregunta { Id = 5, Texto = "¿Cuál es una vocal?", Opciones = new List<string> { "E", "T", "R" }, RespuestaCorrecta = "E", ImagenUrl = "/images/e.png" },
-           new Pregunta { Id = 6, Texto = "¿Qué figura es un triángulo?", Opciones = new List<string> { "Triángulo", "Círculo", "Cuadrado" }, RespuestaCorrecta = "Triángulo", ImagenUrl = "/images/triangulo.png" }
-};
+           new Pregunta {
+               Id = 1,
+               Texto = "¿Cuál es el color rojo?",
+               Opciones = new List<Opcion> {
+                   new Opcion { Id = 1, ImagenUrl = "/Imagenes/Rojo.png" },
+                   new Opcion { Id = 2, ImagenUrl = "/Imagenes/Azul.png" },
+                   new Opcion { Id = 3, ImagenUrl = "/Imagenes/Verde.png" }
+               },
+               RespuestaCorrectaId = 1,
+               ImagenUrl = "/Imagenes/Pregunta1.png"
+           },
+           new Pregunta {
+               Id = 2,
+               Texto = "¿Cuál es la primera letra del abecedario?",
+               Opciones = new List<Opcion> {
+                   new Opcion { Id = 1, ImagenUrl = "/Imagenes/Ardilla.png" },
+                   new Opcion { Id = 2, ImagenUrl = "/Imagenes/FresaJ.png" },
+                   new Opcion { Id = 3, ImagenUrl = "/Imagenes/Uvas.png" }
+               },
+               RespuestaCorrectaId = 1,
+               ImagenUrl = "/Imagenes/Pregunta2.png"
+           },
+           new Pregunta {
+               Id = 3,
+               Texto = "¿La Manzana es una verdura?",
+               Opciones = new List<Opcion> {
+                   new Opcion { Id = 1, ImagenUrl = "/Imagenes/NOSE.png" },
+                   new Opcion { Id = 2, ImagenUrl = "/Imagenes/SII.png" },
+                   new Opcion { Id = 3, ImagenUrl = "/Imagenes/NOO.png" }
+               },
+               RespuestaCorrectaId = 3,
+               ImagenUrl = "/Imagenes/Pregunta3.png"
+           },
+           new Pregunta {
+               Id = 4,
+               Texto = "¿Qué tipo de animal es un perro?",
+               Opciones = new List<Opcion> {
+                   new Opcion { Id = 1, ImagenUrl = "/Imagenes/MamiferoP.png" },
+                   new Opcion { Id = 2, ImagenUrl = "/Imagenes/AveP.png" },
+                   new Opcion { Id = 3, ImagenUrl = "/Imagenes/ReptilP.png" }
+               },
+               RespuestaCorrectaId = 1,
+               ImagenUrl = "/Imagenes/Pregunta4.png"
+           },
+           new Pregunta {
+               Id = 5,
+               Texto = "¿Cuál es una vocal?",
+               Opciones = new List<Opcion> {
+                   new Opcion { Id = 1, ImagenUrl = "/Imagenes/Ardilla.png" },
+                   new Opcion { Id = 2, ImagenUrl = "/Imagenes/NOSE.png" },
+                   new Opcion { Id = 3, ImagenUrl = "/Imagenes/CocoJ.png" }
+               },
+               RespuestaCorrectaId = 1,
+               ImagenUrl = "/Imagenes/Pregunta5.png"
+           },
+            new Pregunta {
+               Id = 6,
+               Texto = "¿Cuál es un triángulo?",
+               Opciones = new List<Opcion> {
+                   new Opcion { Id = 1, ImagenUrl = "/Imagenes/Trapecio.png" },
+                   new Opcion { Id = 2, ImagenUrl = "/Imagenes/Triangulo.png" },
+                   new Opcion { Id = 3, ImagenUrl = "/Imagenes/Circulo.png" }
+               },
+               RespuestaCorrectaId = 2,
+               ImagenUrl = "/Imagenes/Pregunta6.png"
+           },
+           // Añade más preguntas siguiendo este formato
+        };
 
         public ActionResult Index()
         {
             var model = new TestCLS
             {
-                NombreEstudiante = string.Empty, // Inicializar el nombre como vacío
-                Preguntas = preguntas // Cargar las preguntas directamente
+                NombreEstudiante = string.Empty,
+                Preguntas = preguntas
             };
 
             return View(model);
@@ -43,25 +104,23 @@ namespace Proyecto.Controllers
                     {
                         foreach (var pregunta in model.Preguntas)
                         {
-                            var respuestaCorrecta = preguntas.First(p => p.Id == pregunta.Id).RespuestaCorrecta;
-                            var esCorrecta = (pregunta.RespuestaSeleccionada == respuestaCorrecta) ? 1 : 0; // Guardar 1 o 0
+                            var respuestaCorrecta = preguntas.First(p => p.Id == pregunta.Id).RespuestaCorrectaId;
+                            var esCorrecta = (pregunta.RespuestaSeleccionadaId == respuestaCorrecta) ? 1 : 0;
 
                             var resultado = new ResultadosTest
                             {
                                 NombreEstudiante = model.NombreEstudiante,
                                 Pregunta = pregunta.Texto,
-                                Respuesta = pregunta.RespuestaSeleccionada,
-                                EsCorrecta = (pregunta.RespuestaSeleccionada == respuestaCorrecta)
+                                Respuesta = pregunta.RespuestaSeleccionadaId.ToString(),
+                                EsCorrecta = (pregunta.RespuestaSeleccionadaId == respuestaCorrecta)
                             };
 
                             db.ResultadosTest.Add(resultado);
                         }
                         db.SaveChanges();
                     }
-                   
-                    return RedirectToAction("FinalizarTest", new { nombreEstudiante = model.NombreEstudiante });
 
-                   
+                    return RedirectToAction("FinalizarTest", new { nombreEstudiante = model.NombreEstudiante });
                 }
                 catch (Exception)
                 {

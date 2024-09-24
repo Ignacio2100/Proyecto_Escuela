@@ -19,10 +19,16 @@ namespace Proyecto.Models
     public class Pregunta
     {
         public int Id { get; set; }
-        public string Texto { get; set; }
-        public List<string> Opciones { get; set; }
-        public string RespuestaCorrecta { get; set; }
-        public string RespuestaSeleccionada { get; set; }
-        public string ImagenUrl { get; set; } // Propiedad para la URL de la imagen
+        public string Texto { get; set; } // Mantenemos el texto para uso interno
+        public List<Opcion> Opciones { get; set; }
+        public int RespuestaCorrectaId { get; set; }
+        public int? RespuestaSeleccionadaId { get; set; }
+        public string ImagenUrl { get; set; } // Imagen de la pregunta
+    }
+
+    public class Opcion
+    {
+        public int Id { get; set; }
+        public string ImagenUrl { get; set; }
     }
 }
