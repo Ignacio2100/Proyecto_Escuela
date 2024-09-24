@@ -82,6 +82,7 @@ namespace Proyecto.Controllers
            // Añade más preguntas siguiendo este formato
         };
 
+        [Authorize]
         public ActionResult Index()
         {
             var model = new TestCLS
@@ -141,43 +142,103 @@ namespace Proyecto.Controllers
             {
                 using (var db = new ESCUELAEntities())
                 {
-                    var resultados = db.ResultadosTest.Where(r => r.NombreEstudiante == nombreEstudiante).ToList();
+                    var resultados = db.ResultadosTest.Where(r => r.NombreEstudiante == nombreEstudiante)
+                                                      .OrderByDescending(r => r.Id)  // Asumiendo que Id es auto-incremental
+                                                      .ToList();
 
-                    // Generar PDF
+                    // Separar los resultados en recientes y anteriores
+                    var resultadosRecientes = resultados.Take(6).ToList();
+                    var resultadosAnteriores = resultados.Skip(6).ToList();
+
                     using (MemoryStream ms = new MemoryStream())
                     {
                         Document document = new Document(PageSize.A4, 25, 25, 30, 30);
                         PdfWriter writer = PdfWriter.GetInstance(document, ms);
                         document.Open();
 
-                        document.Add(new Paragraph($"Resultados del Test de {nombreEstudiante}", new Font(Font.FontFamily.HELVETICA, 18, Font.BOLD)));
-                        document.Add(new Paragraph(" "));
+                        // Agregar el logo
+                        string logoPath = Server.MapPath("~/Imagenes/LOGO.PNG");
+                        Image logo = Image.GetInstance(logoPath);
+                        logo.ScaleToFit(100, 100);
+                        logo.Alignment = Element.ALIGN_CENTER;
+                        document.Add(logo);
 
-                        PdfPTable table = new PdfPTable(3);
-                        table.WidthPercentage = 100;
-                        table.SetWidths(new int[] { 5, 3, 2 });
+                        // Título y información
+                        Chunk titleChunk = new Chunk($"Resultados del Test de {nombreEstudiante}", new Font(Font.FontFamily.HELVETICA, 20, Font.BOLD, BaseColor.DARK_GRAY));
+                        Paragraph title = new Paragraph(titleChunk);
+                        title.Alignment = Element.ALIGN_CENTER;
+                        title.SpacingBefore = 20f;
+                        title.SpacingAfter = 10f;
+                        document.Add(title);
 
-                        table.AddCell(new PdfPCell(new Phrase("Pregunta", new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD))));
-                        table.AddCell(new PdfPCell(new Phrase("Respuesta", new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD))));
-                        table.AddCell(new PdfPCell(new Phrase("Correcta", new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD))));
+                        Paragraph info = new Paragraph($"Fecha y hora de descarga: {DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss")}", new Font(Font.FontFamily.HELVETICA, 12, Font.ITALIC, BaseColor.GRAY));
+                        info.Alignment = Element.ALIGN_CENTER;
+                        info.SpacingAfter = 20f;
+                        document.Add(info);
 
-                        foreach (var resultado in resultados)
+                        // Función para crear tabla de resultados
+                        PdfPTable CreateResultTable(List<ResultadosTest> results, string tableTitle)
                         {
-                            table.AddCell(new PdfPCell(new Phrase(resultado.Pregunta)));
-                            table.AddCell(new PdfPCell(new Phrase(resultado.Respuesta)));
-                            table.AddCell(new PdfPCell(new Phrase(resultado.EsCorrecta ? "Sí" : "No")));
+                            Paragraph tableTitlePara = new Paragraph(tableTitle, new Font(Font.FontFamily.HELVETICA, 14, Font.BOLD, BaseColor.DARK_GRAY));
+                            tableTitlePara.SpacingBefore = 15f;
+                            tableTitlePara.SpacingAfter = 10f;
+                            document.Add(tableTitlePara);
+
+                            PdfPTable table = new PdfPTable(3);
+                            table.WidthPercentage = 100;
+                            table.SetWidths(new float[] { 5f, 3f, 2f });
+
+                            // Estilo para los encabezados
+                            PdfPCell headerCell = new PdfPCell();
+                            headerCell.BackgroundColor = new BaseColor(41, 128, 185); // Azul atractivo
+                            headerCell.Padding = 5;
+
+                            // Encabezados
+                            headerCell.Phrase = new Phrase("Pregunta", new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD, BaseColor.WHITE));
+                            table.AddCell(headerCell);
+                            headerCell.Phrase = new Phrase("Selección de Respuesta", new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD, BaseColor.WHITE));
+                            table.AddCell(headerCell);
+                            headerCell.Phrase = new Phrase("Correcta", new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD, BaseColor.WHITE));
+                            table.AddCell(headerCell);
+
+                            // Estilo para las celdas de datos
+                            PdfPCell dataCell = new PdfPCell();
+                            dataCell.Padding = 5;
+
+                            foreach (var resultado in results)
+                            {
+                                dataCell.Phrase = new Phrase(resultado.Pregunta, new Font(Font.FontFamily.HELVETICA, 10));
+                                table.AddCell(dataCell);
+                                dataCell.Phrase = new Phrase(resultado.Respuesta, new Font(Font.FontFamily.HELVETICA, 10));
+                                table.AddCell(dataCell);
+                                dataCell.Phrase = new Phrase(resultado.EsCorrecta ? "Sí" : "No", new Font(Font.FontFamily.HELVETICA, 10, resultado.EsCorrecta ? Font.NORMAL : Font.BOLD, resultado.EsCorrecta ? BaseColor.GREEN : BaseColor.RED));
+                                table.AddCell(dataCell);
+                            }
+
+                            return table;
                         }
 
-                        document.Add(table);
+                        // Agregar tabla de resultados recientes
+                        if (resultadosRecientes.Any())
+                        {
+                            document.Add(CreateResultTable(resultadosRecientes, "Resultados Recientes"));
+                        }
+
+                        // Agregar tabla de resultados anteriores
+                        if (resultadosAnteriores.Any())
+                        {
+                            document.Add(CreateResultTable(resultadosAnteriores, "Resultados Anteriores"));
+                        }
+
+                        // Agregar pie de página
+                        Paragraph footer = new Paragraph("Gracias por completar el test. ¡Sigue aprendiendo!", new Font(Font.FontFamily.HELVETICA, 10, Font.ITALIC, BaseColor.GRAY));
+                        footer.Alignment = Element.ALIGN_CENTER;
+                        footer.SpacingBefore = 20f;
+                        document.Add(footer);
+
                         document.Close();
-
                         byte[] byteArray = ms.ToArray();
-
-
-
                         return File(byteArray, "application/pdf", $"Resultados_{nombreEstudiante}.pdf");
-
-                       
                     }
                 }
             }
@@ -185,6 +246,7 @@ namespace Proyecto.Controllers
             {
                 // Manejo de errores al generar el PDF.
                 ViewBag.Error = "Hubo un problema al generar el PDF. Intenta nuevamente.";
+                // Considera loggear la excepción: ex.Message
                 return View("Index");
             }
         }
