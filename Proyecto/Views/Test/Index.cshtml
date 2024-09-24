@@ -1,6 +1,6 @@
 ﻿@model Proyecto.Models.TestCLS
 @{
-    ViewBag.Title = "Evaluación";
+    ViewBag.Title = "Evaluación de Conocimientos";
 }
 <!DOCTYPE html>
 <html lang="es">
@@ -80,11 +80,16 @@
         .alert {
             font-size: 1.2em;
         }
+
+        .speak-icon {
+            cursor: pointer;
+            margin-left: 1px;
+        }
     </style>
 </head>
 <body>
     <div class="containerr">
-        <h2>@ViewBag.Title</h2>
+        <h1>@ViewBag.Title</h1>
 
         <!-- Mensaje de error si existe -->
         @if (!string.IsNullOrEmpty(ViewBag.Error))
@@ -104,7 +109,8 @@
                 for (int i = 0; i < Model.Preguntas.Count; i++)
                 {
                     <div class="question">
-                        <h4>Pregunta @(i + 1): @Model.Preguntas[i].Texto</h4>
+                        <h4>Pregunta @(i + 1): @Model.Preguntas[i].Texto</h4> <img src="https://img.icons8.com/?size=100&id=2795&format=png&color=000000" alt="Reproducir" class="speak-icon" onclick="speakQuestion('@Model.Preguntas[i].Texto')" />           
+                        @Html.HiddenFor(m => m.Preguntas[i].Id)
                         @Html.HiddenFor(m => m.Preguntas[i].Id)
                         @Html.HiddenFor(m => m.Preguntas[i].Texto)
                         <div class="mb-3">
@@ -142,6 +148,12 @@
     </div>
 
     <script>
+        // Función para reproducir la pregunta en voz alta
+        function speakQuestion(text) {
+            const utterance = new SpeechSynthesisUtterance(text);
+            window.speechSynthesis.speak(utterance);
+        }
+
         // Espera hasta que el DOM esté completamente cargado
         document.addEventListener("DOMContentLoaded", function () {
             document.getElementById("recargarPagina").addEventListener("click", function () {

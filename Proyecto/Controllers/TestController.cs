@@ -13,13 +13,13 @@ namespace Proyecto.Controllers
     {
         private static List<Pregunta> preguntas = new List<Pregunta>
         {
-            new Pregunta { Id = 1, Texto = "¿Cuál es el color rojo?", Opciones = new List<string> { "Rojo", "Negro", "Azul" }, RespuestaCorrecta = "Rojo" },
-            new Pregunta { Id = 2, Texto = "¿Cuál es la primera letra del abecedario?", Opciones = new List<string> { "A", "B", "C" }, RespuestaCorrecta = "A" },
-            new Pregunta { Id = 3, Texto = "¿Qué tipo de fruta es una manzana?", Opciones = new List<string> { "Fruta", "Verdura", "Carne" }, RespuestaCorrecta = "Fruta" },
-            new Pregunta { Id = 4, Texto = "¿Qué tipo de animal es un perro?", Opciones = new List<string> { "Mamífero", "Ave", "Reptil" }, RespuestaCorrecta = "Mamífero" },
-            new Pregunta { Id = 5, Texto = "¿Cuál es una vocal?", Opciones = new List<string> { "E", "T", "R" }, RespuestaCorrecta = "E" },
-            new Pregunta { Id = 6, Texto = "¿Qué figura es un triángulo?", Opciones = new List<string> { "Triángulo", "Círculo", "Cuadrado" }, RespuestaCorrecta = "Triángulo" }
-        };
+           new Pregunta { Id = 1, Texto = "¿Cuál es el color rojo?", Opciones = new List<string> { "Rojo", "Negro", "Azul" }, RespuestaCorrecta = "Rojo", ImagenUrl = "Imagenes/Rojo.png" },
+           new Pregunta { Id = 2, Texto = "¿Cuál es la primera letra del abecedario?", Opciones = new List<string> { "A", "B", "C" }, RespuestaCorrecta = "A", ImagenUrl = "/images/a.png" },
+           new Pregunta { Id = 3, Texto = "¿Qué tipo de fruta es una manzana?", Opciones = new List<string> { "Fruta", "Verdura", "Carne" }, RespuestaCorrecta = "Fruta", ImagenUrl = "/images/fruta.png" },
+           new Pregunta { Id = 4, Texto = "¿Qué tipo de animal es un perro?", Opciones = new List<string> { "Mamífero", "Ave", "Reptil" }, RespuestaCorrecta = "Mamífero", ImagenUrl = "/images/mamifero.png" },
+           new Pregunta { Id = 5, Texto = "¿Cuál es una vocal?", Opciones = new List<string> { "E", "T", "R" }, RespuestaCorrecta = "E", ImagenUrl = "/images/e.png" },
+           new Pregunta { Id = 6, Texto = "¿Qué figura es un triángulo?", Opciones = new List<string> { "Triángulo", "Círculo", "Cuadrado" }, RespuestaCorrecta = "Triángulo", ImagenUrl = "/images/triangulo.png" }
+};
 
         public ActionResult Index()
         {

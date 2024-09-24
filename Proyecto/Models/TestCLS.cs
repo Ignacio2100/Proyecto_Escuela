@@ -23,5 +23,6 @@ namespace Proyecto.Models
         public List<string> Opciones { get; set; }
         public string RespuestaCorrecta { get; set; }
         public string RespuestaSeleccionada { get; set; }
+        public string ImagenUrl { get; set; } // Propiedad para la URL de la imagen
     }
 }
