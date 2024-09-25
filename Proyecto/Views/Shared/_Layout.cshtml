@@ -174,7 +174,7 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav flex-grow-1">
                     <li class="nav-item">
-                        @Html.ActionLink("Modulos Aprendizajes", "Index", "Home", new { area = "" }, new { @class = "nav-link" })
+                        @Html.ActionLink("Módulos de Aprendizajes", "Index", "Home", new { area = "" }, new { @class = "nav-link" })
                     </li>
                     <li class="nav-item">
                         @Html.ActionLink("Canciones", "Index", "Canciones", new { area = "" }, new { @class = "nav-link" })
@@ -183,7 +183,7 @@
                         @Html.ActionLink("Juegos", "Contact", "Home", new { area = "" }, new { @class = "nav-link" })
                     </li>
                     <li class="nav-item">
-                        @Html.ActionLink("Test", "Index", "Test", new { area = "" }, new { @class = "nav-link" })
+                        @Html.ActionLink("Evaluación", "Index", "Test", new { area = "" }, new { @class = "nav-link" })
                     </li>
 
                     @if (Session["Rol"] != null && Session["Rol"].ToString() == "Administrador")
